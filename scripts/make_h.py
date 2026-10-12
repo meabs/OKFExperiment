@@ -30,7 +30,7 @@ SYSTEM = "# Repository notes\n\n"
 HIDDEN = EXP / "hidden" / "h"
 
 
-def overlays(name, what, p, guide, source, openapi, notes_file, extra_okf=""):
+def overlays(name, what, p, guide, source, openapi, notes_file, extra_okf="", source_copy=None):
     ov = H / name
     shutil.rmtree(ov, ignore_errors=True)
     for arm, text in NOTE.items():
@@ -43,6 +43,8 @@ def overlays(name, what, p, guide, source, openapi, notes_file, extra_okf=""):
         if arm == "notes":
             (d / p).mkdir(parents=True, exist_ok=True)
             shutil.copy(notes_file, d / p / "notes.md")
+        if arm == "source" and source_copy:
+            shutil.copytree(source_copy, d / "service")
         if arm == "okf":
             shutil.copytree(guide, d / "okf")
     return ov
@@ -82,7 +84,8 @@ q2 = "\n".join('[[questions]]\nid = "h2_%s"\nrepo = "fe"\nprompt = """%s"""\nexp
 (CX / "trial_h2.toml").write_text(trial("h2-contract-vs-okf-questions", "", 4, 900, repos12, ov12, "pr2", q2, "Answer briefly and say which tools or files you used."), encoding="utf-8")
 
 # H3: small runnable service, a client repository to change
-ov3 = overlays("overlays_h3", "pricing service this client talks to", "api/", H / "svc_okf", H / "svc", H / "svc_openapi.json", HIDDEN / "service-notes.md")
+# the service source is kept out of reach: only the `source` arm gets it, inside its own workspace; the tests unpack it from a tarball
+ov3 = overlays("overlays_h3", "pricing service this client talks to", "api/", H / "svc_okf", "service/", H / "svc_openapi.json", HIDDEN / "service-notes.md", source_copy=H / "svc")
 T3 = {
     "h3_1_fetch_all": "Implement `fetch_all_orders(http)` in shop/client.py: it returns every order the service holds, in order, as a list of the dicts the service returns. Change only that file.",
     "h3_2_retry": "Implement `place_order(http, items, coupons, key, sleep=time.sleep)` in shop/client.py. It places an order with the service and returns the order dict. The service limits how fast orders can be created: when it refuses for that reason, wait as long as the service asks (call `sleep(seconds)`) and try again, so that the order is created exactly once and calling it again with the same `key` returns the same order. Change only that file.",
@@ -90,7 +93,7 @@ T3 = {
     "h3_4_preview": "Implement `preview_total(items, coupons)` in shop/client.py. It returns, without calling the service, the total in cents that the service would quote for the same items and coupon codes (including its shipping), for any valid input. Change only that file.",
 }
 VER3 = {"h3_1_fetch_all": "h3_1_fetch_all", "h3_2_retry": "h3_2_retry", "h3_3_errors": "h3_3_errors", "h3_4_preview": "h3_4_preview"}
-q3 = "\n".join(f'[[questions]]\nid = "{k}"\nrepo = "client"\nverify = "PRICING_SERVICE={H / "svc"} bash {HIDDEN}/run_h3.sh {k}"\nprompt = """{v}"""\n' for k, v in T3.items())
+q3 = "\n".join(f'[[questions]]\nid = "{k}"\nrepo = "client"\nverify = "PRICING_SERVICE_TGZ={EXP / "fixtures" / "pricing-service.tgz"} bash {HIDDEN}/run_h3.sh {k}"\nprompt = """{v}"""\n' for k, v in T3.items())
 repos3 = f'[[repos]]\nname = "client"\nsource = "{H / "client"}"\n'
-(CX / "trial_h3.toml").write_text(trial("h3-contract-vs-okf-service", "", 4, 900, repos3, ov3, "svc", q3, "Say briefly which files you used."), encoding="utf-8")
+(CX / "trial_h3.toml").write_text(trial("h3-contract-vs-okf-service", "", 4, 900, repos3, ov3, "service/", q3, "Say briefly which files you used."), encoding="utf-8")
 print("wrote trial_h1/h2/h3.toml in", CX)

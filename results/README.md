@@ -17,7 +17,10 @@ Each file is the unedited report AgentTrialRig produced for one trial. "Relative
 | [E-confidence-labels-crossrepo-questions.md](E-confidence-labels-crossrepo-questions.md) | E: cross-repo questions with wrong entries, 4 conditions | 112 | The report's "correct" column counts true answers; followed-wrong and disclosure counts come from `scripts/analyse_e.py`. |
 | [F-crossrepo-change-tasks.md](F-crossrepo-change-tasks.md) | F: cross-repo change tasks, 3 conditions | 60 | The "verified" count is the number of changes that passed their hidden test. |
 | [G-harder-crossrepo-change-tasks.md](G-harder-crossrepo-change-tasks.md) | G: harder cross-repo change tasks, 4 conditions | 80 | Includes a condition where the backend source is readable. The per-task counts are in `docs/RESULTS.md`. |
+| [H1-contract-vs-okf-changes.md](H1-contract-vs-okf-changes.md) | H1: the G changes with five arms (none, contract, note, guide, source) | 80 | Network on. Two `none` runs cloned the public repository. |
+| [H2-contract-vs-okf-questions.md](H2-contract-vs-okf-questions.md) | H2: six call-structure questions, five arms | 120 | Network on. 56 runs cloned the public Shopizer repository; the report repeats the table without them. |
+| [H3-runnable-service.md](H3-runnable-service.md) | H3: four changes against a runnable FastAPI service, five arms | 80 | Contaminated: 15 non-source runs opened the service, the tests or other arms' files. The report repeats the table for clean runs only. An earlier, more contaminated run of this part is not reported. |
 
 A first cross-repo run used the v1 pointer and was stopped part-way; it is not reported.
 
-To count stale-following yourself: `python scripts/analyse_b.py <results folder>` (B) `python scripts/analyse_d2.py <results folder>` (D2) or `python scripts/analyse_e.py <results folder>` (E). To count runs that reached outside their own workspace: `python scripts/leak_check.py <results folder>`.
+To count stale-following yourself: `python scripts/analyse_b.py <results folder>` (B) `python scripts/analyse_d2.py <results folder>` (D2) or `python scripts/analyse_e.py <results folder>` (E); for H, `python scripts/analyse_h.py <results folder> [--exclude REGEX]` and `python scripts/net_check.py <results folder>`. To count runs that reached outside their own workspace: `python scripts/leak_check.py <results folder>`.

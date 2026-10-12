@@ -1,5 +1,8 @@
 import os, sys, importlib
-SVC = os.environ["PRICING_SERVICE"]          # the real service, used only by the test
+import tarfile, tempfile
+_tmp = tempfile.mkdtemp(prefix="t")
+tarfile.open(os.environ["PRICING_SERVICE_TGZ"]).extractall(_tmp)   # the real service exists on disk only while a test runs
+SVC = os.path.join(_tmp, "pricing-service")
 sys.path.insert(0, SVC)
 sys.path.insert(0, os.getcwd())               # the agent's working copy of shop-client
 from fastapi.testclient import TestClient

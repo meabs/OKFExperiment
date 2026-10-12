@@ -31,8 +31,10 @@ Every test compares the agent in some of these situations:
 | **Cross-repo questions**, guide has wrong `[medium]` entries | cannot answer | followed the wrong entry **11 of 16** | followed it **8 of 16**, and **said so in 6** (labels alone: 10 of 16, said so in 0) |
 | **4. Cross-repo change**, small tasks (F: 4 tasks, hidden tests) | **3 of 20** pass, 482k tokens | **19 of 20** pass, 242k tokens | **15 of 20** pass, 235k tokens |
 | **4. Cross-repo change**, harder tasks (G: edits to the storefront's real code, inheritance, same-named classes) | **3 of 20** pass, 294k tokens | **18 of 20** pass, 301k tokens | **17 of 20** pass, 308k tokens |
+| **H1.** Same changes, with a **contract** or a 3 KB note instead | 4 of 16 | 14 of 16 (contract 13, note 14, source 14) | not run |
+| **H2.** Questions about **call structure** | 1 of 24 (contract 8, note 0) | **21 of 24** (source 21) | not run |
 
-The headline: **where the agent cannot read the code, a guide takes cross-repo changes from about 3 of 20 to about 18 of 20, and in the harder test it matched having the backend's actual source (18 of 20). Where the agent can read the code, a guide adds cost and no accuracy. Confidence labels did not make agents more accurate; with an instruction they made agents say when they were leaning on a guess.**
+The headline: **where the agent cannot read the code, a guide takes cross-repo changes from about 3 of 20 to about 18 of 20, and in the harder test it matched having the backend's actual source (18 of 20). Where the agent can read the code, a guide adds cost and no accuracy. Confidence labels did not make agents more accurate; with an instruction they made agents say when they were leaning on a guess. Test H adds: a contract or a short note does as well as a guide for field names and costs less, but only a guide (or the source) answered questions about what calls what.**
 
 ## What to do
 
@@ -214,6 +216,7 @@ Two measures throughout: **was the answer right (or did the change pass its hidd
 | **E** Cross-repo questions, wrong confidence-tier entries | 2 vs 3 (and 3 with a mislabelled entry) | answers 7 questions where four of the guide's `[medium]` call entries were made wrong on purpose | 112 |
 | **F** Cross-repo **change**, small | 1, 2, 3 | writes 4 small functions in the storefront whose correct field names and paths exist only in the backend; a hidden test checks each | 60 |
 | **G** Cross-repo **change**, harder | 1, 2, 3, and the backend source | edits the storefront's real code and writes modules whose field names sit in the backend's parent classes; hidden tests run the storefront's own modules | 80 |
+| **H** Guide against a contract, a short note and the source | none, contract, note, guide, source | the G changes (H1), six call-structure questions (H2), four changes against a small runnable service (H3) | 280 |
 
 ### Test A. Same repo, can search: a guide did not help
 
@@ -321,6 +324,59 @@ Four tasks that need more than one backend fact each, or need the agent to chang
 - The 3 passes without a guide were all on task 1, where the agent guessed that the cart line's SKU, not its id, was the right identifier.
 - The checkout builder was the hardest: even with the real source, 4 of 5. With the guide the agent sometimes picked the older of the two `PersistableOrder` classes and searched for the original field names.
 - Tokens were about level across conditions, because without a guide the agent usually gave up early with a wrong answer instead of searching for long.
+
+### Test H. Does a guide add anything beyond an API contract? Yes for call structure, no for field names
+
+Tests D to G compared a guide with nothing. A fair objection: most services already have, or can cheaply produce, an API contract (an OpenAPI document) or a short hand-written reference. Test H compares five ways of giving the agent knowledge of a dependency it cannot read, on the same storefront-and-backend setup as tests D to G (full plan, written before any run: [docs/EXPERIMENT_H.md](docs/EXPERIMENT_H.md)):
+
+| Arm | The agent gets |
+| --- | --- |
+| `none` | only a line saying the backend exists elsewhere |
+| `contract` | the backend's OpenAPI document (390 KB: routes, parameter names, request and response schemas with inherited fields, the framework's summary text). Built by our script from the source, not by a running Spring application. |
+| `notes` | a 3 KB hand-written reference: conventions, the endpoints the storefront uses, the field names people get wrong. Every fact checked against the source. |
+| `okf` | the generated guide, as in tests D to G |
+| `source` | the backend's source, readable |
+
+Three parts, 280 runs, the same model, **network access on for every run** (and logged). All figures are passed of 16 runs unless stated.
+
+**H1. The four change tasks of test G (field names the backend defines).**
+
+| `none` | `contract` | `notes` | `okf` | `source` |
+| --- | --- | --- | --- | --- |
+| 4 of 16 (277k tokens) | 13 of 16 (192k) | 14 of 16 (**128k**) | 14 of 16 (282k) | 14 of 16 (334k) |
+
+A contract, a 3 KB note, a guide and the source were level (no reliable difference between any two of them); all beat nothing (p≤0.004). The note was the cheapest by a wide margin, and the guide cost about the same as no help at all. The one task where they split was the checkout builder, where the field names sit in an inherited class: `contract` 1 of 4, `okf` 2 of 4, `notes` 4 of 4, `source` 4 of 4. The 4 passes without help were mostly the one task that can be solved by guessing (task 1: use the SKU).
+
+**H2. Six questions about the backend's call structure ("which method handles this request, and which class does it call?").** A contract describes an interface; it does not say what a handler calls inside.
+
+| `none` | `contract` | `notes` | `okf` | `source` |
+| --- | --- | --- | --- | --- |
+| 1 of 24 (447k) | 8 of 24 (464k) | **0 of 24** (476k) | **21 of 24** (**170k**) | 21 of 24 (207k) |
+
+The guide matched the source and beat the contract and the note (p<0.001), at about a third of the tokens of the arms that had to search. This is the part of the plan where OKF was expected to add something, and it did.
+
+**A finding about the network.** With the network on, 56 of the 120 H2 runs (19 of 24 in `none`, 18 in `contract`, 19 in `notes`, none in `okf` or `source`) ran `git clone` on the public Shopizer repository and searched it. Because the backend's identifiers are renamed, the clone mostly did not help: those 56 runs passed 8 times, all of them in the `contract` arm, where the contract's route names let the agent line the clone up with the renamed code. Runs without the network: `none` 1 of 5, `contract` 0 of 6, `notes` 0 of 5. Without the renaming this test would have been answerable from the internet for any public backend.
+
+**H3. A small FastAPI service, four changes to a client, hidden tests against the running service.** This part was contaminated and is reported with care. Agents in the arms that were not given the source went looking on the disk for the service, for the hidden tests and for other arms' material (they found `rules.py` copies, extracted the test fixture, listed the guide of the service). An earlier run of the same part, where the real service sat in a findable folder, had `none` passing the price-rule task 4 of 4; we archived it and reran with the service unpacked from an archive only while a test runs. The rerun still had 15 of 64 non-source runs touching such paths (`none` 5, `contract` 4, `okf` 4, `notes` 2). The Codex sandbox does not restrict reads, so this cannot be prevented, only detected.
+
+| | `none` | `contract` | `notes` | `okf` | `source` |
+| --- | --- | --- | --- | --- | --- |
+| All 80 runs | 11 of 16 | 11 of 16 | 10 of 16 | 15 of 16 | 16 of 16 |
+| Clean runs only | 7 of 11 | 8 of 12 | 8 of 14 | 11 of 12 | 16 of 16 |
+
+No pair of arms differs reliably (smallest p=0.08, `notes` against `okf`). What the per-task counts do show:
+
+- **Retry on a rate limit:** the contract arm failed 0 of 4 where every other arm passed 4 of 4. The contract lists `201` as the only success; the service returns `200` for a repeated idempotency key, and the agents in the contract arm treated that as an error. A real contract-driven mistake.
+- **Mapping errors (404 for an unknown SKU, 409 for a reused key):** `notes` 0 of 4 and `none` 1 of 4; `contract`, `okf` and `source` 4 of 4. The service does not declare these codes in its contract, so the contract arm's passes are probably guesses of the usual codes, plus the contamination.
+- **Reproducing the price rules (bulk discount, coupon stacking, rounding):** no non-source run that did not read the service got it (`contract` 0 of 1, `notes` 0 of 2, none for `none` and `okf`), and `source` passed 4 of 4. Nothing generated from the service held its rules. This task cannot be tested fairly with this agent and harness, since the rules were found by searching the disk.
+
+**What test H says.**
+
+- For **what the interface is** (routes, parameters, field names), a contract or a three-kilobyte note is as good as a guide and cheaper. If you have one, supply it first.
+- For **how the dependency works inside** (which method handles a request and what it calls), only the guide and the source worked. A contract and a note, however accurate, do not hold it: 0 to 8 of 24, against 21 of 24.
+- For **behaviour** (error codes, rounding, rules), none of the generated artefacts holds it; the guide and the contract are structure. Where the source cannot be read, write the rules into the note.
+- A contract can mislead as well: it states the success code it was written with, and agents trusted it.
+- Not shown: that a guide plus a contract beats either alone (not run), or that these results hold for other models or frameworks that emit richer contracts.
 
 ## Detailed analysis
 
@@ -495,7 +551,7 @@ python .apm/skills/agent-graph/tool/kgen.py okf --repo R --out R/okf --pointer R
 python ../OKFExperiment/scripts/check_okf.py R/okf
 ```
 
-`kgen` needs `tree-sitter` and `tree-sitter-java`. The patch includes a fix for a bug where the Java extractor listed spurious routes. To rerun tests A to C, `scripts/make_a.py`, `make_b.py` and `make_c.py` build each condition for [AgentTrialRig](https://github.com/meabs/AgentTrialRig). To rerun D to G: clone Shopizer at `6a4a0a6` and its React storefront at `455b4bc`; run `scripts/privatize.py` on a copy of the backend (and again with `--drift` on a second copy for D, or with `--extra` on a third for G); generate the guides; copy `harness/` and `hidden/` next to the scripts; and run `scripts/make_d.py`, `make_e.py`, `make_f.py` and `make_g.py`. `scripts/leak_check.py` counts runs that left their workspace; `analyse_d2.py` and `analyse_e.py` count old and wrong answers.
+`kgen` needs `tree-sitter` and `tree-sitter-java`. The patch includes a fix for a bug where the Java extractor listed spurious routes. To rerun tests A to C, `scripts/make_a.py`, `make_b.py` and `make_c.py` build each condition for [AgentTrialRig](https://github.com/meabs/AgentTrialRig). To rerun D to G: clone Shopizer at `6a4a0a6` and its React storefront at `455b4bc`; run `scripts/privatize.py` on a copy of the backend (and again with `--drift` on a second copy for D, or with `--extra` on a third for G); generate the guides; copy `harness/` and `hidden/` next to the scripts; and run `scripts/make_d.py`, `make_e.py`, `make_f.py` and `make_g.py`. `scripts/leak_check.py` counts runs that left their workspace; `analyse_d2.py` and `analyse_e.py` count old and wrong answers. To rerun H: `scripts/make_h_openapi.py` builds the backend's contract from a synced copy of the renamed backend, `fixtures/pricing-service.tgz` and `fixtures/shop-client` are the runnable service and its client, `scripts/make_h.py` writes the three trial files, `scripts/analyse_h.py` and `scripts/net_check.py` read the results. Keep the unpacked service out of any folder the agent can search.
 
 ## Repository layout
 

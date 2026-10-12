@@ -58,4 +58,19 @@ Other models; frameworks that emit richer contracts than our script; a contract 
 
 ## Deviations
 
-*(none yet)*
+1. **Part sizes and the contract.** As planned (4 repetitions, 280 runs). The first contract generator picked the wrong one of two same-named classes and left out the framework's summary and default values; both were fixed and checked against the hidden tests' expected field names before any H1 or H2 run.
+2. **H3 was contaminated and rerun once.** In the first H3 run the service sat in a findable folder; 14 of 64 non-source runs opened it and `none` passed the price-rule task 4 of 4. That run was archived and is not reported. For the rerun the service is unpacked from an archive only while a test runs and only the `source` arm has a copy (in its own workspace). 15 of 64 non-source runs still touched the service, the tests or other arms' material (agents searched the disk for them). The Codex sandbox cannot restrict reads, so H3 is reported for all runs and for clean runs only, and its price-rule task is called untestable here.
+3. **The network was used.** In H2, 56 of 120 runs cloned the public Shopizer repository (see below). The plan said results would be reported with and without such runs; they are.
+
+## Results
+
+Reported in the [README](../README.md#test-h-does-a-guide-add-anything-beyond-an-api-contract-yes-for-call-structure-no-for-field-names); raw reports in `results/H1-*.md`, `H2-*.md`, `H3-*.md`.
+
+| Prediction | Outcome |
+| --- | --- |
+| H1: contract, note, guide and source level; `none` low | **Held.** 13, 14, 14, 14 of 16 against 4 of 16. The note was cheapest (128k tokens against 192k to 334k). |
+| H2: guide and source beat contract and note | **Held, more strongly than expected.** 21 and 21 of 24 against 8 and 0. |
+| H3: source wins the behavioural tasks; contract and guide level; guide adds nothing over a framework contract | **Not testable as designed.** No reliable difference between any pair; the price-rule task was solved only by arms that read the service. The contract arm failed the retry task because the contract states one success code. |
+| Overall: a guide is worth having when the question is how the dependency works inside | **Held on H2.** |
+
+Thresholds: only p < 0.05 was called a difference. Cost differences above 15% are quoted as seen but, with 16 runs per cell, are indicative.
