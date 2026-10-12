@@ -136,5 +136,618 @@
     "index": 4
    }
   ]
+ },
+ "j7_rename_entity_delete": {
+  "op": "rename",
+  "name": "delete",
+  "new": "removeEntity",
+  "sites": [
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderServiceImpl.java",
+    "kind": "decl",
+    "line": 524,
+    "why": "declaration in OrderServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/category/CategoryServiceImpl.java",
+    "kind": "decl",
+    "line": 231,
+    "why": "declaration in CategoryServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogServiceImpl.java",
+    "kind": "decl",
+    "line": 52,
+    "why": "declaration in CatalogServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogService.java",
+    "kind": "decl",
+    "line": 39,
+    "why": "declaration in CatalogService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/marketplace/MarketPlaceService.java",
+    "kind": "decl",
+    "line": 28,
+    "why": "declaration in MarketPlaceService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java",
+    "kind": "decl",
+    "line": 215,
+    "why": "declaration in ProductServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerService.java",
+    "kind": "decl",
+    "line": 30,
+    "why": "declaration in ManufacturerService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerServiceImpl.java",
+    "kind": "decl",
+    "line": 45,
+    "why": "declaration in ManufacturerServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionServiceImpl.java",
+    "kind": "decl",
+    "line": 85,
+    "why": "declaration in ProductOptionServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionValueServiceImpl.java",
+    "kind": "decl",
+    "line": 86,
+    "why": "declaration in ProductOptionValueServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductAttributeServiceImpl.java",
+    "kind": "decl",
+    "line": 94,
+    "why": "declaration in ProductAttributeServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/file/DigitalProductServiceImpl.java",
+    "kind": "decl",
+    "line": 81,
+    "why": "declaration in DigitalProductServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/price/ProductPriceServiceImpl.java",
+    "kind": "decl",
+    "line": 50,
+    "why": "declaration in ProductPriceServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantServiceImpl.java",
+    "kind": "decl",
+    "line": 88,
+    "why": "declaration in ProductVariantServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxRateServiceImpl.java",
+    "kind": "decl",
+    "line": 61,
+    "why": "declaration in TaxRateServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxClassServiceImpl.java",
+    "kind": "decl",
+    "line": 45,
+    "why": "declaration in TaxClassServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/content/ContentServiceImpl.java",
+    "kind": "decl",
+    "line": 66,
+    "why": "declaration in ContentServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/user/UserServiceImpl.java",
+    "kind": "decl",
+    "line": 47,
+    "why": "declaration in UserServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationServiceImpl.java",
+    "kind": "decl",
+    "line": 60,
+    "why": "declaration in MerchantConfigurationServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityService.java",
+    "kind": "decl",
+    "line": 49,
+    "why": "declaration in SalesManagerEntityService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityServiceImpl.java",
+    "kind": "decl",
+    "line": 63,
+    "why": "declaration in SalesManagerEntityServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/CustomerServiceImpl.java",
+    "kind": "decl",
+    "line": 100,
+    "why": "declaration in CustomerServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionValueServiceImpl.java",
+    "kind": "decl",
+    "line": 67,
+    "why": "declaration in CustomerOptionValueServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerAttributeServiceImpl.java",
+    "kind": "decl",
+    "line": 44,
+    "why": "declaration in CustomerAttributeServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionServiceImpl.java",
+    "kind": "decl",
+    "line": 64,
+    "why": "declaration in CustomerOptionServiceImpl"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionSetServiceImpl.java",
+    "kind": "decl",
+    "line": 47,
+    "why": "declaration in CustomerOptionSetServiceImpl"
+   },
+   {
+    "file": "sm-core/src/test/java/com/salesmanager/test/catalog/ProductTest.java",
+    "kind": "call",
+    "line": 346,
+    "why": "through ProductService"
+   },
+   {
+    "file": "sm-core/src/test/java/com/salesmanager/test/catalog/CategoryTest.java",
+    "kind": "call",
+    "line": 61,
+    "why": "through CategoryService"
+   },
+   {
+    "file": "sm-core/src/test/java/com/salesmanager/test/utils/ImportIntegrationModule.java",
+    "kind": "call",
+    "line": 72,
+    "why": "through ModuleConfigurationService"
+   },
+   {
+    "file": "sm-core/src/test/java/com/salesmanager/test/shoppingcart/ShoppingCartTest.java",
+    "kind": "call",
+    "line": 256,
+    "why": "through ShoppingCartService"
+   },
+   {
+    "file": "sm-core/src/test/java/com/salesmanager/test/shoppingcart/ShoppingCartTest.java",
+    "kind": "call",
+    "line": 264,
+    "why": "through CategoryService"
+   },
+   {
+    "file": "sm-core/src/test/java/com/salesmanager/test/customer/CustomerTest.java",
+    "kind": "call",
+    "line": 215,
+    "why": "through CustomerService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderServiceImpl.java",
+    "kind": "call",
+    "line": 527,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java",
+    "kind": "call",
+    "line": 285,
+    "why": "through MerchantConfigurationService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/category/CategoryServiceImpl.java",
+    "kind": "call",
+    "line": 271,
+    "why": "through ProductService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/category/CategoryServiceImpl.java",
+    "kind": "call",
+    "line": 275,
+    "why": "through ProductService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java",
+    "kind": "call",
+    "line": 233,
+    "why": "through ProductReviewService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java",
+    "kind": "call",
+    "line": 242,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java",
+    "kind": "call",
+    "line": 322,
+    "why": "through ProductImageService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerServiceImpl.java",
+    "kind": "call",
+    "line": 47,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionServiceImpl.java",
+    "kind": "call",
+    "line": 91,
+    "why": "through ProductAttributeService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionServiceImpl.java",
+    "kind": "call",
+    "line": 97,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionValueServiceImpl.java",
+    "kind": "call",
+    "line": 92,
+    "why": "through ProductAttributeService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionValueServiceImpl.java",
+    "kind": "call",
+    "line": 98,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductAttributeServiceImpl.java",
+    "kind": "call",
+    "line": 99,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/file/DigitalProductServiceImpl.java",
+    "kind": "call",
+    "line": 87,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/image/ProductImageServiceImpl.java",
+    "kind": "call",
+    "line": 176,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/price/ProductPriceServiceImpl.java",
+    "kind": "call",
+    "line": 54,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/relationship/ProductRelationshipServiceImpl.java",
+    "kind": "call",
+    "line": 65,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/relationship/ProductRelationshipServiceImpl.java",
+    "kind": "call",
+    "line": 92,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantServiceImpl.java",
+    "kind": "call",
+    "line": 89,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxClassServiceImpl.java",
+    "kind": "call",
+    "line": 48,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/content/ContentServiceImpl.java",
+    "kind": "call",
+    "line": 69,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/user/PermissionServiceImpl.java",
+    "kind": "call",
+    "line": 55,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/user/UserServiceImpl.java",
+    "kind": "call",
+    "line": 49,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java",
+    "kind": "call",
+    "line": 307,
+    "why": "through MerchantConfigurationService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java",
+    "kind": "call",
+    "line": 327,
+    "why": "through MerchantConfigurationService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/system/ModuleConfigurationServiceImpl.java",
+    "kind": "call",
+    "line": 177,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationServiceImpl.java",
+    "kind": "call",
+    "line": 63,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java",
+    "kind": "call",
+    "line": 87,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java",
+    "kind": "call",
+    "line": 143,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java",
+    "kind": "call",
+    "line": 194,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java",
+    "kind": "call",
+    "line": 213,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/CustomerServiceImpl.java",
+    "kind": "call",
+    "line": 107,
+    "why": "through CustomerAttributeService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionValueServiceImpl.java",
+    "kind": "call",
+    "line": 73,
+    "why": "through CustomerAttributeService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionValueServiceImpl.java",
+    "kind": "call",
+    "line": 79,
+    "why": "through CustomerOptionSetService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionValueServiceImpl.java",
+    "kind": "call",
+    "line": 85,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerAttributeServiceImpl.java",
+    "kind": "call",
+    "line": 48,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionServiceImpl.java",
+    "kind": "call",
+    "line": 70,
+    "why": "through CustomerAttributeService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionServiceImpl.java",
+    "kind": "call",
+    "line": 78,
+    "why": "through CustomerOptionSetService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionServiceImpl.java",
+    "kind": "call",
+    "line": 82,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionSetServiceImpl.java",
+    "kind": "call",
+    "line": 49,
+    "why": "inherited call in implementation"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/manufacturer/ManufacturerFacadeImpl.java",
+    "kind": "call",
+    "line": 117,
+    "why": "through ManufacturerService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/category/CategoryFacadeImpl.java",
+    "kind": "call",
+    "line": 307,
+    "why": "through CategoryService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/catalog/CatalogFacadeImpl.java",
+    "kind": "call",
+    "line": 91,
+    "why": "through CatalogService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/catalog/CatalogFacadeImpl.java",
+    "kind": "call",
+    "line": 228,
+    "why": "through CatalogEntryService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/tax/TaxFacadeImpl.java",
+    "kind": "call",
+    "line": 99,
+    "why": "through TaxClassService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/tax/TaxFacadeImpl.java",
+    "kind": "call",
+    "line": 245,
+    "why": "through TaxRateService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/content/ContentFacadeImpl.java",
+    "kind": "call",
+    "line": 762,
+    "why": "through ContentService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/content/ContentFacadeImpl.java",
+    "kind": "call",
+    "line": 892,
+    "why": "through ContentService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/user/UserFacadeImpl.java",
+    "kind": "call",
+    "line": 386,
+    "why": "through UserService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductInventoryFacadeImpl.java",
+    "kind": "call",
+    "line": 70,
+    "why": "through ProductAvailabilityService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductPriceFacadeImpl.java",
+    "kind": "call",
+    "line": 118,
+    "why": "through ProductPriceService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantFacadeImpl.java",
+    "kind": "call",
+    "line": 170,
+    "why": "through ProductVariantService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionFacadeImpl.java",
+    "kind": "call",
+    "line": 120,
+    "why": "through ProductOptionService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionFacadeImpl.java",
+    "kind": "call",
+    "line": 135,
+    "why": "through ProductOptionValueService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionFacadeImpl.java",
+    "kind": "call",
+    "line": 406,
+    "why": "through ProductAttributeService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantGroupFacadeImpl.java",
+    "kind": "call",
+    "line": 118,
+    "why": "through ProductVariantGroupService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariationFacadeImpl.java",
+    "kind": "call",
+    "line": 135,
+    "why": "through ProductVariationService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionSetFacadeImpl.java",
+    "kind": "call",
+    "line": 130,
+    "why": "through ProductOptionSetService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductTypeFacadeImpl.java",
+    "kind": "call",
+    "line": 159,
+    "why": "through ProductTypeService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java",
+    "kind": "call",
+    "line": 222,
+    "why": "through ProductService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java",
+    "kind": "call",
+    "line": 324,
+    "why": "through ProductReviewService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java",
+    "kind": "call",
+    "line": 405,
+    "why": "through ProductService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/facade/items/ProductItemsFacadeImpl.java",
+    "kind": "call",
+    "line": 196,
+    "why": "through ProductRelationshipService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java",
+    "kind": "call",
+    "line": 801,
+    "why": "through CustomerReviewService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java",
+    "kind": "call",
+    "line": 942,
+    "why": "through CustomerService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacadeImpl.java",
+    "kind": "call",
+    "line": 292,
+    "why": "through MerchantStoreService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacadeImpl.java",
+    "kind": "call",
+    "line": 425,
+    "why": "through MerchantConfigurationService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductImageApi.java",
+    "kind": "call",
+    "line": 159,
+    "why": "through ProductImageService"
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductImageApi.java",
+    "kind": "call",
+    "line": 183,
+    "why": "through ProductImageService"
+   }
+  ]
  }
 }

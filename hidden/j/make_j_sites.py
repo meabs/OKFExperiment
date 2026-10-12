@@ -43,8 +43,73 @@ for f, n in nodes("method_invocation", "getShippingQuotes"):
     assert len(idx) == 1 and idx[0] == 4, (f, [x.text.decode() for x in a])
     sites.append({"file": f, "kind": "call", "line": n.child_by_field_name("name").start_point[0] + 1, "index": idx[0]})
 TASKS["j3_remove_unused_param"] = {"op": "remove", "name": "getShippingQuotes", "param_name": "origin", "sites": sites}
+
+# J7: rename the generic base-service method delete(E) of SalesManagerEntityService, with every override and every call through a service type
+import collections
+sup = collections.defaultdict(set)
+for f in files:
+    for n in jlib._walk(roots[f]):
+        if n.type in ("class_declaration", "interface_declaration"):
+            nm = n.child_by_field_name("name").text.decode()
+            for c in n.children:
+                if c.type in ("superclass", "super_interfaces", "extends_interfaces"):
+                    for t in jlib._walk(c):
+                        if t.type == "type_identifier":
+                            sup[nm].add(t.text.decode())
+
+
+def is_sub(t, base, seen=None):
+    seen = seen or set()
+    if t == base:
+        return True
+    if t in seen:
+        return False
+    seen.add(t)
+    return any(is_sub(x, base, seen) for x in sup.get(t, ()))
+
+
+svc = {t for t in sup if is_sub(t, "SalesManagerEntityService")} | {"SalesManagerEntityService"}
+impl = {t for t in sup if is_sub(t, "SalesManagerEntityServiceImpl")} | {"SalesManagerEntityServiceImpl"}
+types_of = {}  # name -> declared type, across the whole repo (tests declare services in a base class)
+for f in files:
+    for n in jlib._walk(roots[f]):
+        if n.type in ("field_declaration", "local_variable_declaration", "formal_parameter"):
+            ty = n.child_by_field_name("type")
+            if ty is None:
+                continue
+            T = re.sub(r"<.*", "", ty.text.decode()).split(".")[-1]
+            names = [n.child_by_field_name("name").text.decode()] if n.type == "formal_parameter" else [v.child_by_field_name("name").text.decode() for v in n.children if v.type == "variable_declarator"]
+            for nm in names:
+                types_of.setdefault((f, nm), T)
+                types_of.setdefault(("*", nm), T)
+sites, cls_of = [], {}
+for f in files:
+    for n in jlib._walk(roots[f]):
+        if n.type in ("class_declaration", "interface_declaration"):
+            cname = n.child_by_field_name("name").text.decode()
+            for m in jlib._walk(n):
+                if m.type == "method_declaration" and m.child_by_field_name("name").text == b"delete" and len(jlib.params(m)) == 1 and cname in (svc | impl):
+                    sites.append({"file": f, "kind": "decl", "line": m.child_by_field_name("name").start_point[0] + 1, "why": "declaration in " + cname})
+for f in files:
+    cls = [n.child_by_field_name("name").text.decode() for n in jlib._walk(roots[f]) if n.type in ("class_declaration", "interface_declaration")]
+    for n in jlib._walk(roots[f]):
+        if n.type == "method_invocation" and n.child_by_field_name("name").text == b"delete" and len(jlib.args(n)) == 1:
+            o = n.child_by_field_name("object")
+            why = None
+            if o is None or o.text.decode() in ("super", "this"):
+                if any(c in impl for c in cls):
+                    why = "inherited call in implementation"
+            else:
+                nm = o.text.decode().replace("this.", "")
+                T = types_of.get((f, nm)) or types_of.get(("*", nm))
+                if T in svc:
+                    why = "through " + T
+            if why:
+                sites.append({"file": f, "kind": "call", "line": n.child_by_field_name("name").start_point[0] + 1, "why": why})
+TASKS["j7_rename_entity_delete"] = {"op": "rename", "name": "delete", "new": "removeEntity", "sites": sites}
 for t, v in TASKS.items():
     print(t, len(v["sites"]), "sites in", len({s["file"] for s in v["sites"]}), "files")
     for s in v["sites"]:
-        print("   ", s["kind"], os.path.basename(s["file"]), s["line"])
+        if t != "j7_rename_entity_delete":
+            print("   ", s["kind"], os.path.basename(s["file"]), s["line"])
 json.dump(TASKS, open(out, "w"), indent=1)

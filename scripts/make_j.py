@@ -2,7 +2,7 @@
 `plain`     the 1,173-file Shopizer backend, nothing added (no AGENTS.md, no guide, no graph, no skills).
 `optimised` the same plus: the recommended `kgen okf` guide in okf/, the code graph and its `kg` tool in .agent-knowledge/,
             operating skills in .agents/skills/ (how to navigate and change, not about the technology), and an AGENTS.md that points to all of them.
-Three change tasks (graded exactly, hidden/j/verify_j.py) and three structure questions (graded by expected class names).
+Four change tasks (graded exactly, hidden/j/verify_j.py) and three structure questions (graded by expected class names).
 Agents are isolated from the rest of the disk (AgentTrialRig `isolate`).
 
     python make_j.py SCRATCH_DIR     (SCRATCH_DIR is the `cx` folder; the `h` folder beside it holds `be` (graph in .agent-knowledge) and overlays_h12/okf (the guide))
@@ -24,6 +24,7 @@ shutil.copy(EXP / "fixtures" / "operating-skills" / "AGENTS.md", opt / "AGENTS.m
 T = {
  "j1_rename_payment_method": "Rename the method `authorizeAndCapture` declared in the interface `PaymentModule` to `chargeInOneStep`. Change the interface, every class that implements it, and every call to it. Do not change anything else.",
  "j2_add_param_to_overload": "The interface `PricingService` has several overloads of `calculateProductPrice`. Add a final parameter `boolean refresh` to the one overload that takes `(Product product, List<ProductAttribute> attributes)`, in the interface and in its implementation, and pass `false` at every call to that overload. Do not change the other overloads or the calls to them.",
+ "j7_rename_entity_delete": "Rename the method `delete(E entity)` declared in the interface `SalesManagerEntityService` to `removeEntity`. Change it in that interface, in its base implementation, in every override (service interfaces that redeclare it and service classes that override it), and at every call made through a service, including calls to the inherited method from inside a service implementation (`super.delete(...)`, `this.delete(...)` or unqualified). Repositories, and any other class's own `delete` method, must keep their name. Do not change anything else.",
  "j3_remove_unused_param": "The parameter `ShippingOrigin origin` of `ShippingQuoteModule.getShippingQuotes` is not used by any implementation. Remove it from the interface and from every implementation, and remove the matching argument from the call. Do not change anything else.",
 }
 Q = {
