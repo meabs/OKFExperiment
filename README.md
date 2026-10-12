@@ -149,7 +149,7 @@ Entries marked `[medium]` are heuristic guesses, not facts read from the code. W
 
 ### Step 5. Generate it, check it, and keep it fresh
 
-Generate and validate (the commands are in [Reproducing](#reproducing); `kgen okf` is not released yet):
+Generate and validate (the commands are in [Reproducing](#reproducing); `kgen okf` is on `main` of AgentGraphWorkTree):
 
 ```bash
 kgen sync --repo R
@@ -540,11 +540,10 @@ Yes. All the guides in `end-state/` meet OKF v0.2's conformance rules, load and 
 
 ## Reproducing
 
-The generator command `kgen okf` is not released yet. Until it is, apply the patch to [AgentGraphWorkTree](https://github.com/meabs/AgentGraphWorkTree) at commit `dd26ee6`:
+The generator command `kgen okf` is in [AgentGraphWorkTree](https://github.com/meabs/AgentGraphWorkTree) from commit `aa98666` on `main`. The experiments were run with that code; `scripts/kgen-okf.patch` is the same change as a patch against `dd26ee6`, for anyone who wants the older base.
 
 ```bash
 git clone https://github.com/meabs/AgentGraphWorkTree && cd AgentGraphWorkTree
-git checkout dd26ee6 && git apply ../OKFExperiment/scripts/kgen-okf.patch
 python .apm/skills/agent-graph/tool/kgen.py sync --repo R
 python .apm/skills/agent-graph/tool/kgen.py okf --repo R --out R/okf --pointer R/AGENTS.md              # condition 2
 python .apm/skills/agent-graph/tool/kgen.py okf --repo R --out R/okf --pointer R/AGENTS.md --line-tags  # condition 3

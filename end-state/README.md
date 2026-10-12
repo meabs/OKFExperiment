@@ -27,4 +27,4 @@ kgen okf --repo R --out R/okf --pointer R/AGENTS.md
 python scripts/check_okf.py R/okf        # from this repository
 ```
 
-`kgen okf` is not released yet. The change is in [`../scripts/kgen-okf.patch`](../scripts/kgen-okf.patch), which applies to [AgentGraphWorkTree](https://github.com/meabs/AgentGraphWorkTree) at `dd26ee6`; the steps are in the [main README](../README.md#reproducing).
+`kgen okf` is on `main` of [AgentGraphWorkTree](https://github.com/meabs/AgentGraphWorkTree) (commit `aa98666`); the same change is in [`../scripts/kgen-okf.patch`](../scripts/kgen-okf.patch) for the older base `dd26ee6`; the steps are in the [main README](../README.md#reproducing).
