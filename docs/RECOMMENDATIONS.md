@@ -26,7 +26,7 @@ In the harder test G (edits to the storefront's real code, six renamed fields, t
 
 In D2 the backend changed after the bundle was generated. Agents followed the old fact in 14 to 16 of 16 answers and found the new one in none, with no caveat (none of 46 stale answers hedged). The confirm sentence did not help, because there was no source to confirm against. A past `stale_after` on exactly the seven changed concepts did not help either: not one of 32 answers mentioned staleness, though the concepts the agent read were marked stale and the pointer explained the field.
 
-So flags are not a defence for an unreadable dependency; freshness is. Regenerate the bundle whenever the dependency changes, and check in CI that its `sources[].sha256` values still match the dependency (`kgen okf --stale-against CHECKOUT` finds the concepts that differ). A bundle you cannot keep current is worse than none: unchanged facts stayed correct (controls 16/16), but every changed fact was wrong.
+So flags are not a defence for an unreadable dependency; freshness is. The README's [recommended layout and approach](../README.md#recommended-layout-and-approach) gives two checks for it, [`scripts/check_fresh.sh`](../scripts/check_fresh.sh) for your own guide and [`scripts/check_references.py`](../scripts/check_references.py) for a copied-in one. Regenerate the bundle whenever the dependency changes, and check in CI that its `sources[].sha256` values still match the dependency (`kgen okf --stale-against CHECKOUT` finds the concepts that differ). A bundle you cannot keep current is worse than none: unchanged facts stayed correct (controls 16/16), but every changed fact was wrong.
 
 ## 3. Use confidence labels to make the agent disclose guesses, not to make it right
 

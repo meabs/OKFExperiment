@@ -4,7 +4,7 @@
 
 A coding agent has to work out a codebase before it can change it. We generated a **guide** from source code with a script (no language model): a folder of markdown files, one per module or package, listing its classes, functions, routes and what it calls, with the file and line each fact came from. The file format is [OKF](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md) (Open Knowledge Format), which calls such a folder a *bundle*; this page says *guide*. We gave guides to OpenAI's Codex (`gpt-5.6-luna`) while it answered questions about code and made code changes. About 1,200 runs in total.
 
-[The four conditions](#the-four-conditions) · [Results at a glance](#results-at-a-glance) · [What to do](#what-to-do) · [Each test](#each-test) · [Detailed analysis](#detailed-analysis) · [Example](#what-a-guide-looks-like) · [Is it valid OKF?](#is-it-valid-okf) · [Limits](#limits) · [Reproduce](#reproducing) · [Files](#repository-layout)
+[The four conditions](#the-four-conditions) · [Results at a glance](#results-at-a-glance) · [What to do](#what-to-do) · [Recommended layout](#recommended-layout-and-approach) · [Each test](#each-test) · [Detailed analysis](#detailed-analysis) · [Example](#what-a-guide-looks-like) · [Is it valid OKF?](#is-it-valid-okf) · [Limits](#limits) · [Reproduce](#reproducing) · [Files](#repository-layout)
 
 ---
 
@@ -46,6 +46,160 @@ In order of importance. One model and limited tests, so try it on your own agent
 6. **Do not copy in a guide for something the agent can already read.** It cost about 25% more and gained no accuracy (test C).
 
 The generator's `recommended` setting does item 5; adding `--line-tags` gives condition 3. Detail: [docs/RECOMMENDATIONS.md](docs/RECOMMENDATIONS.md) and [docs/RESULTS.md](docs/RESULTS.md).
+
+## Recommended layout and approach
+
+This is the setup we would use, and what each choice rests on. Where a choice was not tested, it says so.
+
+### Step 1. Decide whether a repository needs a guide
+
+| Situation | Guide? | Why |
+| --- | --- | --- |
+| The agent works in this repo and can search it | Usually no | No gain in accuracy; 7 to 30% more tokens (test A). A very large repo might differ; untested. |
+| The agent needs facts from **another repo it cannot read** (a private service, another team's code, a vendored dependency) | **Yes**, copy that repo's guide in | 3 of 20 changes pass without it, 18 or 19 of 20 with it, about the same as having the source (tests D, F, G). |
+| The agent needs facts from another repo it **can** read | No | About 25% more tokens, no accuracy gain (test C). |
+
+### Step 2. The layout
+
+Each repository that others depend on publishes its own guide in an `okf/` folder at its root, next to an `AGENTS.md` that tells the agent where to start. A repository that depends on another one copies that guide into `okf/references/<name>/`. This is the real output for the invoicing service, which depends on a ledger library:
+
+```text
+invoice-service/
+  AGENTS.md                              # tells the agent where to start (step 4)
+  okf/
+    index.md                             # the only index; carries okf_version, links every file below
+    routes.md                            # only if the repo serves HTTP: every route with its handler
+    modules/                             # one file per module (Python, TypeScript) or package (Java)
+      invoices.md
+      invoices.service.md
+    references/                          # other repositories' guides, copied in
+      ledger-lib/
+        index.md
+        modules/
+          ledgerlib.ledger.md
+          ledgerlib.money.md
+          ...
+```
+
+- **One file per module** (Python, TypeScript) **or per package** (Java), named by its dotted name. A module called `index` or `log` is written as `index-module.md` or `log-module.md`, because OKF reserves those two names.
+- **`routes.md`** exists only for a repo that serves HTTP. For the cross-repo questions it was the most useful single file.
+- **`references/<name>/`** holds a dependency's guide exactly as its owner generated it, with its internal links rewritten to stay inside the copy (`kgen okf --reference name=path` does this). Every file in it keeps the SHA-256 of the source it was made from, which is what the freshness check in step 5 uses.
+- **No `log.md`** and no nested directories: neither was generated or tested.
+- **Size.** Click (about 25 modules): 33 files, about 120 KB. Shopizer (1,173 Java files): 315 files, about 3.5 MB, a typical file 7 KB and the largest 111 KB. For big repos the generator drops getter and setter calls and groups the calls from one method to one target on a single line; before that, one package file reached 168 KB.
+
+### Step 3. What is in each file
+
+Real example, trimmed (`end-state/ledger-lib/okf/modules/ledgerlib.ledger.md`):
+
+```markdown
+---
+type: Code Module
+title: "ledgerlib.ledger"
+description: "ledgerlib.ledger: Ledger"
+resource: "https://github.com/meabs/OKFExperiment/blob/main/fixtures/ledger-lib/ledgerlib/ledger.py"
+tags: ["generated", "code"]
+generated: { by: "kgen/0.4.0", at: "2026-10-12T13:50:42+01:00" }
+sources:
+  - resource: "https://github.com/meabs/OKFExperiment/blob/main/fixtures/ledger-lib/ledgerlib/ledger.py"
+    sha256: "5ed69f2c3031649838b55868b2e7fd3150916d5a5d19da7ac91fcb5b4d37d856"
+    last_modified: "2026-10-12T13:50:42+01:00"
+status: stable
+---
+
+## Types
+- `Ledger` (class)  `ledgerlib/ledger.py:13`
+
+## Functions and methods
+- `Ledger.reverse(entry_id: str, reason: str, key: str, amount: Money | None) -> str`  `ledgerlib/ledger.py:40`
+
+## Depends on
+- [ledgerlib.entries](/modules/ledgerlib.entries.md)  `ledgerlib/ledger.py:6`
+```
+
+| Part | What to put in it | Why |
+| --- | --- | --- |
+| `type` | A descriptive word (`Code Module`, `HTTP API`) | The only field OKF requires. |
+| `resource`, `sources[].resource` | A URL to the file at the commit it was made from (or a relative path) | Lets a reader open the real code. |
+| `sources[].sha256` | The hash of each source file | Lets a check tell whether the guide is still current (step 5). |
+| `generated.at`, `sources[].last_modified` | Dates from the source's git history | Provenance. Not used to decide freshness. |
+| `stale_after` | Only on files known to be out of date | It did not change what agents did (test D), so it is a fallback, not a defence. |
+| **Sections** | `Types`, `Fields` (data classes), `Functions and methods`, `HTTP routes`, `Depends on`, `Calls`, `Tests` | Each list the facts the cross-repo questions were answered from. For Java, fields from parent classes appear in the parent's own file, reached by a link. |
+| **Every line** | Ends with `` `path:line` `` | The agent can check any claim in seconds. |
+| Optional | `` `[high]` `` or `` `[medium]` `` at the end of a line | Confidence labels (step 6). |
+
+### Step 4. Tell the agent where to start
+
+Put this in the repository's `AGENTS.md` (or whatever file your agent reads). `kgen okf --pointer AGENTS.md` writes it. The last sentence of the first paragraph is the one that stopped agents repeating out-of-date facts when they could read the code (test B):
+
+```markdown
+# Repository knowledge
+
+`okf/` is an Open Knowledge Format bundle generated from this repository's source: one markdown file per module with its types, functions, call edges and the file and line each came from. Start at `okf/index.md`. Use it to find your way around, then read the source to confirm before you rely on it.
+
+`okf/references/` holds bundles of other repositories this one depends on, copied in as they were when generated.
+```
+
+Leave the second paragraph out if there are no references. If you use confidence labels, add:
+
+```markdown
+Entries marked `[medium]` are heuristic guesses, not facts read from the code. When your answer relies on one, say so.
+```
+
+### Step 5. Generate it, check it, and keep it fresh
+
+Generate and validate (the commands are in [Reproducing](#reproducing); `kgen okf` is not released yet):
+
+```bash
+kgen sync --repo R
+kgen okf --repo R --out R/okf --pointer R/AGENTS.md --source-url 'https://github.com/OWNER/REPO/blob/COMMIT/{path}'
+python scripts/check_okf.py R/okf        # is it valid OKF?
+```
+
+Commit `okf/` and `AGENTS.md`. Then keep two things true, both checked automatically. Both scripts were run for this write-up, including their failure cases:
+
+**A. Your own guide matches your own code.** [`scripts/check_fresh.sh`](scripts/check_fresh.sh) regenerates the guide into a temporary folder and compares it with the committed one. Generation is deterministic, so any difference means the code changed and the guide was not regenerated. It ignores the two date fields, so a shallow CI clone gives the same answer as a full one. In our runs it passed on a fresh guide and after a documentation-only commit, failed after a source change (naming the one changed file), and passed again after regenerating. Run it on every push:
+
+```yaml
+# sketch of a CI step; the script above was tested locally, this workflow file was not run
+- uses: actions/checkout@v4
+- run: KGEN="python path/to/kgen.py" scripts/check_fresh.sh . --source-url 'https://github.com/OWNER/REPO/blob/main/{path}'
+```
+
+Use a **branch** (`main`) in `--source-url` for a guide that this check covers, not a commit. A commit in the URL changes every file on every commit, so the check could never pass. The SHA-256 hashes, not the URLs, are what tie the guide to a version of the code.
+
+**B. A copied-in guide matches the dependency it describes.** [`scripts/check_references.py`](scripts/check_references.py) compares the SHA-256 recorded in each file of `okf/references/<name>/` with the dependency's current files and lists what differs:
+
+```bash
+python scripts/check_references.py okf/references/ledger-lib path/to/ledger-lib --list
+# changed: ledgerlib/ledger.py   (cited by modules/ledgerlib.ledger.md)
+# 6 source citations checked, 1 file(s) differ        (exit 1)
+```
+
+When it fails, the owner of the dependency regenerates and republishes its guide, and you copy the new one in. Pin the copy to a version or commit of the dependency. This step matters most: an out-of-date guide for something the agent cannot read was repeated as fact in 14 to 16 of 16 answers, and nothing we tried inside the guide prevented it (test D).
+
+### Step 6. Confidence labels: optional, for transparency
+
+Generate with `--line-tags` and add the sentence from step 4. Mark `[high]` only what the source states directly (a class, a field, a route, a declared signature); the generator marks call targets `[medium]`, because it works them out by matching names and types. Expect agents to **say when they rely on a guess** (6 of 8 wrong answers in test E, none without labels), not to be more accurate. A wrong fact marked `[high]` was trusted every time, so never promote an inference. Labels do not tell the agent a fact is out of date; step 5 does.
+
+### What was tested and what is a judgement call
+
+| Choice | Evidence |
+| --- | --- |
+| Citations, links, cross-module calls and an index together | The thinnest guide (none of these) was the most expensive in both runs of test A. We did not isolate which part matters. |
+| One file per module, not per package (Python) | Per-package files were no better (test A, first run). |
+| An index | Leaving it out was no better (test A, first run). |
+| Cross-module calls only | No calls, cross-module and all calls were within noise on cost (test A). We kept cross-module calls because test E's questions depend on call entries. |
+| A `routes.md`, request-class fields, parent-class fields | Used in tests D to G, which they answered. Not tested one at a time. |
+| Confirm-in-source sentence | Tested alone (test B3). |
+| Freshness checks (step 5) | Built and run on small examples for this write-up; not run in a real CI pipeline or at the scale of Shopizer. |
+| Per-class files, nested folders, `log.md`, other layouts | Not tested. |
+
+### Things not to do
+
+- Do not copy in a guide for code the agent can already read.
+- Do not rely on `stale_after`, banners or labels to protect agents from an out-of-date guide.
+- Do not mark an inferred fact `[high]`.
+- Do not let a copied-in guide drift: no check means no protection.
 
 ## Each test
 
@@ -350,6 +504,6 @@ python ../OKFExperiment/scripts/check_okf.py R/okf
 | [`docs/`](docs/) | the detail: [RESULTS.md](docs/RESULTS.md), [RECOMMENDATIONS.md](docs/RECOMMENDATIONS.md), [CONFORMANCE.md](docs/CONFORMANCE.md) |
 | [`results/`](results/) | each test's raw report ([index](results/README.md)) |
 | [`end-state/`](end-state/) | the recommended guides and their agent-instruction files ([readme](end-state/README.md)) |
-| [`scripts/`](scripts/) | test builders, the generator patch, the validity checker, analysis scripts |
+| [`scripts/`](scripts/) | test builders, the generator patch, the validity checker (`check_okf.py`), the freshness checks (`check_fresh.sh`, `check_references.py`), analysis scripts |
 | [`harness/`](harness/) | the Node harness that runs the storefront's own modules with the network stubbed (test G) |
 | [`hidden/`](hidden/), [`fixtures/`](fixtures/), [`drift/`](drift/) | the hidden tests, the invoicing pair, and the Click changes |

@@ -103,10 +103,10 @@ index 3af8163..3e900b6 100644
                  full = "/" + "/".join(x for x in (pre.strip("/"), p.strip("/")) if x)
 diff --git a/.apm/skills/agent-graph/tool/kgen/okf.py b/.apm/skills/agent-graph/tool/kgen/okf.py
 new file mode 100644
-index 0000000..3ca3cfc
+index 0000000..ea662b3
 --- /dev/null
 +++ b/.apm/skills/agent-graph/tool/kgen/okf.py
-@@ -0,0 +1,339 @@
+@@ -0,0 +1,342 @@
 +"""Emit an Open Knowledge Format (v0.2) bundle from kgen claims, with switches for what goes in it.
 +
 +The bundle is a pure function of claims.jsonl and manifest.json, so it is as deterministic as the claims.
@@ -142,6 +142,7 @@ index 0000000..3ca3cfc
 +    attest: bool = False        # add `verified` with a process actor for concepts whose claims are all high confidence
 +    max_items: int = 400        # cap on types, functions and edges listed per concept
 +    source_url: str = ""        # template with {path}, e.g. https://github.com/o/r/blob/<commit>/{path}; empty gives a path relative to a bundle at <repo>/okf/
++    generated_at: str = ""      # generated.at; defaults to the newest change among the cited source files, so committing the guide itself does not change it
 +    file_times: tuple = ()      # ((path, ISO 8601 time the file last changed), ...) for sources[].last_modified; falls back to the commit time
 +    stale_files: tuple = ()     # source paths known to have changed since generation; their concepts get a past stale_after
 +    references: tuple = field(default_factory=tuple)  # extra bundles to mirror under references/: ((name, path), ...)
@@ -234,6 +235,7 @@ index 0000000..3ca3cfc
 +    for c in by["has_method"]:
 +        module_of.setdefault(c["object"], module_of.get(c["subject"], c["subject"]))
 +    commit_time = manifest.get("source_commit_time") or ""
++    gen_at = cfg.generated_at or commit_time
 +    commit = (manifest.get("source_commit") or "unknown")[:12]
 +    gen_by = f"kgen/{VERSION}"
 +    stale = ""
@@ -348,9 +350,9 @@ index 0000000..3ca3cfc
 +        fm = ["---", "type: Code Module", f"title: {q(name)}", f"description: {q(desc)}"]
 +        if cfg.meta == "native":
 +            fm += [f"resource: {q(src_ref(files[0], cfg))}", f"tags: {q(['generated', 'code'])}"]
-+            fm += ["generated:", f"  by: {q(gen_by)}", f"  at: {q(commit_time or '1970-01-01T00:00:00Z')}"]
++            fm += ["generated:", f"  by: {q(gen_by)}", f"  at: {q(gen_at or '1970-01-01T00:00:00Z')}"]
 +            if cfg.attest and all(c["confidence"] == "high" for c in used) and used:
-+                fm += ["verified:", f"  - by: {q('process:kgen-extract')}", f"    at: {q(commit_time or '1970-01-01T00:00:00Z')}"]
++                fm += ["verified:", f"  - by: {q('process:kgen-extract')}", f"    at: {q(gen_at or '1970-01-01T00:00:00Z')}"]
 +            fm.append("sources:")
 +            for f in files:
 +                fm += [f"  - resource: {q(src_ref(f, cfg))}", f"    sha256: {q(manifest.get('sources', {}).get(f, ''))}", f"    last_modified: {q(dict(cfg.file_times).get(f) or commit_time or '1970-01-01T00:00:00Z')}"]
@@ -380,7 +382,7 @@ index 0000000..3ca3cfc
 +        desc = f"All {len(routes)} HTTP routes with their handlers"
 +        fm = ["---", "type: HTTP API", 'title: "HTTP routes"', f"description: {q(desc)}"]
 +        if cfg.meta == "native":
-+            fm += [f"tags: {q(['generated', 'api'])}", "generated:", f"  by: {q(gen_by)}", f"  at: {q(commit_time or '1970-01-01T00:00:00Z')}", "sources:"]
++            fm += [f"tags: {q(['generated', 'api'])}", "generated:", f"  by: {q(gen_by)}", f"  at: {q(gen_at or '1970-01-01T00:00:00Z')}", "sources:"]
 +            for f in files:
 +                fm += [f"  - resource: {q(src_ref(f, cfg))}", f"    sha256: {q(manifest.get('sources', {}).get(f, ''))}", f"    last_modified: {q(dict(cfg.file_times).get(f) or commit_time or '1970-01-01T00:00:00Z')}"]
 +            fm.append("status: stable")
@@ -432,7 +434,8 @@ index 0000000..3ca3cfc
 +            r = subprocess.run(["git", "-C", str(repo), "log", "-1", "--format=%cI", "--", path], text=True, capture_output=True)
 +            if r.returncode == 0 and r.stdout.strip():
 +                times.append((path, r.stdout.strip()))
-+        cfg = replace(cfg, file_times=tuple(times))
++        newest = max(times, key=lambda t: datetime.fromisoformat(t[1]), default=None)
++        cfg = replace(cfg, file_times=tuple(times), generated_at=cfg.generated_at or (newest[1] if newest else ""))
 +    if not cfg.source_url:
 +        cfg = replace(cfg, source_url=remote_url_template(repo, manifest.get("source_commit") or ""))
 +    files = render(claims, manifest, cfg)
@@ -473,10 +476,10 @@ index 2fb6743..42075a6 100644
 +    assert routes == ["route:GET /api/x", "route:GET /api/y", "route:POST /api", "route:POST /api/login"], routes
 diff --git a/.apm/skills/agent-graph/tool/tests/test_okf.py b/.apm/skills/agent-graph/tool/tests/test_okf.py
 new file mode 100644
-index 0000000..65abb58
+index 0000000..0898b24
 --- /dev/null
 +++ b/.apm/skills/agent-graph/tool/tests/test_okf.py
-@@ -0,0 +1,136 @@
+@@ -0,0 +1,157 @@
 +import re
 +import subprocess
 +import sys
@@ -613,3 +616,24 @@ index 0000000..65abb58
 +def test_pointer_asks_the_reader_to_say_when_it_relies_on_a_medium_entry_only_when_lines_are_tagged():
 +    assert "relies on one, say so" not in okf.pointer(okf.Config())
 +    assert "relies on one, say so" in okf.pointer(okf.Config(line_tags=True))
++
++
++def test_committing_the_guide_itself_does_not_change_it(tmp_path: Path):
++    repo = synced(tmp_path)
++    claims, manifest = okf.load(repo)
++    first = okf.write(repo, tmp_path / "g1", okf.Config())
++    (repo / "NOTES.md").write_text("not source\n", encoding="utf-8")
++    subprocess.run(["git", "-C", str(repo), "add", "."], check=True)
++    subprocess.run(["git", "-C", str(repo), "-c", "user.email=t@e", "-c", "user.name=t", "commit", "-qm", "docs only"], check=True)
++    gen.generate(repo)
++    okf.write(repo, tmp_path / "g2", okf.Config())
++    a = {p.relative_to(tmp_path / "g1").as_posix(): p.read_text(encoding="utf-8") for p in (tmp_path / "g1").rglob("*.md")}
++    b = {p.relative_to(tmp_path / "g2").as_posix(): p.read_text(encoding="utf-8") for p in (tmp_path / "g2").rglob("*.md")}
++    assert a == b and first == len(a), "a commit that touches no cited source file must not change the guide"
++
++
++def test_generated_at_is_the_newest_change_among_the_cited_files(tmp_path: Path):
++    repo = synced(tmp_path)
++    claims, manifest = okf.load(repo)
++    files = okf.render(claims, manifest, okf.Config(generated_at="2021-05-06T07:08:09+00:00", file_times=(("pkg/store.py", "2020-01-02T03:04:05+00:00"),)))
++    assert 'at: "2021-05-06T07:08:09+00:00"' in files["modules/pkg.store.md"]
