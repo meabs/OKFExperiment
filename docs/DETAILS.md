@@ -344,6 +344,17 @@ No pair of arms differs reliably (smallest p=0.08, `notes` against `okf`). What 
 - A contract can mislead as well: it states the success code it was written with, and agents trusted it.
 - Not shown: that a guide plus a contract beats either alone (not run), or that these results hold for other models or frameworks that emit richer contracts.
 
+### Test I. A large repository the agent can read: a guide did not help and cost more
+
+Four renames of a method with a common name (`findOne`, `saveOrUpdate` twice, `toLocale`), each with its callers, in the 1,173-file backend, readable. A text search for the name finds 3 to 10 times more hits than there are true call sites. 8 runs per task per arm, graded exactly by a hidden script (every true site renamed, nothing else changed). Agents were isolated from the rest of the disk. Full plan, deviations and results: [EXPERIMENT_I.md](EXPERIMENT_I.md).
+
+| | `plain` | `guide` |
+| --- | --- | --- |
+| Passed | 22 of 32 | 24 of 32 (p = 0.78, no reliable difference) |
+| Tokens per run | 267k | 318k (1.22 times, reliably more) |
+
+Failures were concentrated in the two `saveOrUpdate` renames and were missed calls or edits to callers of a different class, in both arms. The first batch was graded with a rule that was too strict and is discarded; both batches are published.
+
 ## Detailed analysis
 
 This section explains what the numbers mean, why we think they came out this way, and how far to trust them.

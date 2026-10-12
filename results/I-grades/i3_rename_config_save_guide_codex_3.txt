@@ -1,0 +1,73 @@
+i3_rename_config_save: renamed 10 of 12 sites; 2 other lines wrong
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java
+index 6b25968..1af17a9 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java
+@@ -247 +247 @@ public class PaymentServiceImpl implements PaymentService {
+-			merchantConfigurationService.saveOrUpdate(merchantConfiguration);
++				merchantConfigurationService.saveMerchantConfiguration(merchantConfiguration);
+@@ -276 +276 @@ public class PaymentServiceImpl implements PaymentService {
+-				merchantConfigurationService.saveOrUpdate(merchantConfiguration);
++			merchantConfigurationService.saveMerchantConfiguration(merchantConfiguration);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
+index 6d58fc3..0ba0ef1 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
+@@ -180 +180 @@ public class ShippingServiceImpl implements ShippingService {
+-		merchantConfigurationService.saveOrUpdate(configuration);
++		merchantConfigurationService.saveMerchantConfiguration(configuration);
+@@ -207 +207 @@ public class ShippingServiceImpl implements ShippingService {
+-			merchantConfigurationService.saveOrUpdate(configuration);
++			merchantConfigurationService.saveMerchantConfiguration(configuration);
+@@ -272 +272 @@ public class ShippingServiceImpl implements ShippingService {
+-				merchantConfigurationService.saveOrUpdate(merchantConfiguration);
++				merchantConfigurationService.saveMerchantConfiguration(merchantConfiguration);
+@@ -298 +298 @@ public class ShippingServiceImpl implements ShippingService {
+-				merchantConfigurationService.saveOrUpdate(merchantConfiguration);
++				merchantConfigurationService.saveMerchantConfiguration(merchantConfiguration);
+@@ -845 +845 @@ public class ShippingServiceImpl implements ShippingService {
+-			merchantConfigurationService.saveOrUpdate(configuration);
++			merchantConfigurationService.saveMerchantConfiguration(configuration);
+@@ -962 +962 @@ public class ShippingServiceImpl implements ShippingService {
+-}
+\ No newline at end of file
++}
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/system/EmailServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/system/EmailServiceImpl.java
+index ea43c48..b741961 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/system/EmailServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/system/EmailServiceImpl.java
+@@ -64 +64 @@ public class EmailServiceImpl implements EmailService {
+-		merchantConfigurationService.saveOrUpdate(configuration);
++		merchantConfigurationService.saveMerchantConfiguration(configuration);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationService.java b/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationService.java
+index 0c80f9f..352d946 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationService.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationService.java
+@@ -17 +17 @@ public interface MerchantConfigurationService extends
+-	void saveOrUpdate(MerchantConfiguration entity) throws ServiceException;
++	void saveMerchantConfiguration(MerchantConfiguration entity) throws ServiceException;
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationServiceImpl.java
+index 10452bf..fedc80f 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationServiceImpl.java
+@@ -46 +46 @@ public class MerchantConfigurationServiceImpl extends
+-	public void saveOrUpdate(MerchantConfiguration entity) throws ServiceException {
++	public void saveMerchantConfiguration(MerchantConfiguration entity) throws ServiceException {
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxServiceImpl.java
+index a0e1562..2ef3423 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxServiceImpl.java
+@@ -87 +87 @@ public class TaxServiceImpl
+-		merchantConfigurationService.saveOrUpdate(configuration);
++		merchantConfigurationService.saveMerchantConfiguration(configuration);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacadeImpl.java
+index 9834139..09ac2a2 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacadeImpl.java
+@@ -420 +420 @@ public class StoreFacadeImpl implements StoreFacade {
+-					merchantConfigurationService.saveOrUpdate(mConfigs);
++					merchantConfigurationService.saveMerchantConfiguration(mConfigs);
+@@ -584 +584 @@ public class StoreFacadeImpl implements StoreFacade {
+-}
+\ No newline at end of file
++}

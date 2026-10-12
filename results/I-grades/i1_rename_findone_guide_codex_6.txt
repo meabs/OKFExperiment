@@ -1,0 +1,81 @@
+i1_rename_findOne: renamed 14 of 15 sites; 0 other lines wrong
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/listeners/IndexProductEventListener.java b/sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/listeners/IndexProductEventListener.java
+index 2d5cb79..e783a07 100644
+--- a/sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/listeners/IndexProductEventListener.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/listeners/IndexProductEventListener.java
+@@ -108 +108 @@ public class IndexProductEventListener implements ApplicationListener<ProductEve
+-			Product fullProduct = productService.findOne(product.getId(), store);
++			Product fullProduct = productService.findProductById(product.getId(), store);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductService.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductService.java
+index 3253ab0..d7b4743 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductService.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductService.java
+@@ -97 +97 @@ public interface ProductService extends SalesManagerEntityService<Long, Product>
+-	Product findOne(Long id, MerchantStore merchant);
++	Product findProductById(Long id, MerchantStore merchant);
+@@ -101 +100,0 @@ public interface ProductService extends SalesManagerEntityService<Long, Product>
+-
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java
+index 883ae07..f1c75b1 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java
+@@ -339 +339 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
+-	public Product findOne(Long id, MerchantStore merchant) {
++	public Product findProductById(Long id, MerchantStore merchant) {
+@@ -399 +399 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
+-			return this.findOne(id.longValue(), merchant);
++			return this.findProductById(id.longValue(), merchant);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/PersistableProductVariantMapper.java b/sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/PersistableProductVariantMapper.java
+index 6215c1a..71c92ce 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/PersistableProductVariantMapper.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/PersistableProductVariantMapper.java
+@@ -130 +130 @@ public class PersistableProductVariantMapper implements Mapper<PersistableProduc
+-			product = productService.findOne(source.getProductId(), store);
++			product = productService.findProductById(source.getProductId(), store);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/mapper/inventory/PersistableInventoryMapper.java b/sm-shop/src/main/java/com/salesmanager/shop/mapper/inventory/PersistableInventoryMapper.java
+index 3c8a0fc..555dfed 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/mapper/inventory/PersistableInventoryMapper.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/mapper/inventory/PersistableInventoryMapper.java
+@@ -68 +68 @@ public class PersistableInventoryMapper implements Mapper<PersistableInventory,
+-				product = productService.findOne(source.getProductId().longValue(), store);
++				product = productService.findProductById(source.getProductId().longValue(), store);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java
+index cd3d302..9c8b4d1 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java
+@@ -129 +129 @@ public class ProductCommonFacadeImpl implements ProductCommonFacade {
+-		Product product = productService.findOne(id, store);
++		Product product = productService.findProductById(id, store);
+@@ -351 +351 @@ public class ProductCommonFacadeImpl implements ProductCommonFacade {
+-		Product modified = productService.findOne(productId, merchant);
++		Product modified = productService.findProductById(productId, merchant);
+@@ -416 +416 @@ public class ProductCommonFacadeImpl implements ProductCommonFacade {
+-		return productService.findOne(id, store);
++		return productService.findProductById(id, store);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductDefinitionFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductDefinitionFacadeImpl.java
+index 9e2eecb..09eaf2e 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductDefinitionFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductDefinitionFacadeImpl.java
+@@ -88 +88 @@ public class ProductDefinitionFacadeImpl implements ProductDefinitionFacade {
+-		Product product = productService.findOne(id, store);
++		Product product = productService.findProductById(id, store);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeImpl.java
+index ee0ee4b..b0ccd94 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeImpl.java
+@@ -235 +235 @@ public class ProductFacadeImpl implements ProductFacade {
+-			Product model = productService.findOne(id, store);
++			Product model = productService.findProductById(id, store);
+@@ -268 +268 @@ public class ProductFacadeImpl implements ProductFacade {
+-		return productService.findOne(id, store);
++		return productService.findProductById(id, store);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeV2Impl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeV2Impl.java
+index fad03cc..20c811c 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeV2Impl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeV2Impl.java
+@@ -86 +86 @@ public class ProductFacadeV2Impl implements ProductFacade {
+-		return productService.findOne(id, store);
++		return productService.findProductById(id, store);
+@@ -245 +245 @@ public class ProductFacadeV2Impl implements ProductFacade {
+-			Product model = productService.findOne(id, store);
++			Product model = productService.findProductById(id, store);

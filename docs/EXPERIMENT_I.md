@@ -59,4 +59,30 @@ Other task types (adding a parameter, changing behaviour); a repository the agen
 ## Deviations
 
 1. **Pilot and grader fix 1 (comments).** A two-run pilot (task i4, discarded) showed both agents also renaming a commented-out call, which the exact grader counted as wrong. Before the counted runs the grader was changed to accept either choice for comment lines.
-2. **Grader fix 2 (trailing blank line), and a full rerun.** The first 64 counted runs were graded with an exact whole-file comparison. Task i1 failed in all 16 runs. Rerunning one i1 run with its work folder kept showed why: the agent had renamed all 15 sites correctly, but its editing tool had also removed the blank line at the end of `ProductService.java`, and the grader counted that as a wrong edit. The work folders of the first batch had been deleted, so it could not be regraded. The grader was changed to ignore trailing whitespace and blank lines at the end of a file, retested on the exact answer (passes), no change (fails), one missed site (fails) and a blanket rename (fails), and **all 64 runs were repeated with the work folders kept**. The first batch is kept in the results as `I-first-batch-strict-grader.md` and the second is the one reported; both are shown in the README. This change was made after seeing the first batch's results, for a defect in the measurement, not in the direction of either arm.
+2. **Grader fix 2 (trailing blank line), and a full rerun.** The first 64 counted runs were graded with an exact whole-file comparison. Task i1 failed in all 16 runs. Rerunning one i1 run with its work folder kept showed why: the agent had renamed all 15 sites correctly, but its editing tool had also removed the blank line at the end of `ProductService.java`, and the grader counted that as a wrong edit. The work folders of the first batch had been deleted, so it could not be regraded. The grader was changed to ignore trailing whitespace and blank lines at the end of a file, retested on the exact answer (passes), no change (fails), one missed site (fails) and a blanket rename (fails), and **all 64 runs were repeated**, this time with the grader saving each run's verdict and its Java diff (a first attempt that kept every work folder filled the disk and was abandoned after 14 runs, which were discarded). The first batch is kept in the results as `I-first-batch-strict-grader.md` and the second is the one reported; both are shown in the README. This change was made after seeing the first batch's results, for a defect in the measurement, not in the direction of either arm.
+
+## Results
+
+Raw reports: [`results/I-rename-in-large-repo.md`](../results/I-rename-in-large-repo.md) (reported), [`results/I-first-batch-strict-grader.md`](../results/I-first-batch-strict-grader.md) (discarded, see Deviations), per-run verdicts and diffs in [`results/I-grades/`](../results/I-grades/).
+
+| Task | `plain` | `guide` |
+| --- | --- | --- |
+| i1 `findOne` (15 sites) | 8 / 8 | 7 / 8 |
+| i2 cart `saveOrUpdate` (12 sites) | 2 / 8 | 3 / 8 |
+| i3 configuration `saveOrUpdate` (12 sites) | 5 / 8 | 6 / 8 |
+| i4 `toLocale` (10 sites) | 7 / 8 | 8 / 8 |
+| **Passed** | **22 of 32** | **24 of 32** |
+| Tokens per run | 267k | 318k (1.22 times, interval 1.07 to 1.37: reliably more) |
+
+- **Pass rate: no reliable difference** (22 against 24 of 32, p = 0.78). The first, discarded batch, graded too strictly, gave 15 against 14 of 32; that grader defect hit both arms alike.
+- **Where runs failed:** almost entirely on the two `saveOrUpdate` renames, whose name has about 70 hits in the codebase. Across i2 and i3, `plain` missed 15 sites and edited 13 lines of the wrong class; `guide` missed 10 and edited 8. Both arms made the same two kinds of mistake (a missed call, or an edit to a caller of a different class with the same method name); the difference in counts between the arms was not tested for reliability.
+- **Cost: the guide was reliably dearer**, by about 22%, as in tests A and C.
+- **Isolation held.** In 11 of 64 runs (6 `plain`, 5 `guide`) a command was refused by the sandbox; they were `find ..` and similar commands looking for another copy of the repository. No network use was detected.
+
+| Prediction | Outcome |
+| --- | --- |
+| No reliable difference in pass rate | **Held** (22 against 24 of 32). |
+| The guide misses the sites its call claims lack (i1, i4) more often than `plain` | **Not seen.** `guide` missed 1 site on i1 and none on i4. |
+| The guide costs more | **Held**, 1.22 times, reliably. |
+
+What this adds: in a large repository the agent can read, with a task designed so that a text search over-matches, a generated guide did not improve the result and cost about a fifth more. It does not say anything about other task types, other repositories or other models. It also does not test the case this experiment was meant to approach in the end, a change whose correct form depends on internal structure the agent cannot otherwise see.

@@ -1,0 +1,69 @@
+i2_rename_cart_save: renamed 11 of 12 sites; 1 other lines wrong
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderServiceImpl.java
+index b6bac52..b2f2d5f 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderServiceImpl.java
+@@ -451 +451 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
+-    			shoppingCartService.saveOrUpdate(shoppingCart);
++			shoppingCartService.persistShoppingCart(shoppingCart);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartCalculationServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartCalculationServiceImpl.java
+index 9f5df77..8379af7 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartCalculationServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartCalculationServiceImpl.java
+@@ -118 +118 @@ public class ShoppingCartCalculationServiceImpl implements ShoppingCartCalculati
+-		shoppingCartService.saveOrUpdate(cartModel);
++		shoppingCartService.persistShoppingCart(cartModel);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartService.java b/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartService.java
+index 6fad8bf..34c9d9a 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartService.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartService.java
+@@ -19 +19 @@ public interface ShoppingCartService extends SalesManagerEntityService<Long, Sho
+-	void saveOrUpdate(ShoppingCart shoppingCart) throws ServiceException;
++	void persistShoppingCart(ShoppingCart shoppingCart) throws ServiceException;
+@@ -67 +67 @@ public interface ShoppingCartService extends SalesManagerEntityService<Long, Sho
+-}
+\ No newline at end of file
++}
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java
+index e0d1ce8..a6e9896 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java
+@@ -104 +104 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-	public void saveOrUpdate(ShoppingCart shoppingCart) throws ServiceException {
++	public void persistShoppingCart(ShoppingCart shoppingCart) throws ServiceException {
+@@ -434 +434 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-		saveOrUpdate(userShoppingModel);
++		persistShoppingCart(userShoppingModel);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java
+index 60fbf4b..86d6baa 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java
+@@ -226 +226 @@ public class CustomerFacadeImpl implements CustomerFacade {
+-              shoppingCartService.saveOrUpdate(sessionShoppingCart);
++              shoppingCartService.persistShoppingCart(sessionShoppingCart);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/order/facade/OrderFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/order/facade/OrderFacadeImpl.java
+index 0da643b..06d82c4 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/order/facade/OrderFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/order/facade/OrderFacadeImpl.java
+@@ -266 +266 @@ public class OrderFacadeImpl implements OrderFacade {
+-						shoppingCartService.saveOrUpdate(shoppingCart);
++						shoppingCartService.persistShoppingCart(shoppingCart);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacadeImpl.java
+index 809db39..d02860e 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacadeImpl.java
+@@ -174 +174 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
+-		shoppingCartService.saveOrUpdate(cartModel);
++		shoppingCartService.persistShoppingCart(cartModel);
+@@ -607 +607 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
+-				shoppingCartService.saveOrUpdate(cartModel);
++				shoppingCartService.persistShoppingCart(cartModel);
+@@ -670 +670 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
+-		shoppingCartService.saveOrUpdate(cartModel);
++		shoppingCartService.persistShoppingCart(cartModel);
+@@ -729 +729 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
+-		shoppingCartService.saveOrUpdate(cart);
++		shoppingCartService.persistShoppingCart(cart);
+@@ -822 +822 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
+-		shoppingCartService.saveOrUpdate(cart);// update cart with remaining items
++		shoppingCartService.persistShoppingCart(cart);// update cart with remaining items

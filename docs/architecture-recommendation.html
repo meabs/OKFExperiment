@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Giving coding agents the right knowledge</title>
+<style>
+  @page { size: A4; margin: 22mm 20mm 22mm 20mm; }
+  :root { --ink:#1b2430; --mute:#5a6675; --rule:#cfd6de; --accent:#1f4e79; --soft:#eef3f8; --warn:#8a3b12; --warnbg:#fbf1ea; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, "Times New Roman", serif; color: var(--ink); font-size: 10.6pt; line-height: 1.5; margin: 0; }
+  h1, h2, h3, .sans { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  h1 { font-size: 24pt; line-height: 1.15; margin: 0 0 6pt; color: var(--accent); }
+  h2 { font-size: 14pt; margin: 20pt 0 6pt; color: var(--accent); border-bottom: 1px solid var(--rule); padding-bottom: 3pt; break-after: avoid; }
+  h3 { font-size: 11pt; margin: 12pt 0 3pt; break-after: avoid; }
+  p { margin: 0 0 7pt; orphans: 3; widows: 3; }
+  .sub { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--mute); font-size: 10.5pt; margin-bottom: 14pt; }
+  .box { background: var(--soft); border-left: 3px solid var(--accent); padding: 8pt 11pt; margin: 9pt 0; break-inside: avoid; }
+  .warn { background: var(--warnbg); border-left-color: var(--warn); }
+  table { border-collapse: collapse; width: 100%; margin: 7pt 0 10pt; font-size: 9.2pt; line-height: 1.35; break-inside: avoid; }
+  th, td { border: 1px solid var(--rule); padding: 3.5pt 6pt; text-align: left; vertical-align: top; }
+  th { background: var(--soft); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 600; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  ol, ul { margin: 0 0 7pt; padding-left: 17pt; }
+  li { margin-bottom: 3pt; }
+  .small { font-size: 9pt; color: var(--mute); }
+  .rec { break-inside: avoid; margin-bottom: 8pt; }
+  .rec h3 { margin-bottom: 1pt; }
+  figure { margin: 10pt 0; break-inside: avoid; }
+  figcaption { font-size: 9pt; color: var(--mute); margin-top: 3pt; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  code { font-family: Menlo, Consolas, monospace; font-size: 8.8pt; background: #f1f3f5; padding: 0 2pt; }
+  .pb { break-before: page; }
+</style>
+</head>
+<body>
+
+<h1>Giving coding agents the right knowledge</h1>
+<p class="sub">An architectural recommendation, based on about 1,550 controlled runs of a coding agent<br>OKF Experiment &middot; October 2026</p>
+
+<h2 style="margin-top:0">1. Summary</h2>
+
+<p>Coding agents have to understand code before they can change it. When the code is in front of them, they can search it. When a change depends on another team's service, a private library or any code the agent cannot read, the agent has to be given the facts, or it will guess. This paper recommends how to supply those facts.</p>
+
+<div class="box">
+<p><strong>The principle.</strong> Coding agents do not necessarily need more documentation. They need the right information, at the right time, from a source that can be trusted. Where the source of a dependency is out of reach, give the agent an authoritative, versioned contract first. Add structural knowledge only for tasks the contract cannot support. Check, before the agent uses it, that what you supplied matches the version of the dependency in use.</p>
+</div>
+
+<p>We tested this with one agent on a real Java backend and web storefront. We compared giving the agent nothing, an API contract, a three-kilobyte hand-written note, a generated "guide" of the backend, and the backend's real source. The guide is a folder of markdown files produced from the code by a script, in a format called OKF (Open Knowledge Format). It lists classes, routes and calls, with the file and line each fact came from.</p>
+
+<p>Five results matter for architecture:</p>
+<ol>
+  <li>If the agent can already read the code, extra generated knowledge did not make it more accurate. It cost more tokens, and when it was out of date it misled the agent.</li>
+  <li>If the agent cannot read a dependency, supplying facts about it made a very large difference: changes passed in about 3 of 20 runs with nothing and in 18 or 19 of 20 with a guide.</li>
+  <li>For changes that depend on an interface (names, paths, fields), a contract or a short note did about as well as the guide, and cost less.</li>
+  <li>For questions about what calls what inside the dependency, only the guide or the source worked. That shows the guide helps agents answer structural questions. It does not show that it helps them make better changes. A later test in a large repository the agent could read found no gain in the quality of its changes from a guide (section 4.5).</li>
+  <li>Out-of-date knowledge produced confident, wrong answers, and nothing placed inside the knowledge itself protected the agent.</li>
+</ol>
+
+<h2>2. The problem</h2>
+
+<p>Most real changes cross a boundary. A storefront team calls a backend owned by someone else. A service uses a vendored library. A migration touches a system whose source is held in another repository, or is not available to the agent at all. In each case the agent has two options: to be told the facts, or to guess.</p>
+
+<p>Guessing is not harmless. In our tests, agents given nothing guessed the names of request fields from habit and mostly got them wrong. They also spent a great deal of effort searching and then gave up, using about 785,000 tokens per question on average and answering correctly in 1 of 24 cases.</p>
+
+<p>Architects therefore need an answer to a practical question: <em>what is the cheapest dependable way to give an agent knowledge of code it cannot read?</em> Generated knowledge bases are one answer. API contracts and short reference notes are others. Until now there was little controlled evidence about how they compare.</p>
+
+<h2>3. What we tested</h2>
+
+<p>We ran about 1,550 runs of one agent (OpenAI's Codex, model <code>gpt-5.6-luna</code>, medium reasoning). Each run was one question or one change, started from scratch, and graded by a hidden test or an exact answer check. We recorded correctness and tokens used, which is a stand-in for cost and time. We called a difference real only when a standard statistical test (Fisher's exact test) gave p below 0.05.</p>
+
+<table>
+  <tr><th>Experiment</th><th>Setting</th><th class="n">Runs</th></tr>
+  <tr><td>A, B, C</td><td>A small Python library and an invoicing service; the agent can read the code. Which guide shapes help; what an out-of-date guide does.</td><td class="n">724</td></tr>
+  <tr><td>D, E</td><td>A web storefront and a 1,173-file Java backend the agent cannot read. Questions; guides with deliberately wrong entries.</td><td class="n">336</td></tr>
+  <tr><td>F, G</td><td>The same pair. Small, then harder, cross-repository changes graded by hidden tests.</td><td class="n">140</td></tr>
+  <tr><td>H</td><td>Guide against an OpenAPI contract, a note and the source, on changes (H1), call-structure questions (H2) and a small running service (H3).</td><td class="n">280</td></tr>
+  <tr><td>I</td><td>A change task in a large codebase the agent can read: does a guide improve the result? Renames with and without a guide.</td><td class="n">64</td></tr>
+</table>
+
+<p>The backend was Shopizer, with names changed so the agent could not recall the answers from memory. We wrote the questions, the tests and the planted changes ourselves.</p>
+
+<h2>4. What we found</h2>
+
+<h3>4.1 Where the agent can read the code, a guide adds cost, not accuracy</h3>
+<p>On a small library, agents answered 14 or 15 of 15 questions and made 8 or 9 of 9 changes correctly, with or without a guide. The recommended guide cost 1.30 times the tokens in one run and 1.07 in a rerun (the second not clearly different). Copying in a guide for a library the agent could read cost 1.25 times the tokens, with all 72 changes passing either way.</p>
+
+<h3>4.2 Where it cannot, facts decide the outcome</h3>
+<p>Cross-repository changes passed in 3 of 20 runs with nothing. With a guide they passed in 19 of 20 (small tasks) and 18 of 20 (harder tasks). In the harder tasks, an agent with the backend's real source also passed 18 of 20. The three passes with nothing were on tasks whose answer can be guessed.</p>
+
+<h3>4.3 A contract or a note is enough for interface changes</h3>
+<p>Experiment H gave the same harder tasks to five arms, 16 runs each.</p>
+<table>
+  <tr><th>Arm</th><th class="n">Passed (of 16)</th><th class="n">Tokens per run</th><th>Cost against nothing</th></tr>
+  <tr><td>Nothing</td><td class="n">4</td><td class="n">277k</td><td>baseline</td></tr>
+  <tr><td>OpenAPI contract</td><td class="n">13</td><td class="n">192k</td><td>reliably cheaper</td></tr>
+  <tr><td>3 KB note</td><td class="n">14</td><td class="n">128k</td><td>reliably cheaper</td></tr>
+  <tr><td>Generated guide</td><td class="n">14</td><td class="n">282k</td><td>no clear difference</td></tr>
+  <tr><td>Source</td><td class="n">14</td><td class="n">334k</td><td>reliably dearer</td></tr>
+</table>
+<p>All four beat nothing. They did not differ reliably from each other. That is not proof they are equivalent: with 16 runs, gaps under about 30 points cannot be separated. The hardest task, building a checkout request whose fields sit in inherited classes, split them: contract 1 of 4, guide 2 of 4, note 4 of 4, source 4 of 4. Two cautions: we wrote the note knowing the tasks, which favours it, and our contract was generated from the source by a script, not by a running application.</p>
+
+<h3>4.4 For internal structure, only a guide or the source answered</h3>
+<p>Six questions asked "which method handles this request, and which class does it then call?" A contract describes an interface, not what a handler calls inside.</p>
+<table>
+  <tr><th>Arm</th><th class="n">Correct (of 24)</th><th class="n">Tokens per run</th></tr>
+  <tr><td>Nothing</td><td class="n">1</td><td class="n">447k</td></tr>
+  <tr><td>OpenAPI contract</td><td class="n">8</td><td class="n">464k</td></tr>
+  <tr><td>3 KB note</td><td class="n">0</td><td class="n">476k</td></tr>
+  <tr><td><strong>Generated guide</strong></td><td class="n"><strong>21</strong></td><td class="n"><strong>170k</strong></td></tr>
+  <tr><td>Source</td><td class="n">21</td><td class="n">207k</td></tr>
+</table>
+<p>This is a clear result, but it is a result about answering questions. It does not show that a better answer produces a better change. The network was on in this experiment, and 56 of 120 runs cloned the public repository; all 8 contract passes were among them. A separate part (H3, a small running service) was contaminated because agents without the source found it on the disk, so we draw no conclusions from it except one: a contract that listed only one success code led agents to treat the service's other success code as an error.</p>
+
+<h3>4.5 In a large repository the agent can read, a guide did not improve the change</h3>
+<p>Experiment I asked whether structural knowledge improves an engineering outcome, not only an answer. In the 1,173-file backend, with the source readable, the agent had to rename a method and update every caller. The names were common (<code>findOne</code>, <code>saveOrUpdate</code>, <code>toLocale</code>), so a plain text search finds three to ten times more hits than there are real callers. A script graded each result exactly: every true call site renamed and nothing else changed. Agents were also kept from reading anything outside their workspace.</p>
+<table>
+  <tr><th>Arm</th><th class="n">Passed (of 32)</th><th class="n">Tokens per run</th></tr>
+  <tr><td>Source only</td><td class="n">22</td><td class="n">267k</td></tr>
+  <tr><td>Source and generated guide</td><td class="n">24</td><td class="n">318k</td></tr>
+</table>
+<p>The pass rates did not differ reliably (p = 0.78), and the guide cost about 22% more tokens, which was reliably more. Failures were mostly missed calls, or edits to callers of a different class with the same method name, and they happened in both arms. The guide's own call information was incomplete in three places; the agents mostly did not follow it into error. This is one repository, one kind of task and one model. It does not say that structural knowledge cannot help a change, only that on this task it did not.</p>
+
+
+<h3>4.6 Out-of-date knowledge is the main hazard</h3>
+<p>We renamed four things in the backend after the guide was made. Four questions had new answers.</p>
+<table>
+  <tr><th>The agent had</th><th class="n">Gave the old answer (of 16)</th></tr>
+  <tr><td>The changed source</td><td class="n">0</td></tr>
+  <tr><td>The out-of-date guide</td><td class="n">14</td></tr>
+  <tr><td>The guide plus "read the source to confirm"</td><td class="n">16</td></tr>
+  <tr><td>The guide plus an expiry date on the changed files</td><td class="n">16</td></tr>
+</table>
+<p>None of the 46 wrong answers hedged. When the agent could read the code, one sentence in its instructions, "read the source to confirm before you rely on it", cut repeated old facts from 8 of 12 to 0 of 12. When it could not, nothing placed inside the guide helped: not warnings, not expiry dates, not confidence labels. Labels say how a fact was found, not whether it is still true. With an instruction to disclose guesses, agents did say they were relying on a guess in 6 of 8 wrong answers, but accuracy did not improve.</p>
+
+<h2 class="pb">5. Recommendations</h2>
+
+<p>Findings are measured. Recommendations are our judgement, built on them. Where a recommendation goes beyond what we measured, it says so.</p>
+
+<div class="rec"><h3>R1. Do not give agents generated knowledge of code they can already read.</h3>
+<p><em>Evidence:</em> experiments A, B, C. No accuracy gain, higher cost, and a stale guide misleads. <em>Instead:</em> rely on the source and existing tools, and add "read the source to confirm before you rely on it" to the agent's instructions.</p></div>
+
+<div class="rec"><h3>R2. For a dependency the agent cannot read, supply a versioned API contract first.</h3>
+<p><em>Evidence:</em> H1. A contract matched the guide on interface changes at lower cost. <em>Why architects care:</em> most services already have, or can generate, one. It is also the form your teams already review and version. <em>Caution:</em> a contract states the success codes it was written with, and agents trust it. Make sure it is complete, including every success and error response.</p></div>
+
+<div class="rec"><h3>R3. Add a short, authoritative reference for the facts a contract cannot carry.</h3>
+<p><em>Evidence:</em> H1, where a 3 KB note was the cheapest arm and among the best. <em>Use it for:</em> conventions, the field names people get wrong, error behaviour and business rules. A note written by the dependency's owners costs little and was the most efficient help we measured. This is a measured result with an important bias: we wrote the note knowing the tasks.</p></div>
+
+<div class="rec"><h3>R4. Add structural knowledge only where tasks need internal call relationships.</h3>
+<p><em>Evidence:</em> H2, where the guide answered 21 of 24 against 8 for a contract. A generated guide is one way to supply it; the source, where it can be shared, is another. <em>Boundary of the evidence:</em> we showed better answers to questions, not better changes. Treat this as a targeted capability for specific tasks, such as impact analysis, not as a default layer.</p></div>
+
+<div class="rec"><h3>R5. Put business behaviour and invariants in specifications and tests, not in generated knowledge.</h3>
+<p><em>Evidence:</em> a generated guide or contract holds structure, not rules. In H3, rules such as price calculation were found only by agents that read the service. That experiment was contaminated, so this is a recommendation, not a measured result. Behaviour that matters should live where it is verified.</p></div>
+
+<div class="rec"><h3>R6. Make freshness a gate, not a hope.</h3>
+<p><em>Evidence:</em> B and D2. A stale guide of an unreadable dependency was repeated as fact in 14 to 16 of 16 answers. Warnings, banners, expiry dates and labels did not prevent it. <em>Recommendation:</em> every piece of knowledge supplied to an agent should record the version of the thing it describes. Check that version against the dependency in use before the agent runs, in your pipeline. We built and ran two such checks (a guide matches its code; a copied-in guide matches its dependency's files) on small examples. They have not been run in a real pipeline, so treat them as a starting point.</p></div>
+
+<div class="rec"><h3>R7. Use confidence labels only to make guesses visible.</h3>
+<p><em>Evidence:</em> E, F, G. Labels did not make agents more accurate. With an instruction, they made agents say when a conclusion rested on a guess. A wrong fact labelled as certain was trusted every time, so label only what the source states.</p></div>
+
+<h2>6. A reference approach</h2>
+
+<p>Think of the knowledge supplied to an agent as layers, each added only when the task needs it. The owner of the dependency publishes each layer, versioned with the code it describes.</p>
+
+<figure>
+<svg viewBox="0 0 640 250" width="100%" role="img" aria-label="Layers of knowledge for a dependency the agent cannot read">
+  <style>
+    .t{font:600 12px Helvetica,Arial,sans-serif;fill:#1b2430}
+    .s{font:11px Helvetica,Arial,sans-serif;fill:#5a6675}
+    .b{fill:#eef3f8;stroke:#1f4e79;stroke-width:1.2}
+    .g{fill:#fbf1ea;stroke:#8a3b12;stroke-width:1.2}
+  </style>
+  <rect class="b" x="10" y="10" width="430" height="42" rx="3"/><text class="t" x="22" y="29">1. Versioned API contract (always)</text><text class="s" x="22" y="44">Routes, parameters, fields, every success and error response</text>
+  <rect class="b" x="10" y="60" width="430" height="42" rx="3"/><text class="t" x="22" y="79">2. Short owner-written reference (usually)</text><text class="s" x="22" y="94">Conventions, error behaviour, rules, the facts people get wrong</text>
+  <rect class="b" x="10" y="110" width="430" height="42" rx="3"/><text class="t" x="22" y="129">3. Structural guide or source (when tasks need call relationships)</text><text class="s" x="22" y="144">Who calls whom; generated from the code, line by line</text>
+  <rect class="b" x="10" y="160" width="430" height="42" rx="3"/><text class="t" x="22" y="179">4. Specifications and tests (for behaviour that must hold)</text><text class="s" x="22" y="194">Authoritative and verified, not generated</text>
+  <rect class="g" x="460" y="10" width="170" height="192" rx="3"/><text class="t" x="472" y="32">Gate</text>
+  <text class="s" x="472" y="52">Each layer records the</text><text class="s" x="472" y="66">version it describes.</text>
+  <text class="s" x="472" y="90">Before the agent runs,</text><text class="s" x="472" y="104">compare that version with</text><text class="s" x="472" y="118">the dependency in use.</text>
+  <text class="s" x="472" y="142">Mismatch: refresh or</text><text class="s" x="472" y="156">do not supply it.</text>
+  <text class="s" x="10" y="226">Agent's instructions: say where the layers are, and add "read the source to confirm" wherever it can.</text>
+</svg>
+<figcaption>Figure 1. Layers of knowledge, added only as the task needs them, with a freshness check across all of them.</figcaption>
+</figure>
+
+<table>
+  <tr><th>Situation</th><th>Suggested approach</th><th>Basis</th></tr>
+  <tr><td>The agent can read the repository</td><td>Source and existing tooling, plus "read the source to confirm"</td><td>Measured (A, B, C)</td></tr>
+  <tr><td>It needs another service's API</td><td>Versioned API contract</td><td>Measured for names and paths (H1)</td></tr>
+  <tr><td>It needs a few extra facts</td><td>Small authoritative reference</td><td>Measured, with a note written knowing the tasks (H1)</td></tr>
+  <tr><td>It needs internal call relationships</td><td>Targeted structural knowledge, possibly a generated guide</td><td>Measured for questions only (H2)</td></tr>
+  <tr><td>It needs business behaviour or invariants</td><td>Authoritative specifications and tests</td><td>Recommendation</td></tr>
+  <tr><td>Generated knowledge may be stale</td><td>Validate against the dependency version before use</td><td>Harm measured (B, D2); checks are a recommendation</td></tr>
+</table>
+
+<h3>Operating it</h3>
+<ul>
+  <li><strong>Ownership.</strong> The dependency's owner publishes the contract, the reference and, if used, the guide. Consumers copy a pinned version and do not write their own.</li>
+  <li><strong>Pinning and checks.</strong> A copy records the version it came from. A pipeline step compares it with the dependency in use and fails on a mismatch.</li>
+  <li><strong>Instructions.</strong> A short file tells the agent where the layers are, and tells it to read the source to confirm wherever it can.</li>
+  <li><strong>Measure before you scale.</strong> Try your own agent on a handful of real tasks, with and without each layer, before investing in more.</li>
+</ul>
+
+<h2>7. What this does not justify</h2>
+<div class="box warn">
+<ul>
+  <li>It does not justify an enterprise-wide knowledge platform. The experiments compared ways of giving an agent facts about one dependency, not a programme of knowledge management.</li>
+  <li>It does not show a guide is needed everywhere, nor that it improves software changes beyond a contract.</li>
+  <li>It does not show that equal pass rates mean equal quality. Our samples were small.</li>
+</ul>
+</div>
+
+<h2>8. How far to trust this</h2>
+<ul>
+  <li><strong>One agent and one setting.</strong> Other models may behave differently.</li>
+  <li><strong>Few tasks.</strong> Experiments A to G had 3 to 5 runs per question per condition; H had 16 to 24 per arm. Small differences are not reliable.</li>
+  <li><strong>We wrote the tests.</strong> The questions, hidden tests, planted changes and the note were ours. The contract was generated by our script.</li>
+  <li><strong>Contamination.</strong> H2 had network access and H3 let agents find material on the disk. We report H2 with and without the affected runs and draw no conclusion from H3.</li>
+  <li><strong>The code was altered.</strong> The backend had names changed and changes applied as uncompiled text edits.</li>
+  <li><strong>Mistakes we made and kept.</strong> Early runs of A and B told the agent to verify in every condition, which hid differences, so we reran them. The first H3 run is archived and unreported. Experiment I's first graded batch was discarded for a grader defect and rerun; both are published.</li>
+</ul>
+
+<h2>9. What to do next</h2>
+<ol>
+  <li><strong>Test a contract and a guide together.</strong> We did not, and it is the combination this paper recommends.</li>
+  <li><strong>Test changes that need internal structure.</strong> Show that structural knowledge improves the change, not only the answer.</li>
+  <li><strong>Repeat on another model and on real drift</strong> from real commits.</li>
+  <li><strong>Run the freshness checks in a real pipeline</strong> and measure how often they fire.</li>
+</ol>
+
+<p class="small">Evidence, scripts and raw reports: the OKFExperiment repository (README, <code>docs/DETAILS.md</code>, <code>docs/RESULTS.md</code>, <code>results/</code>). Preregistered plans for experiments H and I are in <code>docs/</code>.</p>
+
+</body>
+</html>

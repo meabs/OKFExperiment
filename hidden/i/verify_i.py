@@ -1,7 +1,7 @@
 """Experiment I grader. Run inside the agent's work folder (a git repo at the original commit).
 Passes only if every Java file equals the original with the method renamed at exactly the true sites: no site missed, nothing else changed (comment lines may go either way; trailing whitespace and blank lines at the end of a file are ignored).
 Prints how many sites were renamed and how many other lines changed. Usage: python verify_i.py TASK_ID SITES_JSON"""
-import json, re, subprocess, sys
+import json, os, re, subprocess, sys
 tid, sj = sys.argv[1], sys.argv[2]
 spec = json.load(open(sj))[tid]
 old, new = spec["old"], spec["new"]
@@ -37,5 +37,10 @@ for f in sorted(files):
         if i in want.get(f, ()) and c != e and c != o:
             wrong += 1
 total = sum(len(v) for v in want.values())
-print(f"{tid}: renamed {renamed} of {total} sites; {wrong} other lines wrong")
+msg = f"{tid}: renamed {renamed} of {total} sites; {wrong} other lines wrong"
+print(msg)
+if os.environ.get("TRIAL_OUT") and os.environ.get("TRIAL_ID"):  # keep the verdict and the change, so the work folder need not be kept
+    g = os.path.join(os.environ["TRIAL_OUT"], "grades")
+    os.makedirs(g, exist_ok=True)
+    open(os.path.join(g, os.environ["TRIAL_ID"] + ".txt"), "w").write(msg + "\n" + subprocess.run(["git", "diff", "-U0", "--", "*.java"], capture_output=True, text=True).stdout)
 sys.exit(0 if renamed == total and wrong == 0 else 1)

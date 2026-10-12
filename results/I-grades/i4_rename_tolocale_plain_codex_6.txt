@@ -1,0 +1,78 @@
+i4_rename_toLocale: renamed 9 of 10 sites; 1 other lines wrong
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/order/ordertotal/OrderTotalServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/order/ordertotal/OrderTotalServiceImpl.java
+index 874a65e..e012332 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/order/ordertotal/OrderTotalServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/order/ordertotal/OrderTotalServiceImpl.java
+@@ -52 +52 @@ public class OrderTotalServiceImpl implements OrderTotalService {
+-					//Product product = productService.getProductForLocale(productId, language, languageService.toLocale(language, store));
++					//Product product = productService.getProductForLocale(productId, language, languageService.resolveLocale(language, store));
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/reference/language/LanguageService.java b/sm-core/src/main/java/com/salesmanager/core/business/services/reference/language/LanguageService.java
+index f3b45d1..6824561 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/reference/language/LanguageService.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/reference/language/LanguageService.java
+@@ -20 +20 @@ public interface LanguageService extends SalesManagerEntityService<Integer, Lang
+-	Locale toLocale(Language language, MerchantStore store);
++	Locale resolveLocale(Language language, MerchantStore store);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/reference/language/LanguageServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/reference/language/LanguageServiceImpl.java
+index 62aab51..23a31e4 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/reference/language/LanguageServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/reference/language/LanguageServiceImpl.java
+@@ -54 +54 @@ public class LanguageServiceImpl extends SalesManagerEntityServiceImpl<Integer,
+-	public Locale toLocale(Language language, MerchantStore store) {
++	public Locale resolveLocale(Language language, MerchantStore store) {
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
+index 6d58fc3..ea32c79 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
+@@ -534 +534 @@ public class ShippingServiceImpl implements ShippingService {
+-			Locale locale = languageService.toLocale(language, store);
++			Locale locale = languageService.resolveLocale(language, store);
+@@ -962 +962 @@ public class ShippingServiceImpl implements ShippingService {
+-}
+\ No newline at end of file
++}
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/system/ContactApi.java b/sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/system/ContactApi.java
+index 22370d6..b1d125a 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/system/ContactApi.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/system/ContactApi.java
+@@ -58 +58 @@ public class ContactApi {
+-    Locale locale = languageService.toLocale(language, merchantStore);
++    Locale locale = languageService.resolveLocale(language, merchantStore);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java
+index 60fbf4b..7badff3 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java
+@@ -876 +876 @@ public class CustomerFacadeImpl implements CustomerFacade {
+-    Locale locale = languageService.toLocale(language, store);
++    Locale locale = languageService.resolveLocale(language, store);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/customer/CustomerFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/customer/CustomerFacadeImpl.java
+index 9748865..fbe0885 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/customer/CustomerFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/customer/CustomerFacadeImpl.java
+@@ -127 +127 @@ public class CustomerFacadeImpl implements CustomerFacade {
+-			resetPasswordRequest(customer, customerResetLink, store, lamguageService.toLocale(language, store));
++			resetPasswordRequest(customer, customerResetLink, store, lamguageService.resolveLocale(language, store));
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/order/OrderFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/order/OrderFacadeImpl.java
+index 7893a01..446a551 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/order/OrderFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/order/OrderFacadeImpl.java
+@@ -98 +98 @@ public class OrderFacadeImpl implements OrderFacade {
+-	          String shippingName = messages.getMessage(optionCodeBuilder.toString(), new String[]{store.getStorename()},languageService.toLocale(language, store));
++	              String shippingName = messages.getMessage(optionCodeBuilder.toString(), new String[]{store.getStorename()},languageService.resolveLocale(language, store));
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/user/UserFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/user/UserFacadeImpl.java
+index 92a6764..f3749ea 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/user/UserFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/user/UserFacadeImpl.java
+@@ -833 +833 @@ public class UserFacadeImpl implements UserFacade {
+-			resetPasswordRequest(user, customerResetLink, store, lamguageService.toLocale(language, store));
++			resetPasswordRequest(user, customerResetLink, store, lamguageService.resolveLocale(language, store));
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/utils/LanguageUtils.java b/sm-shop/src/main/java/com/salesmanager/shop/utils/LanguageUtils.java
+index 638f383..8461a93 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/utils/LanguageUtils.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/utils/LanguageUtils.java
+@@ -86 +86 @@ public class LanguageUtils {
+-            locale = languageService.toLocale(language, store);
++            locale = languageService.resolveLocale(language, store);
+@@ -120 +120 @@ public class LanguageUtils {
+-      locale = languageService.toLocale(language, store);
++      locale = languageService.resolveLocale(language, store);
