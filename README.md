@@ -28,7 +28,7 @@ The central message: **coding agents do not necessarily need more documentation.
 
 ## When the agent can read the repository
 
-Evidence: A (Click, 312 runs), B (340 runs), C (72 runs). Details: [docs/RESULTS.md](docs/RESULTS.md).
+Evidence: A (Click, 312 runs), B (340 runs), C (72 runs). Details: [docs/DETAILS.md](docs/DETAILS.md) and [docs/RESULTS.md](docs/RESULTS.md).
 
 **Accuracy did not change.** With or without a guide, agents answered 14 or 15 of 15 questions and made 8 or 9 of 9 changes correctly. In C all 72 changes passed.
 
@@ -126,6 +126,7 @@ The first runs of A and B told the agent to verify in every condition, which hid
 
 | What | Where |
 | --- | --- |
+| **Long-form detail**: the four conditions, recommended guide layout, each experiment, the full analysis, an example file, rerun commands | [docs/DETAILS.md](docs/DETAILS.md) |
 | Results for each experiment, with tables | [docs/RESULTS.md](docs/RESULTS.md) |
 | Plans written before the runs (H, and I in progress) | [docs/EXPERIMENT_H.md](docs/EXPERIMENT_H.md), [docs/EXPERIMENT_I.md](docs/EXPERIMENT_I.md) |
 | Raw trial reports | [results/](results/) ([index](results/README.md)) |
@@ -135,4 +136,4 @@ The first runs of A and B told the agent to verify in every condition, which hid
 | Validity and freshness checks | [`scripts/check_okf.py`](scripts/check_okf.py), [`scripts/check_fresh.sh`](scripts/check_fresh.sh), [`scripts/check_references.py`](scripts/check_references.py) |
 | Test builders and analysis | [scripts/](scripts/), [harness/](harness/), [hidden/](hidden/), [fixtures/](fixtures/), [drift/](drift/) |
 
-The generator, `kgen okf`, is in [AgentGraphWorkTree](https://github.com/meabs/AgentGraphWorkTree) from commit `aa98666` on `main`; `scripts/kgen-okf.patch` applies the same change to the older base `dd26ee6`. The tests run through [AgentTrialRig](https://github.com/meabs/AgentTrialRig). The generated guides, the build scripts for each experiment and the steps to rerun them (clone Shopizer at `6a4a0a6` and its React storefront at `455b4bc`, then follow `scripts/make_*.py`) are described in the script headers and in `docs/`.
+The generator, `kgen okf`, is in [AgentGraphWorkTree](https://github.com/meabs/AgentGraphWorkTree) from commit `aa98666` on `main`; `scripts/kgen-okf.patch` applies the same change to the older base `dd26ee6`. The tests run through [AgentTrialRig](https://github.com/meabs/AgentTrialRig). The commands to generate a guide and the steps to rerun each experiment (clone Shopizer at `6a4a0a6` and its React storefront at `455b4bc`, then follow `scripts/make_*.py`) are in [docs/DETAILS.md](docs/DETAILS.md#reproducing-in-detail).
