@@ -1,0 +1,140 @@
+{
+ "j1_rename_payment_method": {
+  "op": "rename",
+  "name": "authorizeAndCapture",
+  "new": "chargeInOneStep",
+  "sites": [
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/BraintreePayment.java",
+    "kind": "decl",
+    "line": 297
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/MoneyOrderPayment.java",
+    "kind": "decl",
+    "line": 77
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/BeanStreamPayment.java",
+    "kind": "decl",
+    "line": 129
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/PayPalExpressCheckoutPayment.java",
+    "kind": "decl",
+    "line": 327
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/PayPalRestPayment.java",
+    "kind": "decl",
+    "line": 213
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/StripePayment.java",
+    "kind": "decl",
+    "line": 252
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/Stripe3Payment.java",
+    "kind": "decl",
+    "line": 278
+   },
+   {
+    "file": "sm-core-modules/src/main/java/com/salesmanager/core/modules/integration/payment/model/PaymentModule.java",
+    "kind": "decl",
+    "line": 46
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java",
+    "kind": "call",
+    "line": 376
+   }
+  ]
+ },
+ "j2_add_param_to_overload": {
+  "op": "add",
+  "name": "calculateProductPrice",
+  "decl_param": "boolean refresh",
+  "call_arg": "false",
+  "sites": [
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingService.java",
+    "kind": "decl",
+    "line": 71
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingServiceImpl.java",
+    "kind": "decl",
+    "line": 50
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java",
+    "kind": "call",
+    "line": 352
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacadeImpl.java",
+    "kind": "call",
+    "line": 604
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacadeImpl.java",
+    "kind": "call",
+    "line": 655
+   },
+   {
+    "file": "sm-shop/src/main/java/com/salesmanager/shop/store/api/v2/product/ProductVariationApi.java",
+    "kind": "call",
+    "line": 153
+   }
+  ]
+ },
+ "j3_remove_unused_param": {
+  "op": "remove",
+  "name": "getShippingQuotes",
+  "param_name": "origin",
+  "sites": [
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/PriceByDistanceShippingQuoteRules.java",
+    "kind": "decl",
+    "line": 59
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomShippingQuoteRules.java",
+    "kind": "decl",
+    "line": 59
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/USPSShippingQuote.java",
+    "kind": "decl",
+    "line": 126
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/StorePickupShippingQuote.java",
+    "kind": "decl",
+    "line": 96
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/UPSShippingQuote.java",
+    "kind": "decl",
+    "line": 122
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomWeightBasedShippingQuote.java",
+    "kind": "decl",
+    "line": 89
+   },
+   {
+    "file": "sm-core-modules/src/main/java/com/salesmanager/core/modules/integration/shipping/model/ShippingQuoteModule.java",
+    "kind": "decl",
+    "line": 24
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java",
+    "kind": "call",
+    "line": 563,
+    "index": 4
+   }
+  ]
+ }
+}
