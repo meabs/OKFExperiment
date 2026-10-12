@@ -6,7 +6,7 @@ What the data supports, in order of how much it matters. Every claim points at a
 
 This was the only thing that stopped agents following stale claims. With the same bundle and the same efficiency pressure, the sentence took stale-following from 8 of 12 to 0 of 12, at no extra token cost (B3). Per-line tags, banners, OKF-native provenance fields and a trust-tier sentence did not (B2). Without the sentence, an unflagged bundle was worse than no bundle at all (8 of 12 against 0 of 12).
 
-`kgen okf --pointer AGENTS.md` writes the text with the sentence in it.
+`kgen okf --pointer AGENTS.md` writes the text with the sentence in it (`kgen okf` is not released yet; see the [README](../README.md#reproducing)). Any agent file works: the sentence is what matters, not the tool.
 
 ## 2. Do not expect a bundle to make a small, searchable repository cheaper
 
@@ -51,4 +51,4 @@ Other agents or models; large repositories; dependencies the agent cannot read; 
 - `click-after-drift/` is the same bundle after the three refactors, with `stale_after` on the two concepts whose source changed.
 - `ledger-lib/` and `invoice-service/` are the cross-repo pair, with the library's bundle mirrored under `invoice-service/okf/references/ledger-lib/`.
 
-Each folder has its `AGENTS.md` pointer. To reproduce one: sync with `kgen sync --repo R`, then `kgen okf --repo R --out R/okf --pointer R/AGENTS.md` (add `--stale-against CHECKOUT` or `--reference NAME=BUNDLE` as needed).
+Each folder has its `AGENTS.md` pointer. To reproduce one, see [the end-state guide](../end-state/README.md).
