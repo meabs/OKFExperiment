@@ -1,6 +1,6 @@
 # Results
 
-The README organises everything around four conditions: **1. No OKF**, **2. OKF**, **3. OKF with confidence labels** (every fact marked `[high]`, stated in the source, or `[medium]`, a heuristic guess, with an instruction to say when relying on `[medium]`) and **4. cross-repo change with OKF**. Tests A and B use the same repository, C to F cross repositories; F is the cross-repo change test, E the confidence-label test.
+The README organises everything around four conditions: **1. No OKF**, **2. OKF**, **3. OKF with confidence labels** (every fact marked `[high]`, stated in the source, or `[medium]`, a heuristic guess, with an instruction to say when relying on `[medium]`) and **4. cross-repo change with OKF**. Tests A and B use the same repository, C to G cross repositories; F and G are the cross-repo change tests (G the harder one), E the confidence-label test.
 
 > **Terms.** A *bundle* is OKF's name for a generated guide to a codebase: a folder of markdown files, one per module or package, listing what it contains and where each fact came from. The [main README](../README.md) calls it a *guide*.
 
@@ -143,6 +143,38 @@ Four renames on the backend (a handler method, a request-class field, a path var
 - No OKF against OKF: 3 against 19 of 20 (p<0.001), at about half the tokens. The 3 passes without a guide were all on task 1, where the backend's field name (`voucher`) is a common word an agent can guess.
 - OKF against OKF with labels: 19 against 15 of 20 (p≈0.18), not a reliable difference at this size. The labelled condition's five failures were two wrong paging field names (`start`/`startIndex` for `offset`) and three on the reviews path, one of which added a `/api/v1` prefix that the task did not clearly rule out. The plain guide failed once, on the same task. The task wording should have been clearer about the prefix.
 - One task (4) was ambiguous in the first draft: the backend has an internal setting and a public response field with similar meanings. The wording was fixed before any real run.
+
+## G. Cross-repo change, harder tasks (80 runs)
+
+**Question tested:** does the guide still help when the change needs several backend facts, edits the storefront's existing code, or depends on fields defined in the backend's parent classes? And how does it compare with the agent being able to read the backend's source?
+
+**Setup.** A second variant of the backend (`scripts/privatize.py --extra`) additionally renames six fields reached through inheritance, so none can be guessed from memory: `PersistableOrder.shippingQuote` to `quoteId`, `Order.customerAgreement` to `termsAccepted`, `Order.comments` to `orderNote`, `PersistablePayment.paymentToken` to `cardToken`, `PaymentEntity.paymentModule` to `processor`, and `ReadableList`'s `totalPages`, `recordsTotal`, `number` to `pageCount`, `totalRecords`, `itemsOnPage`. The backend has two classes called `PersistableOrder` (older and newer); the checkout handler uses the newer.
+
+Four tasks, each checked by a hidden Node test that runs the storefront's own modules with only the network (axios) and browser globals stubbed (`harness/`). Each test failed on the unchanged storefront and passed on a reference solution (`scripts/solve_g.py`):
+
+1. `g1_delete_item`: fix `deleteFromCart` in the storefront's `cartActions.js`. The backend's route identifies the cart line by its SKU (`/cart/{code}/product/{sku}`); the code sent the numeric id. The prompt only says that removing an item does nothing.
+2. `g2_add_voucher`: add an optional last parameter `promoCode` to `addToCart`, sent in the backend's field (`voucher`) for both create and update.
+3. `g3_checkout_request`: write `buildCheckoutRequest` using six backend field names, some defined in parent classes.
+4. `g4_orders_list`: write `normalizeOrderList` reading the backend's list response, whose paging fields are in a parent class.
+
+Conditions: no OKF; the backend's source readable at a path (an upper reference); OKF (the backend's guide); OKF with confidence labels. 5 runs per task per condition.
+
+| Task | No OKF | Backend source | OKF | OKF + labels |
+| --- | --- | --- | --- | --- |
+| g1 delete fix | 3 / 5 | 5 / 5 | 5 / 5 | 5 / 5 |
+| g2 voucher | 0 / 5 | 4 / 5 | 5 / 5 | 5 / 5 |
+| g3 checkout | 0 / 5 | 4 / 5 | 3 / 5 | 2 / 5 |
+| g4 orders list | 0 / 5 | 5 / 5 | 5 / 5 | 5 / 5 |
+| **Total** | **3 / 20** | **18 / 20** | **18 / 20** | **17 / 20** |
+| Tokens per run (95% CI) | 294k (235k to 366k) | 333k (284k to 389k) | 301k (257k to 351k) | 308k (267k to 353k) |
+| Seconds per run | 42 | 45 | 38 | 38 |
+
+- A guide matched the readable source (18 against 18 of 20, p=1.0). Both beat no guide (p<0.001).
+- The 3 passes without a guide were all on `g1`, where the agent guessed the SKU. Where the name was not guessable, no-guide agents passed 0 of 15 here (0 of 30 across F and G).
+- `g3` was hardest in every condition. In the one failure inspected, the agent searched the guide for the original field names and used the older `PersistableOrder`.
+- Tokens were level across conditions: without a guide the agent usually gave up early with a wrong answer.
+- No run reached outside its own workspace (`scripts/leak_check.py`, ignoring the constant global-skills overhead).
+- Labelled against plain, pooled with F: 32 against 37 of 40 (p≈0.19), not reliable.
 
 ## Spec findings from building it
 

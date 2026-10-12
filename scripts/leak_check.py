@@ -9,7 +9,7 @@ for f in glob.glob(f'{d}/runs/*/*/codex/*/run.json'):
     for t in r['tool_calls']:
         c=t['text']
         for m in re.findall(r'/(?:private/)?tmp/[^\s"\'\\]+|/Users/[^/]+/[^\s"\'\\]*',c):
-            if own in m or 'using-superpowers' in m: continue
+            if own in m or 'using-superpowers' in m or '/.agents/skills' in m: continue
             out=True;ex.setdefault(a,m[:170])
     if out: hit[a]+=1
 for a in tot: print(f"{a:14} runs reaching outside their own workdir: {hit[a]:>2}/{tot[a]}   e.g. {ex.get(a,'')}")

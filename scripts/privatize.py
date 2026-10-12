@@ -10,6 +10,7 @@ import pathlib, re, subprocess, sys
 
 root = pathlib.Path(sys.argv[1])
 drift = "--drift" in sys.argv
+extra = "--extra" in sys.argv
 J = lambda *p: next(root.rglob(p[-1]))  # the one file with this name
 
 
@@ -33,7 +34,23 @@ def rename_class(old, new):
     src.rename(src.with_name(f"{new}.java"))
 
 
-if not drift:
+if extra:
+    # a second wave of renames for the harder change tasks: fields reached through inheritance (PersistableOrder extends Order, PersistablePayment extends PaymentEntity, ReadableOrderList extends ReadableList)
+    def edit_path(rel, pairs):
+        f = root / rel
+        t = f.read_text(encoding="utf-8")
+        for a, b in pairs:
+            assert re.search(a, t), f"{rel}: nothing matched {a!r}"
+            t = re.sub(a, b, t)
+        f.write_text(t, encoding="utf-8")
+    M = "sm-shop-model/src/main/java/com/salesmanager/shop/model/"
+    edit_path(M + "order/v1/PersistableOrder.java", [(r"shippingQuote", "quoteId"), (r"ShippingQuote", "QuoteId")])
+    edit_path(M + "order/v1/Order.java", [(r"customerAgreement", "termsAccepted"), (r"CustomerAgreement", "TermsAccepted"), (r"\bcomments\b", "orderNote"), (r"Comments", "OrderNote")])
+    edit_path(M + "order/transaction/PersistablePayment.java", [(r"paymentToken", "cardToken"), (r"PaymentToken", "CardToken")])
+    edit_path(M + "order/transaction/PaymentEntity.java", [(r"paymentModule", "processor"), (r"PaymentModule", "Processor")])
+    edit_path(M + "entity/ReadableList.java", [(r"\btotalPages\b", "pageCount"), (r"TotalPages", "PageCount"), (r"\brecordsTotal\b", "totalRecords"), (r"RecordsTotal", "TotalRecords"), (r"\bnumber\b", "itemsOnPage"), (r"\bgetNumber\b", "getItemsOnPage"), (r"\bsetNumber\b", "setItemsOnPage")])
+    print("ok extra")
+elif not drift:
     # methods, renamed inside their own controller file before the classes are renamed
     edit("ShoppingCartApi.java", [(r"\baddToCart\(", "appendItem("), (r"\bmodifyCart\(", "replaceBasket("), (r"\bdeleteCartItem\(", "removeLine(")], regex=True)
     edit("AuthenticateCustomerApi.java", [(r"ResponseEntity<\?> authenticate\(", "ResponseEntity<?> openSession(")], regex=True)

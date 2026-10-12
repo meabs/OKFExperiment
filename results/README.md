@@ -16,6 +16,7 @@ Each file is the unedited report AgentTrialRig produced for one trial. "Relative
 | [D2-cross-repo-stale-shopizer.md](D2-cross-repo-stale-shopizer.md) | D: unreadable dependency, bundle stale, 4 arms | 128 | The report's "correct" column mixes drift and control questions; the stale-following counts come from `scripts/analyse_d2.py`. Efficiency prompt. |
 | [E-confidence-labels-crossrepo-questions.md](E-confidence-labels-crossrepo-questions.md) | E: cross-repo questions with wrong entries, 4 conditions | 112 | The report's "correct" column counts true answers; followed-wrong and disclosure counts come from `scripts/analyse_e.py`. |
 | [F-crossrepo-change-tasks.md](F-crossrepo-change-tasks.md) | F: cross-repo change tasks, 3 conditions | 60 | The "verified" count is the number of changes that passed their hidden test. |
+| [G-harder-crossrepo-change-tasks.md](G-harder-crossrepo-change-tasks.md) | G: harder cross-repo change tasks, 4 conditions | 80 | Includes a condition where the backend source is readable. The per-task counts are in `docs/RESULTS.md`. |
 
 A first cross-repo run used the v1 pointer and was stopped part-way; it is not reported.
 

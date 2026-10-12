@@ -20,7 +20,7 @@ A private service, a vendored dependency, another team's repository. This is whe
 
 What answered the questions: a **routes concept** (every route with its handler), each concept's **handlers with their parameter types**, and each request class's **fields**. All of it carries the `path:line` it came from.
 
-In test F the agent had to change a storefront using facts that only the backend states: 3 of 20 changes passed without the guide and 19 of 20 with it, at about half the tokens (482k against 242k). For a repository the agent can search, do not expect a bundle to be cheaper (A). The best configuration was level on questions and about 21% dearer on change tasks.
+In the harder test G (edits to the storefront's real code, six renamed fields, two same-named classes) the guide matched having the backend's actual source, 18 of 20 each against 3 of 20 with nothing. In test F the agent had to change a storefront using facts that only the backend states: 3 of 20 changes passed without the guide and 19 of 20 with it, at about half the tokens (482k against 242k). For a repository the agent can search, do not expect a bundle to be cheaper (A). The best configuration was level on questions and about 21% dearer on change tasks.
 
 ## 2. Treat a vendored bundle as a pinned snapshot and keep it fresh automatically
 
