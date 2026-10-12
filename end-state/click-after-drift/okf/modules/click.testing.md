@@ -2,14 +2,14 @@
 type: Code Module
 title: "click.testing"
 description: "click.testing: EchoingStdin, _FDCapture, BytesIOCopy, StreamMixer"
-resource: "repo:src/click/testing.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/testing.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/testing.py"
-    id: "76f4e649bc53"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/testing.py"
+    sha256: "76f4e649bc53000d667c8c0deff1591970fa034b0f085a207165839b2301019a"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

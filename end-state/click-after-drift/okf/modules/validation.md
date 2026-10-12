@@ -2,14 +2,14 @@
 type: Code Module
 title: "validation"
 description: "validation: URL"
-resource: "repo:examples/validation/validation.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/validation/validation.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:examples/validation/validation.py"
-    id: "246c4962fff1"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/validation/validation.py"
+    sha256: "246c4962fff19bbf12cf620e141a904ac9059698f0002c11833bb882f492786f"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

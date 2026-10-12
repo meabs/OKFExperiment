@@ -2,14 +2,14 @@
 type: Code Module
 title: "ledgerlib.ledger"
 description: "ledgerlib.ledger: Ledger"
-resource: "repo:ledgerlib/ledger.py"
+resource: "https://github.com/meabs/OKFExperiment/blob/main/fixtures/ledger-lib/ledgerlib/ledger.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-12T13:50:42+01:00"
 sources:
-  - resource: "repo:ledgerlib/ledger.py"
-    id: "5ed69f2c3031"
+  - resource: "https://github.com/meabs/OKFExperiment/blob/main/fixtures/ledger-lib/ledgerlib/ledger.py"
+    sha256: "5ed69f2c3031649838b55868b2e7fd3150916d5a5d19da7ac91fcb5b4d37d856"
     last_modified: "2026-10-12T13:50:42+01:00"
 status: stable
 ---

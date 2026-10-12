@@ -70,4 +70,4 @@ Drifts: a renamed function (`_resolve_context` to `_resolve_completion_context`)
 
 ## Limits
 
-One model; one repository for A and B (Click, about 25 modules); a synthetic pair for C; 3 to 4 runs per cell; graders and drift written by the experimenters; a constant overhead from the author's global agent skills in every run; v1 and v2 not run simultaneously. The pooled B comparisons were chosen after seeing the data. A language-model arm was excluded by design.
+One model; one repository for A and B (Click, about 25 modules); a synthetic pair for C; 3 to 4 runs per cell; graders and drift written by the experimenters; a constant overhead from the author's global agent skills in every run; v1 and v2 not run simultaneously. The pooled B comparisons were chosen after seeing the data. The bundles the agents read were generated before a later fix to a few optional frontmatter fields (`resource`, `sources[].id`, `last_modified`; see [CONFORMANCE.md](CONFORMANCE.md)); concept bodies were unchanged and nothing was rerun. A language-model arm was excluded by design.

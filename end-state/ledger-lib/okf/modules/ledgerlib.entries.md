@@ -2,14 +2,14 @@
 type: Code Module
 title: "ledgerlib.entries"
 description: "ledgerlib.entries: EntryKind, Entry"
-resource: "repo:ledgerlib/entries.py"
+resource: "https://github.com/meabs/OKFExperiment/blob/main/fixtures/ledger-lib/ledgerlib/entries.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-12T13:50:42+01:00"
 sources:
-  - resource: "repo:ledgerlib/entries.py"
-    id: "260e8b6067bd"
+  - resource: "https://github.com/meabs/OKFExperiment/blob/main/fixtures/ledger-lib/ledgerlib/entries.py"
+    sha256: "260e8b6067bd822a5bbcaf5dbe04c2c24ff306769092ca18d3c5f6152eb89b45"
     last_modified: "2026-10-12T13:50:42+01:00"
 status: stable
 ---

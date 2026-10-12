@@ -2,14 +2,14 @@
 type: Code Module
 title: "click._textwrap"
 description: "click._textwrap: TextWrapper"
-resource: "repo:src/click/_textwrap.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/_textwrap.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/_textwrap.py"
-    id: "ed9d0ded59a7"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/_textwrap.py"
+    sha256: "ed9d0ded59a7fbae933524d4c29e8e5c96dc5174666044fd87d736b9c0fca104"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

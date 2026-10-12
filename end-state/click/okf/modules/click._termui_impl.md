@@ -2,14 +2,14 @@
 type: Code Module
 title: "click._termui_impl"
 description: "click._termui_impl: ProgressBar, _PagerWriter, Editor"
-resource: "repo:src/click/_termui_impl.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/_termui_impl.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/_termui_impl.py"
-    id: "88b97d9b7a5b"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/_termui_impl.py"
+    sha256: "88b97d9b7a5b947b10a16d8ab269837bc84c7e55c28ba72ea5f2fb339112336a"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

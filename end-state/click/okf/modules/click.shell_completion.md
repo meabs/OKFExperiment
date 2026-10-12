@@ -2,14 +2,14 @@
 type: Code Module
 title: "click.shell_completion"
 description: "click.shell_completion: CompletionItem, _SourceVarsDict, ShellComplete, BashComplete"
-resource: "repo:src/click/shell_completion.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/shell_completion.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/shell_completion.py"
-    id: "18522f75ddff"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/shell_completion.py"
+    sha256: "18522f75ddffe655e943978d1953255c447842867d3fd67fbdc1543d3df7da09"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

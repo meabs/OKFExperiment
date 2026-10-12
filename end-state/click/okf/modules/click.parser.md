@@ -2,14 +2,14 @@
 type: Code Module
 title: "click.parser"
 description: "click.parser: _Option, _Argument, _ParsingState, _OptionParser"
-resource: "repo:src/click/parser.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/parser.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/parser.py"
-    id: "a09f9f53fde6"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/parser.py"
+    sha256: "a09f9f53fde6bf1ba022e36d1da0804d9e7a9601261d18208c9892a84818ae30"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

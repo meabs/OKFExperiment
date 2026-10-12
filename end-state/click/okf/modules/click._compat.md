@@ -2,14 +2,14 @@
 type: Code Module
 title: "click._compat"
 description: "click._compat: _NonClosingTextIOWrapper, _FixupStream, _AtomicFile"
-resource: "repo:src/click/_compat.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/_compat.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/_compat.py"
-    id: "8db1da2965cf"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/_compat.py"
+    sha256: "8db1da2965cf3e5dc66c6c53833cbc613ea1cd2440b9d0eb6aa8360eb46d4913"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

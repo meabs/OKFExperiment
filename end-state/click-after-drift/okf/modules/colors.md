@@ -2,14 +2,14 @@
 type: Code Module
 title: "colors"
 description: "colors: cli"
-resource: "repo:examples/colors/colors.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/colors/colors.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:examples/colors/colors.py"
-    id: "674b6442b8cd"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/colors/colors.py"
+    sha256: "674b6442b8cd39319a9448fe67c9badbcbe512da7280985065aa51b8839e9614"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

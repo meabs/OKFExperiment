@@ -35,6 +35,8 @@ In the cross-repo pair, every arm passed, including with no bundle, because the 
 
 ## 6. For the OKF spec
 
+Checked against the spec text and the reference parser, the output is conformant; the details and the choices that remain are in [CONFORMANCE.md](CONFORMANCE.md). Suggestions for the spec:
+
 - Say how a bundle copied into another bundle should be linked. Bundle-relative links break silently.
 - Allow a producer to say what it can vouch for. A deterministic generator vouches for structure, not behaviour; `verified` cannot express that, so it stays empty.
 - A `stale_after` the producer cannot know in advance (it depends on when the source changes) is only useful if a tool sets it when the source changes. Consider a defined source digest per concept and a way to compare it (the emitter puts a digest in `sources[].id`, which the spec defines as an attribution key, not a digest).

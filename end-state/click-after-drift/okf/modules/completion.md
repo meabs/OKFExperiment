@@ -2,14 +2,14 @@
 type: Code Module
 title: "completion"
 description: "completion: cli, ls, get_env_vars, show_env"
-resource: "repo:examples/completion/completion.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/completion/completion.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:examples/completion/completion.py"
-    id: "ceeb4f35fa92"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/completion/completion.py"
+    sha256: "ceeb4f35fa92d4abcc537e0759624cb404e5b1600690467a099c8552a4b7bff2"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

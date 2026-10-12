@@ -2,14 +2,14 @@
 type: Code Module
 title: "aliases"
 description: "aliases: Config, AliasedGroup"
-resource: "repo:examples/aliases/aliases.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/aliases/aliases.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:examples/aliases/aliases.py"
-    id: "ce8e75f58d7a"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/aliases/aliases.py"
+    sha256: "ce8e75f58d7a61c9390c5e8734b24caa83e37447d283ce121dc07a61f4801340"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

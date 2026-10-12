@@ -4,7 +4,7 @@ How should a repository's [Open Knowledge Format](https://github.com/GoogleCloud
 
 Three experiments, about 720 agent runs with Codex `gpt-5.6-luna`, bundles from a deterministic generator (`kgen okf`, no language model).
 
-**Read next:** [Recommendations](docs/RECOMMENDATIONS.md) (what to do) · [Results](docs/RESULTS.md) (the tables) · [End-state bundles](end-state/) (the recommended output, generated) · [Raw reports](results/)
+**Read next:** [Recommendations](docs/RECOMMENDATIONS.md) (what to do) · [Results](docs/RESULTS.md) (the tables) · [Conformance](docs/CONFORMANCE.md) (is it valid OKF?) · [End-state bundles](end-state/) (the recommended output, generated) · [Raw reports](results/)
 
 ## The answer in five lines
 
@@ -44,6 +44,7 @@ The first runs of A and B (labelled "v1") had a pointer in the agent file that t
 - Every run also loads the author's global agent skills (a constant overhead in all arms).
 - The graders and the planted drift were written by the experimenters, and the pooled flag comparisons in B were chosen after seeing the data.
 - v1 and v2 were not run at the same time.
+- The agents read bundles generated before a later conformance fix to a few frontmatter fields (see [Conformance](docs/CONFORMANCE.md)); the bundle bodies are unchanged and the experiments were not rerun.
 
 ## Reproducing
 
@@ -62,9 +63,9 @@ python .apm/skills/agent-graph/tool/kgen.py okf --repo R --out R/okf --pointer R
 
 | Path | What it holds |
 | --- | --- |
-| [`docs/`](docs/) | the write-up: [RESULTS.md](docs/RESULTS.md), [RECOMMENDATIONS.md](docs/RECOMMENDATIONS.md) |
+| [`docs/`](docs/) | the write-up: [RESULTS.md](docs/RESULTS.md), [RECOMMENDATIONS.md](docs/RECOMMENDATIONS.md), [CONFORMANCE.md](docs/CONFORMANCE.md) |
 | [`results/`](results/) | each trial's raw report ([index](results/README.md)) |
 | [`end-state/`](end-state/) | the recommended bundles and their `AGENTS.md` pointers ([guide](end-state/README.md)) |
-| [`scripts/`](scripts/) | `make_a.py`, `make_b.py`, `make_c.py` build each trial's arms; `kgen-okf.patch` adds `kgen okf` to AgentGraphWorkTree (51 passing tests; see below), and `okf.py` is a copy of the emitter; `verify*.sh` run the hidden tests; `analyse_b.py` counts stale-following |
+| [`scripts/`](scripts/) | `make_a.py`, `make_b.py`, `make_c.py` build each trial's arms; `kgen-okf.patch` adds `kgen okf` to AgentGraphWorkTree (53 passing tests; see below), and `okf.py` is a copy of the emitter; `verify*.sh` run the hidden tests; `check_okf.py` checks a bundle against the OKF v0.2 rules; `analyse_b.py` counts stale-following |
 | [`hidden/`](hidden/) | the hidden tests |
 | [`fixtures/`](fixtures/), [`drift/`](drift/) | the cross-repo pair and the Click refactor |

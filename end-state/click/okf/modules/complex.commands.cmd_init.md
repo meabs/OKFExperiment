@@ -2,14 +2,14 @@
 type: Code Module
 title: "complex.commands.cmd_init"
 description: "complex.commands.cmd_init: cli"
-resource: "repo:examples/complex/complex/commands/cmd_init.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/complex/complex/commands/cmd_init.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:examples/complex/complex/commands/cmd_init.py"
-    id: "6068f21b5874"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/complex/complex/commands/cmd_init.py"
+    sha256: "6068f21b5874685d6e4d467f24bc45ddf2cc28457cd27b1b2dc2aadef24ddde4"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

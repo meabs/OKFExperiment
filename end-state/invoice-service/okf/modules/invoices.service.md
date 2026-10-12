@@ -2,14 +2,14 @@
 type: Code Module
 title: "invoices.service"
 description: "invoices.service: InvoiceNotFound, InvoiceService"
-resource: "repo:invoices/service.py"
+resource: "https://github.com/meabs/OKFExperiment/blob/main/fixtures/invoice-service/invoices/service.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-12T13:50:42+01:00"
 sources:
-  - resource: "repo:invoices/service.py"
-    id: "b383f2fe730d"
+  - resource: "https://github.com/meabs/OKFExperiment/blob/main/fixtures/invoice-service/invoices/service.py"
+    sha256: "b383f2fe730d5e9d644e86668282300015d41bce3b205588d6b245fb2e87c764"
     last_modified: "2026-10-12T13:50:42+01:00"
 status: stable
 ---

@@ -2,14 +2,14 @@
 type: Code Module
 title: "click.formatting"
 description: "click.formatting: HelpFormatter"
-resource: "repo:src/click/formatting.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/formatting.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/formatting.py"
-    id: "f125b628692f"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/formatting.py"
+    sha256: "f125b628692f8dfcfd43535b7a88cc1ee64137471f9d0243b389aa0cfea85e6b"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

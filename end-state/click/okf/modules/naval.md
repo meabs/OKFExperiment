@@ -2,14 +2,14 @@
 type: Code Module
 title: "naval"
 description: "naval: cli, ship, ship_new, ship_move"
-resource: "repo:examples/naval/naval.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/naval/naval.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:examples/naval/naval.py"
-    id: "a8d3748eeaa2"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/naval/naval.py"
+    sha256: "a8d3748eeaa204012b1794ea77be6dd23dfdb141c2d5940332c06c73b266a0c1"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

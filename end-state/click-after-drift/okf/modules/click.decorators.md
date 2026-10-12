@@ -2,14 +2,14 @@
 type: Code Module
 title: "click.decorators"
 description: "click.decorators: pass_context, pass_obj, make_pass_decorator, pass_meta_key"
-resource: "repo:src/click/decorators.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/decorators.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/decorators.py"
-    id: "160693576156"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/decorators.py"
+    sha256: "16069357615691fcdfc9c794bb515f6009eb35aad6f7a76c017bdce06dae8d55"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

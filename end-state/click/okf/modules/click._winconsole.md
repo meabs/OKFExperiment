@@ -2,14 +2,14 @@
 type: Code Module
 title: "click._winconsole"
 description: "click._winconsole: Py_buffer, _WindowsConsoleRawIOBase, _WindowsConsoleReader, _WindowsConsoleWriter"
-resource: "repo:src/click/_winconsole.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/_winconsole.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/_winconsole.py"
-    id: "a6f0d49ef0be"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/_winconsole.py"
+    sha256: "a6f0d49ef0be806a9730bd64a2e5b373a95d49de91fd7728595ff31d773f2db7"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

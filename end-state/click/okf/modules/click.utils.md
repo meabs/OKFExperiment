@@ -2,14 +2,14 @@
 type: Code Module
 title: "click.utils"
 description: "click.utils: _LazyFile, _KeepOpenFile, _PacifyFlushWrapper"
-resource: "repo:src/click/utils.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/utils.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/utils.py"
-    id: "4720e22c2920"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/utils.py"
+    sha256: "4720e22c292047ff1a747546b1ba80e96d1d8e8158e2e21ff01cdddb6498db17"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

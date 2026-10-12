@@ -2,14 +2,14 @@
 type: Code Module
 title: "click.types"
 description: "click.types: ParamTypeInfoDict, ParamType, CompositeParamType, FuncParamTypeInfoDict"
-resource: "repo:src/click/types.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/types.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/types.py"
-    id: "30a39185da37"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/types.py"
+    sha256: "30a39185da37bbd98ef47153f7bfd310b04eac44bd9b9b2fe15998406337757e"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

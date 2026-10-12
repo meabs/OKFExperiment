@@ -2,14 +2,14 @@
 type: Code Module
 title: "inout"
 description: "inout: cli"
-resource: "repo:examples/inout/inout.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/inout/inout.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:examples/inout/inout.py"
-    id: "f0a15c4c3d33"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/inout/inout.py"
+    sha256: "f0a15c4c3d331111841605298951dd281f5b8df116119e331094880704159e35"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

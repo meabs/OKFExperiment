@@ -11,14 +11,16 @@ The recommended output, generated with `kgen okf --preset recommended` (see [../
 
 ## Reading a concept
 
-Open `okf/index.md`, then a module such as [`click/okf/modules/click.core.md`](click/okf/modules/click.core.md). The frontmatter follows OKF v0.2 (`type`, `title`, `description`, `resource`, `generated`, `sources`, `status`), and every body line ends with the `path:line` it came from.
+Open `okf/index.md`, then a module such as [`click/okf/modules/click.core.md`](click/okf/modules/click.core.md). The frontmatter follows OKF v0.2 (`type`, `title`, `description`, `resource`, `tags`, `generated`, `sources`, `status`), and every body line ends with the `path:line` it came from. All four bundles pass [`scripts/check_okf.py`](../scripts/check_okf.py) with no findings; see [CONFORMANCE.md](../docs/CONFORMANCE.md) for what that means and the deviations that remain.
 
 ## Reproducing one
 
 ```bash
 kgen sync --repo R
 kgen okf --repo R --out R/okf --pointer R/AGENTS.md
-# optionally:  --stale-against CHECKOUT   or   --reference NAME=BUNDLE_DIR
+# optionally:  --source-url 'https://github.com/OWNER/REPO/blob/COMMIT/{path}'   (default: read from git origin)
+#              --stale-against CHECKOUT   or   --reference NAME=BUNDLE_DIR
+python scripts/check_okf.py R/okf        # from this repository
 ```
 
 `kgen okf` is not released yet. The change is in [`../scripts/kgen-okf.patch`](../scripts/kgen-okf.patch), which applies to [AgentGraphWorkTree](https://github.com/meabs/AgentGraphWorkTree) at `dd26ee6`; the steps are in the [main README](../README.md#reproducing).

@@ -2,14 +2,14 @@
 type: Code Module
 title: "imagepipe"
 description: "imagepipe: cli, process_commands, processor, generator"
-resource: "repo:examples/imagepipe/imagepipe.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/imagepipe/imagepipe.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:examples/imagepipe/imagepipe.py"
-    id: "eaf679fc90b9"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/imagepipe/imagepipe.py"
+    sha256: "eaf679fc90b988c938b2a32ff4d716d25127fe63a8c3804222628ffe8ec46dc2"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

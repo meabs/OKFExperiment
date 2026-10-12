@@ -2,14 +2,14 @@
 type: Code Module
 title: "click.termui"
 description: "click.termui: _mask_hidden_input, hidden_prompt_func, _readline_prompt, _build_prompt"
-resource: "repo:src/click/termui.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/termui.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:src/click/termui.py"
-    id: "16f6546b36d6"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/src/click/termui.py"
+    sha256: "16f6546b36d647d191788fc912e32d93e8b64289517f004e6d9604f4896ad1ca"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

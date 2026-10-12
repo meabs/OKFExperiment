@@ -2,14 +2,14 @@
 type: Code Module
 title: "complex.commands.cmd_status"
 description: "complex.commands.cmd_status: cli"
-resource: "repo:examples/complex/complex/commands/cmd_status.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/complex/complex/commands/cmd_status.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:examples/complex/complex/commands/cmd_status.py"
-    id: "22bbe1f58b41"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/complex/complex/commands/cmd_status.py"
+    sha256: "22bbe1f58b41c89b12ce6b74a3b95932bf607c73cdec9d0ef82e9f948a06803d"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

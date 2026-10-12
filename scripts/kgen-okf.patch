@@ -1,5 +1,5 @@
 diff --git a/.apm/skills/agent-graph/tool/kgen.py b/.apm/skills/agent-graph/tool/kgen.py
-index 23e3697..5fe0e03 100644
+index 23e3697..eb1b0a2 100644
 --- a/.apm/skills/agent-graph/tool/kgen.py
 +++ b/.apm/skills/agent-graph/tool/kgen.py
 @@ -85,6 +85,25 @@ def cmd_route(a):
@@ -11,7 +11,7 @@ index 23e3697..5fe0e03 100644
 +
 +    ov = {"unit": a.unit, "meta": a.meta, "index": a.index, "stale_after_days": a.stale_after_days, "max_items": a.max_items,
 +          "line_tags": True if a.line_tags else None, "banner": True if a.banner else None, "attest": True if a.attest else None,
-+          "links": False if a.no_links else None, "calls": "none" if a.no_calls else a.calls, "cite": False if a.no_cite else None,
++          "source_url": a.source_url, "links": False if a.no_links else None, "calls": "none" if a.no_calls else a.calls, "cite": False if a.no_cite else None,
 +          "references": tuple(tuple(x.split("=", 1)) for x in a.reference) if a.reference else None}
 +    if a.stale_against:
 +        cur = gen.source_files(Path(a.stale_against).resolve())
@@ -28,7 +28,7 @@ index 23e3697..5fe0e03 100644
  def main():
      p = argparse.ArgumentParser(prog="kgen")
      sub = p.add_subparsers(dest="cmd", required=True)
-@@ -103,6 +122,26 @@ def main():
+@@ -103,6 +122,27 @@ def main():
              s.add_argument("--components", choices=("docs", "graph", "both"), default="both")
              s.add_argument("--extra-claims", help="JSONL of model-inferred claims (tier low)")
          s.set_defaults(fn=fn)
@@ -49,6 +49,7 @@ index 23e3697..5fe0e03 100644
 +    o.add_argument("--calls", choices=("none", "cross", "all"))
 +    o.add_argument("--no-cite", action="store_true")
 +    o.add_argument("--stale-against", metavar="REPO", help="mark concepts whose source differs in this checkout as stale (stale_after in the past)")
++    o.add_argument("--source-url", help="template with {path} for the resource fields (default: the repo's origin on GitHub at the synced commit, else a relative path)")
 +    o.add_argument("--pointer", metavar="FILE", help="also write the AGENTS.md text that goes with the bundle")
 +    o.add_argument("--reference", action="append", metavar="NAME=PATH", help="mirror another bundle under references/NAME/")
 +    o.set_defaults(fn=cmd_okf)
@@ -57,10 +58,10 @@ index 23e3697..5fe0e03 100644
      r.add_argument("--trial", help="the trial's TOML, so questions are typed by their prompt (default: by id)")
 diff --git a/.apm/skills/agent-graph/tool/kgen/okf.py b/.apm/skills/agent-graph/tool/kgen/okf.py
 new file mode 100644
-index 0000000..917ae62
+index 0000000..dfbe4aa
 --- /dev/null
 +++ b/.apm/skills/agent-graph/tool/kgen/okf.py
-@@ -0,0 +1,251 @@
+@@ -0,0 +1,281 @@
 +"""Emit an Open Knowledge Format (v0.2) bundle from kgen claims, with switches for what goes in it.
 +
 +The bundle is a pure function of claims.jsonl and manifest.json, so it is as deterministic as the claims.
@@ -71,6 +72,7 @@ index 0000000..917ae62
 +
 +import json
 +import re
++import subprocess
 +from collections import defaultdict
 +from dataclasses import dataclass, field, replace
 +from datetime import datetime, timedelta, timezone
@@ -94,6 +96,8 @@ index 0000000..917ae62
 +    cite: bool = True           # `path:line` after each line
 +    attest: bool = False        # add `verified` with a process actor for concepts whose claims are all high confidence
 +    max_items: int = 400        # cap on types, functions and edges listed per concept
++    source_url: str = ""        # template with {path}, e.g. https://github.com/o/r/blob/<commit>/{path}; empty gives a path relative to a bundle at <repo>/okf/
++    file_times: tuple = ()      # ((path, ISO 8601 time the file last changed), ...) for sources[].last_modified; falls back to the commit time
 +    stale_files: tuple = ()     # source paths known to have changed since generation; their concepts get a past stale_after
 +    references: tuple = field(default_factory=tuple)  # extra bundles to mirror under references/: ((name, path), ...)
 +
@@ -132,8 +136,18 @@ index 0000000..917ae62
 +    return json.dumps(v, ensure_ascii=False)
 +
 +
++RESERVED = {"index", "log"}  # index.md and log.md mean something at any level (SPEC section 3.1), so a module of that name cannot be a concept file
++
++
 +def mod_path(name: str) -> str:
-+    return "/modules/" + name.replace("/", ".") + ".md"
++    stem = name.replace("/", ".")
++    return "/modules/" + (stem + "-module" if stem.lower() in RESERVED else stem) + ".md"
++
++
++def src_ref(path: str, cfg: "Config") -> str:
++    """A path-valued field (SPEC section 6.2): an absolute URL, or else a relative path from modules/ to the source.
++    A relative path means nothing once the bundle is mirrored into another repository, so give a bundle that will be mirrored a --source-url."""
++    return cfg.source_url.format(path=path) if cfg.source_url else "../../" + path
 +
 +
 +def short(fqn: str) -> str:
@@ -258,13 +272,13 @@ index 0000000..917ae62
 +        summaries[name] = desc
 +        fm = ["---", "type: Code Module", f"title: {q(name)}", f"description: {q(desc)}"]
 +        if cfg.meta == "native":
-+            fm += [f"resource: {q('repo:' + files[0])}", f"tags: {q(['generated', 'code'])}"]
++            fm += [f"resource: {q(src_ref(files[0], cfg))}", f"tags: {q(['generated', 'code'])}"]
 +            fm += ["generated:", f"  by: {q(gen_by)}", f"  at: {q(commit_time or '1970-01-01T00:00:00Z')}"]
 +            if cfg.attest and all(c["confidence"] == "high" for c in used) and used:
 +                fm += ["verified:", f"  - by: {q('process:kgen-extract')}", f"    at: {q(commit_time or '1970-01-01T00:00:00Z')}"]
 +            fm.append("sources:")
 +            for f in files:
-+                fm += [f"  - resource: {q('repo:' + f)}", f"    id: {q(manifest.get('sources', {}).get(f, '')[:12])}", f"    last_modified: {q(commit_time or '1970-01-01T00:00:00Z')}"]
++                fm += [f"  - resource: {q(src_ref(f, cfg))}", f"    sha256: {q(manifest.get('sources', {}).get(f, ''))}", f"    last_modified: {q(dict(cfg.file_times).get(f) or commit_time or '1970-01-01T00:00:00Z')}"]
 +            fm.append("status: stable")
 +            if stale:
 +                fm.append(f"stale_after: {q(stale)}")
@@ -283,7 +297,8 @@ index 0000000..917ae62
 +            text = p.read_text(encoding="utf-8")
 +            if rel == "index.md":
 +                text = re.sub(r"\A---\n.*?\n---\n\n?", "", text, count=1, flags=re.S)  # okf_version belongs to the root index only
-+            out[f"references/{ref}/{rel}"] = text.replace("](/", f"](/references/{ref}/")  # bundle-relative links must stay inside the mirrored bundle
++            text = text.replace("](/", f"](/references/{ref}/")  # bundle-relative links must stay inside the mirrored bundle
++            out[f"references/{ref}/{rel}"] = text
 +    if cfg.index != "none":
 +        fm = ["---", f'okf_version: "{OKF_VERSION}"', "---", ""]
 +        lines = [f"# {manifest.get('name', 'Repository')} knowledge", ""]
@@ -299,8 +314,24 @@ index 0000000..917ae62
 +    return out
 +
 +
++def remote_url_template(repo: Path, commit: str) -> str:
++    """https://github.com/<owner>/<repo>/blob/<commit>/{path} from the repo's origin, or '' when there is none."""
++    r = subprocess.run(["git", "-C", str(repo), "remote", "get-url", "origin"], text=True, capture_output=True)
++    m = re.match(r"^(?:https?://|git@|ssh://git@)([^/:]+)[/:](.+?)(?:\.git)?/?$", r.stdout.strip()) if r.returncode == 0 else None
++    return f"https://{m.group(1)}/{m.group(2)}/blob/{commit}/{{path}}" if m and commit else ""
++
++
 +def write(repo: Path, dest: Path, cfg: Config) -> int:
 +    claims, manifest = load(repo)
++    if not cfg.file_times:
++        times = []
++        for path in sorted(manifest.get("sources", {})):
++            r = subprocess.run(["git", "-C", str(repo), "log", "-1", "--format=%cI", "--", path], text=True, capture_output=True)
++            if r.returncode == 0 and r.stdout.strip():
++                times.append((path, r.stdout.strip()))
++        cfg = replace(cfg, file_times=tuple(times))
++    if not cfg.source_url:
++        cfg = replace(cfg, source_url=remote_url_template(repo, manifest.get("source_commit") or ""))
 +    files = render(claims, manifest, cfg)
 +    dest.mkdir(parents=True, exist_ok=True)
 +    for rel, text in files.items():
@@ -314,10 +345,10 @@ index 0000000..917ae62
 +    return replace(PRESETS[preset], **{k: v for k, v in overrides.items() if v is not None})
 diff --git a/.apm/skills/agent-graph/tool/tests/test_okf.py b/.apm/skills/agent-graph/tool/tests/test_okf.py
 new file mode 100644
-index 0000000..4d87291
+index 0000000..2d68bf2
 --- /dev/null
 +++ b/.apm/skills/agent-graph/tool/tests/test_okf.py
-@@ -0,0 +1,91 @@
+@@ -0,0 +1,115 @@
 +import re
 +import subprocess
 +import sys
@@ -409,3 +440,27 @@ index 0000000..4d87291
 +    assert "read the source to confirm before you rely on it" in plain and "stale_after" not in plain and "references" not in plain
 +    full = okf.pointer(okf.Config(stale_files=("a.py",), references=(("x", "/p"),)))
 +    assert "stale_after" in full and "okf/references/" in full
++
++
++def test_resource_fields_are_urls_or_relative_paths_and_a_module_named_index_does_not_take_a_reserved_name(tmp_path: Path):
++    repo = synced(tmp_path)
++    (repo / "pkg" / "index.py").write_text("def f():\n    return 1\n", encoding="utf-8")
++    subprocess.run(["git", "-C", str(repo), "add", "."], check=True)
++    gen.generate(repo)
++    claims, manifest = okf.load(repo)
++    files = okf.render(claims, manifest, okf.Config(source_url="https://example.com/o/r/blob/abc/{path}"))
++    text = files["modules/pkg.service.md"]
++    assert 'resource: "https://example.com/o/r/blob/abc/pkg/service.py"' in text and "repo:" not in text and "    id:" not in text and "sha256:" in text
++    rel = okf.render(claims, manifest, okf.Config())["modules/pkg.service.md"]
++    assert 'resource: "../../pkg/service.py"' in rel
++    assert "modules/pkg.index.md" in files and not any(p.endswith("/index.md") and p != "index.md" for p in files)
++    assert okf.mod_path("index") == "/modules/index-module.md" and okf.mod_path("log") == "/modules/log-module.md"
++
++
++
++def test_last_modified_is_the_files_own_time(tmp_path: Path):
++    repo = synced(tmp_path)
++    claims, manifest = okf.load(repo)
++    files = okf.render(claims, manifest, okf.Config(file_times=(("pkg/store.py", "2020-01-02T03:04:05+00:00"),)))
++    assert 'last_modified: "2020-01-02T03:04:05+00:00"' in files["modules/pkg.store.md"]
++    assert 'last_modified: "2020-01-02T03:04:05+00:00"' not in files["modules/pkg.service.md"]

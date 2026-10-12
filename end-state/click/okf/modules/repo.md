@@ -2,14 +2,14 @@
 type: Code Module
 title: "repo"
 description: "repo: Repo"
-resource: "repo:examples/repo/repo.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/repo/repo.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:examples/repo/repo.py"
-    id: "cef5766bc593"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/repo/repo.py"
+    sha256: "cef5766bc59330ff9342f7c6a7eabfe89716ab46a7f719d84a7b97d3b12f5f09"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---

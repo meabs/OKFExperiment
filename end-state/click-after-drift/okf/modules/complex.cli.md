@@ -2,14 +2,14 @@
 type: Code Module
 title: "complex.cli"
 description: "complex.cli: Environment, ComplexCLI"
-resource: "repo:examples/complex/complex/cli.py"
+resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/complex/complex/cli.py"
 tags: ["generated", "code"]
 generated:
   by: "kgen/0.4.0"
   at: "2026-10-04T15:19:53-07:00"
 sources:
-  - resource: "repo:examples/complex/complex/cli.py"
-    id: "2042ffdb1e77"
+  - resource: "https://github.com/pallets/click/blob/2247b35ea1c47c727d7a06e51fa280e12a863ff6/examples/complex/complex/cli.py"
+    sha256: "2042ffdb1e77f0f937036f3f0a33c67bacbad90477873d7576cc297674a55de7"
     last_modified: "2026-10-04T15:19:53-07:00"
 status: stable
 ---
