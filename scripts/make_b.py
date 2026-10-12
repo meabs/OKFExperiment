@@ -1,6 +1,6 @@
 import shutil, pathlib
 W = pathlib.Path(__file__).parent
-BASE = "# Repository knowledge\n\n`okf/` is an Open Knowledge Format bundle about this repository: one markdown file per module with its types, functions and call edges. Start at `okf/index.md`. Use it to find your way around, then read the source to confirm before you rely on it.\n"
+BASE = "# Repository knowledge\n\n`okf/` is an Open Knowledge Format bundle about this repository: one markdown file per module with its types, functions and call edges. Start at `okf/index.md`. Use it to find your way around.\n"
 TRUST = "\nEach concept's `generated` field says how it was produced. A concept with no `verified` entry is unverified: machine-written and not reviewed by a person.\n"
 STALE = "\nA concept whose `stale_after` time has passed is stale: re-check it against the source before relying on it.\n"
 ARMS = {"noflag": BASE, "native": BASE + TRUST, "tags": BASE, "banner": BASE, "all": BASE + TRUST, "targeted": BASE + TRUST + STALE, "blanket": BASE + TRUST + STALE}
@@ -21,13 +21,13 @@ qs = [
  q("where", "Where is get_parameter_source defined (file and class), and what does it return when the name is unknown?", [r"\bContext\b", r"\bNone\b"]),
  q("getdefault", "Which functions or methods in src/click call get_default directly? Ignore tests.", [r"\binvoke\b", "consume_value", "get_help_extra", "prompt_for_value"]),
 ]
-toml = f'''name = "okf-flags"
+toml = f'''name = "okf-flags-v2"
 [defaults]
 reps = 4
 parallel = 3
 timeout = 900
 baseline = "none"
-prompt_suffix = "Answer briefly and say which tools or files you used."
+prompt_suffix = "Be efficient: use the repository knowledge where it answers the question and avoid unnecessary file reads. Answer briefly and say which tools or files you used."
 [[repos]]
 name = "click"
 source = "{W / 'click1'}"
@@ -38,4 +38,4 @@ model = "gpt-5.6-luna"
 args = ["--ignore-user-config", "-c", "model_reasoning_effort=\\"medium\\""]
 
 ''' + "\n".join(qs)
-(W / "trial_b.toml").write_text(toml, encoding="utf-8")
+(W / "trial_b2.toml").write_text(toml, encoding="utf-8")

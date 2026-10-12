@@ -1,0 +1,28 @@
+---
+type: Code Module
+title: "click.globals"
+description: "click.globals: get_current_context, push_context, pop_context, resolve_color_default"
+resource: "repo:src/click/globals.py"
+tags: ["generated", "code"]
+generated:
+  by: "kgen/0.4.0"
+  at: "2026-10-04T15:19:53-07:00"
+sources:
+  - resource: "repo:src/click/globals.py"
+    id: "80cf8d87a038"
+    last_modified: "2026-10-04T15:19:53-07:00"
+status: stable
+---
+
+# click.globals
+
+Source: `src/click/globals.py`
+
+## Functions and methods
+- `get_current_context(silent: bool) -> Context | None` `src/click/globals.py:20`
+- `push_context(ctx: Context) -> None` `src/click/globals.py:44`
+- `pop_context() -> None` `src/click/globals.py:49`
+- `resolve_color_default(color: bool | None) -> bool | None` `src/click/globals.py:54`
+
+## Depends on
+- [click.core](/modules/click.core.md) `src/click/globals.py:7`

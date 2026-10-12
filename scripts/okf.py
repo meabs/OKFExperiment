@@ -35,10 +35,24 @@ class Config:
     references: tuple = field(default_factory=tuple)  # extra bundles to mirror under references/: ((name, path), ...)
 
 
+POINTER = """# Repository knowledge
+
+`okf/` is an Open Knowledge Format bundle generated from this repository's source: one markdown file per module with its types, functions, call edges and the file and line each came from. Start at `okf/index.md`. Use it to find your way around, then read the source to confirm before you rely on it.
+"""
+POINTER_STALE = "\nA concept whose `stale_after` time has passed describes source that has changed since it was generated; re-check it against the source.\n"
+POINTER_REFERENCES = "\n`okf/references/` holds bundles of other repositories this one depends on, copied in as they were when generated.\n"
+
+
+def pointer(cfg: "Config") -> str:
+    """The AGENTS.md text that goes with a bundle. The first paragraph's last sentence is the part that measurably stops stale claims being followed."""
+    return POINTER + (POINTER_STALE if cfg.stale_files or cfg.stale_after_days else "") + (POINTER_REFERENCES if cfg.references else "")
+
+
 PRESETS = {
     "minimal": Config(meta="minimal", links=False, calls="none", index="none", cite=False),
     "lean": Config(calls="none", cite=True),
     "default": Config(),
+    "recommended": Config(),  # what the experiments support: module concepts, native fields, links, citations, cross-module calls, routing index
     "tagged": Config(line_tags=True, attest=True),
     "guarded": Config(line_tags=True, banner=True, attest=True, stale_after_days=30),
 }

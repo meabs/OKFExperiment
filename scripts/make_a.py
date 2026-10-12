@@ -1,8 +1,10 @@
-import os
 import shutil, pathlib, sys
 W = pathlib.Path(__file__).parent
 ARMS = {"none": None, "minimal": "a_minimal", "nocalls": "a_nocalls", "default": "a_default", "allcalls": "a_allcalls", "package": "a_package", "noindex": "a_noindex"}
-POINTER = "# Repository knowledge\n\n`okf/` is an Open Knowledge Format bundle about this repository: one markdown file per module with its types, functions and (where listed) call edges. {where} Use it to find your way around, then read the source to confirm before you rely on it.\n"
+import os
+POINTER = "# Repository knowledge\n\n`okf/` is an Open Knowledge Format bundle about this repository: one markdown file per module with its types, functions and (where listed) call edges. {where} Use it to find your way around.\n"
+if os.environ.get("ARMS"):
+    ARMS = {k: v for k, v in ARMS.items() if k in os.environ["ARMS"].split(",")}
 ov = W / "overlays_a"
 shutil.rmtree(ov, ignore_errors=True)
 for arm, bundle in ARMS.items():
@@ -39,7 +41,7 @@ qs = [
  q("t2", "Add a method `Command.params_by_priority(ctx)` that returns the parameter names in the order their callbacks would run when none of them were given on the command line: eager parameters first, then the rest in declaration order. Keep existing tests passing. Do not add tests.", verify="bash $OKF_EXP/verify.sh t2"),
  q("t3", "Add a read-only property `is_positional` to Parameter: True for Argument and False for Option. Keep existing tests passing. Do not add tests.", verify="bash $OKF_EXP/verify.sh t3"),
 ]
-toml = f'''name = "okf-config"
+toml = f'''name = "okf-config-v2"
 [defaults]
 reps = 3
 parallel = 3
@@ -58,5 +60,5 @@ args = ["--ignore-user-config", "-c", "model_reasoning_effort=\\"medium\\""]
 env = {{ OKF_EXP = "{W / 'exp'}", OKF_PY = "{W / 'pyv/bin/python'}" }}
 
 ''' + "\n".join(qs)
-(W / "trial_a.toml").write_text(toml, encoding="utf-8")
+(W / os.environ.get("TRIAL_FILE", "trial_a.toml")).write_text(toml, encoding="utf-8")
 print("arms", len(ARMS) + 1, "questions", len(qs))

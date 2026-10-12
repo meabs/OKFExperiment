@@ -2,7 +2,9 @@
 
 How should a repository's [Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) (v0.2) bundle be generated, flagged and shared across repositories so that coding agents do better work with it?
 
-**Status: in progress. No results yet.** This commit has the method, the fixtures and the tooling. Results and recommendations will be added in a later commit, once the runs finish. Nothing here should be read as a finding.
+**Status: complete.** Start with [docs/RECOMMENDATIONS.md](docs/RECOMMENDATIONS.md), then [docs/RESULTS.md](docs/RESULTS.md). The recommended bundles, generated, are in [end-state/](end-state/).
+
+Headline: with Codex on small repositories, accuracy was at the ceiling with or without a bundle, no bundle beat having none on tokens, an unflagged bundle made agents follow stale claims (8 of 12 against 0 of 12 with none), and the one thing that stopped it was a sentence in the agent file telling it to confirm in the source (0 of 12, no extra cost). Tags, banners and OKF-native provenance fields did not help.
 
 ## Three experiments
 
@@ -30,9 +32,15 @@ Bundles come from a deterministic generator (`kgen okf`, no language model): eve
 - Every run also loads the author's global agent skills (a constant overhead in all arms).
 - The graders and the planted drift were written by the experimenters.
 
+## Method notes
+
+Two of the original runs (A and B, "v1") had a pointer that told the agent to confirm in the source in every arm, which hid the differences between flags and may have inflated cost. They were kept, reported next to the reruns without that sentence ("v2"), and a third run (B3) tested the sentence alone. See `results/` for each report.
+
 ## Layout
 
 - `scripts/make_a.py`, `make_b.py`, `make_c.py` build each trial's arms and TOML.
-- `scripts/okf.py` is a snapshot of the bundle emitter (it lives in `kgen`, with 50 passing tests).
+- `scripts/okf.py` is a snapshot of the bundle emitter (it lives in `kgen`, with 51 passing tests).
 - `hidden/` holds the hidden tests; `scripts/verify*.sh` run them.
 - `fixtures/` and `drift/` hold the cross-repo pair and the Click refactor.
+- `results/` holds each trial's report; `docs/` the write-up; `end-state/` the recommended bundles.
+- `scripts/chain.sh` and `analyse_b.py` ran the reruns and counted stale-following.

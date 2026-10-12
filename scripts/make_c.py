@@ -1,7 +1,7 @@
 import shutil, pathlib
 W = pathlib.Path(__file__).parent
 HINT = f"Run tests with `{W}/pyv/bin/python -m pytest` (the `ledgerlib` package this service uses is installed there).\n"
-OKF = "\n# Repository knowledge\n\n`okf/` is an Open Knowledge Format bundle about this service. `okf/references/ledger-lib/` is the bundle of the separate `ledgerlib` repository it depends on. Start at `okf/index.md`. Use it to find your way around, then read the source to confirm before you rely on it.\n"
+OKF = "\n# Repository knowledge\n\n`okf/` is an Open Knowledge Format bundle about this service. `okf/references/ledger-lib/` is the bundle of the separate `ledgerlib` repository it depends on. Start at `okf/index.md`. Use it to find your way around.\n"
 TRUST = "\nEach concept's `generated` field says how it was produced. A concept with no `verified` entry is unverified: machine-written and not reviewed by a person.\n"
 STALE = "\nA concept whose `stale_after` time has passed is stale: re-check it against the source before relying on it.\n"
 SRC = f"\nThe `ledgerlib` library's repository is checked out at `{W}/ledger-lib` (read-only reference).\n"
@@ -23,7 +23,7 @@ qs = [
  q("c2", "In this service, add `InvoiceService.refund_invoice_partial(invoice_id, amount, reason)` where amount is a Decimal in currency units: it refunds that part of the invoice through the ledger and returns the id of the refund entry. A refund larger than the invoice total must be rejected by the ledger's own error and leave the balance unchanged, and an invoice can be refunded only once. Keep existing tests passing. Do not add tests."),
  q("c3", "In this service, add `InvoiceService.customer_balance(customer)` returning what the ledger says the customer owes, as a Decimal in currency units (0 for an unknown customer). Keep existing tests passing. Do not add tests."),
 ]
-toml = f'''name = "okf-crossrepo"
+toml = f'''name = "okf-crossrepo-v2"
 [defaults]
 reps = 4
 parallel = 3
@@ -42,4 +42,4 @@ args = ["--ignore-user-config", "-c", "model_reasoning_effort=\\"medium\\""]
 env = {{ OKF_EXP = "{W / 'exp'}", OKF_PY = "{W / 'pyv/bin/python'}" }}
 
 ''' + "\n".join(qs)
-(W / "trial_c.toml").write_text(toml, encoding="utf-8")
+(W / "trial_c2.toml").write_text(toml, encoding="utf-8")
