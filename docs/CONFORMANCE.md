@@ -18,6 +18,7 @@ There is no official validator or JSON schema; the spec is prose, and the checke
 | `click-after-drift` | 32 | 0 | 0 | the two changed concepts are stale, no others |
 | `ledger-lib` | 6 | 0 | 0 | all parse and validate |
 | `invoice-service` (with the mirrored library) | 8 | 0 | 0 | all parse and validate |
+| `shopizer` (Java: package concepts and a routes concept) | 313 packages, 1 routes concept | 0 | 0 | not run |
 
 ## What was wrong in the first version
 

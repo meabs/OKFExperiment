@@ -10,7 +10,9 @@ Each file is the unedited report AgentTrialRig produced for one trial. "Relative
 | [B2-no-confirm-efficiency-prompt.md](B2-no-confirm-efficiency-prompt.md) | B: confidence flags, 8 arms | 160 | No sentence, and an efficiency prompt. The stale-following counts come from `scripts/analyse_b.py`, not from this report. |
 | [B3-confirm-sentence-only.md](B3-confirm-sentence-only.md) | B: the sentence alone | 20 | The "no flags" bundle with the sentence added; same prompt as B2. Its baseline is that arm. |
 | [C2-cross-repo.md](C2-cross-repo.md) | C: cross-repo, 6 arms | 72 | Change tasks only, so there is no "correct" column; the verified count is in the first column. |
+| [D1-cross-repo-fresh-shopizer.md](D1-cross-repo-fresh-shopizer.md) | D: unreadable dependency, bundle current, 4 arms | 96 | Storefront as the working repo, backend renamed. `scripts/leak_check.py` found 3 of 24 no-backend runs that searched the disk. |
+| [D2-cross-repo-stale-shopizer.md](D2-cross-repo-stale-shopizer.md) | D: unreadable dependency, bundle stale, 4 arms | 128 | The report's "correct" column mixes drift and control questions; the stale-following counts come from `scripts/analyse_d2.py`. Efficiency prompt. |
 
 A first cross-repo run used the v1 pointer and was stopped part-way; it is not reported.
 
-To count stale-following yourself: `python scripts/analyse_b.py <results folder>`.
+To count stale-following yourself: `python scripts/analyse_b.py <results folder>` (B) or `python scripts/analyse_d2.py <results folder>` (D2). To count runs that reached outside their own workspace: `python scripts/leak_check.py <results folder>`.

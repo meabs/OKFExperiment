@@ -63,6 +63,42 @@ Drifts: a renamed function (`_resolve_context` to `_resolve_completion_context`)
 - Everything passed, and no run hit a stale-API error in any arm (0 of 12 each). The library was installed and readable, so the agent could always inspect it, and the other repo's bundle added cost without adding accuracy.
 - This does **not** show that cross-repo bundles never help. A dependency the agent cannot read (a private service, a binary) is untested, and the pair is synthetic.
 
+## D. A complex repository as a dependency the agent cannot read
+
+The working repository is the real [Shopizer React storefront](https://github.com/shopizer-ecommerce/shopizer-shop-reactjs). It calls a backend, [Shopizer](https://github.com/shopizer-ecommerce/shopizer) (1,173 Java files, 325 routes), that is **not available** to the agent. Eight questions each trace one storefront call to the backend: the controller method, the request class, and a field or path variable. Examples: the cart POST in `cartActions.js`, the login request in `LoginRegister.js`, the search request, the config request.
+
+**The backend's question-relevant identifiers were renamed** (`scripts/privatize.py`), so the answers cannot come from memory of a famous public repository. A first attempt without this let the agent answer from memory (it found `AuthenticateCustomerApi` unaided); that was caught in a smoke test before any trial run.
+
+### D1. Backend current (96 runs: 8 questions x 4 arms x 3 runs)
+
+| Arm | Correct | Tokens per run (95% CI) | Cost vs no backend |
+| --- | --- | --- | --- |
+| No backend | **1 / 24** | 785k (513k to 1118k) | 1.00 |
+| Backend source checked out (read-only) | 24 / 24 | 181k (155k to 212k) | 0.43 (0.25 to 0.65) |
+| Backend bundle, with the confirm sentence | 24 / 24 | 189k (161k to 219k) | 0.41 (0.26 to 0.61) |
+| Backend bundle, without it | 24 / 24 | 169k (138k to 208k) | 0.34 (0.24 to 0.45) |
+
+- A bundle gave the same accuracy as the full source at the same cost, and a fraction of what searching blind cost. The "no backend" cost is the cost of failing.
+- The intervals on the ratios are wide (the no-backend runs vary from 55k to 3.0M tokens, median 722k); the accuracy gap is not in doubt.
+- **Contamination.** Codex can read the whole disk. 3 of 24 no-backend runs searched it. One found another run's bundle in its work folder and answered correctly (the 1 of 24), so the no-backend arm is, if anything, flattered. Two found copies of the backend source and still answered wrongly. No bundle-arm run reached outside its own workspace (`scripts/leak_check.py`); the source arm was given the path.
+
+### D2. Backend refactored after the bundle was generated (128 runs: 8 questions x 4 arms x 4 runs)
+
+Four renames on the backend (a handler method, a request-class field, a path variable, a request class): four questions have a new answer, four are controls. The bundle is from before the refactor. Efficiency prompt ("use the repository knowledge ... avoid unnecessary file reads"), as in B2.
+
+| Arm | Gave the **old** fact | Gave the new fact | Controls correct | Tokens per run |
+| --- | --- | --- | --- | --- |
+| Backend source (refactored) | 0 / 16 | 16 / 16 | 16 / 16 | 148k |
+| Stale bundle | **14 / 16** | 0 / 16 | 16 / 16 | 157k |
+| Stale bundle + the confirm sentence | **16 / 16** | 0 / 16 | 16 / 16 | 158k |
+| Stale bundle + the sentence + `stale_after` on the 7 changed concepts | **16 / 16** | 0 / 16 | 16 / 16 | 156k |
+
+- Every drift answer from a bundle arm was wrong, and none of the 46 stale answers carried a caveat.
+- The confirm sentence could not help: there was no backend source to confirm against.
+- `stale_after` did not help either. The seven marked concepts included the routes concept and the packages the questions touched, the pointer explained the field, and still not one of 32 answers in that arm mentioned staleness.
+- Unchanged facts stayed correct (controls 16/16 in every arm), so the harm is exactly the drifted facts.
+- No run in D2 reached outside its own workspace.
+
 ## Spec findings from building it
 
 - Bundle-relative links (`/modules/x.md`) point at the bundle root, so a bundle copied under `references/<name>/` has every internal link broken unless they are rewritten. The emitter rewrites them; the spec does not say how a vendored bundle should be linked.
@@ -70,4 +106,4 @@ Drifts: a renamed function (`_resolve_context` to `_resolve_completion_context`)
 
 ## Limits
 
-One model; one repository for A and B (Click, about 25 modules); a synthetic pair for C; 3 to 4 runs per cell; graders and drift written by the experimenters; a constant overhead from the author's global agent skills in every run; v1 and v2 not run simultaneously. The pooled B comparisons were chosen after seeing the data. The bundles the agents read were generated before a later fix to a few optional frontmatter fields (`resource`, `sources[].id`, `last_modified`; see [CONFORMANCE.md](CONFORMANCE.md)); concept bodies were unchanged and nothing was rerun. A language-model arm was excluded by design.
+One model; one repository for A and B (Click, about 25 modules); a synthetic pair for C; 3 to 4 runs per cell; graders and drift written by the experimenters; a constant overhead from the author's global agent skills in every run; v1 and v2 not run simultaneously. The pooled B comparisons were chosen after seeing the data. The bundles the agents read were generated before a later fix to a few optional frontmatter fields (`resource`, `sources[].id`, `last_modified`; see [CONFORMANCE.md](CONFORMANCE.md)); concept bodies were unchanged and nothing was rerun. A language-model arm was excluded by design. D uses the complex repository only as a dependency: whether a bundle saves cost *inside* a large repository the agent can search was not tested. D's backend is real code with the question-relevant identifiers renamed and the planted refactors applied as text edits that were not compiled; it is still recognisably Shopizer by package name.

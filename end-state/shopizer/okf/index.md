@@ -1,0 +1,325 @@
+---
+okf_version: "0.2"
+---
+
+# Repository knowledge
+
+Start here. Open the module that matches your task; each lists its types, functions, routes and what it depends on.
+
+## API
+- [HTTP routes](/routes.md) - every route with its handler
+
+## Packages
+- [com.salesmanager.core.business.configuration](/modules/com.salesmanager.core.business.configuration.md) - ApplicationSearchConfiguration, CoreApplicationConfiguration, DataConfiguration, DroolsBeanFactory
+- [com.salesmanager.core.business.configuration.db](/modules/com.salesmanager.core.business.configuration.db.md) - DbConfig
+- [com.salesmanager.core.business.configuration.events](/modules/com.salesmanager.core.business.configuration.events.md) - AsynchronousEventsConfiguration
+- [com.salesmanager.core.business.configuration.events.products](/modules/com.salesmanager.core.business.configuration.events.products.md) - DeleteProductAttributeEvent, DeleteProductEvent, DeleteProductImageEvent, DeleteProductVariantEvent
+- [com.salesmanager.core.business.configuration.events.products.listeners](/modules/com.salesmanager.core.business.configuration.events.products.listeners.md) - IndexProductEventListener
+- [com.salesmanager.core.business.constants](/modules/com.salesmanager.core.business.constants.md) - Constants, ShippingConstants, SystemConstants
+- [com.salesmanager.core.business.exception](/modules/com.salesmanager.core.business.exception.md) - ConversionException, ServiceException
+- [com.salesmanager.core.business.modules.cms.common](/modules/com.salesmanager.core.business.modules.cms.common.md) - getImages, removeImages
+- [com.salesmanager.core.business.modules.cms.content](/modules/com.salesmanager.core.business.modules.cms.content.md) - StaticContentFileManager, StaticContentFileManagerImpl
+- [com.salesmanager.core.business.modules.cms.content.aws](/modules/com.salesmanager.core.business.modules.cms.content.aws.md) - S3StaticContentAssetsManagerImpl
+- [com.salesmanager.core.business.modules.cms.content.gcp](/modules/com.salesmanager.core.business.modules.cms.content.gcp.md) - GCPDownloadsManagerImpl, GCPStaticContentAssetsManagerImpl
+- [com.salesmanager.core.business.modules.cms.content.infinispan](/modules/com.salesmanager.core.business.modules.cms.content.infinispan.md) - CmsStaticContentFileManagerImpl
+- [com.salesmanager.core.business.modules.cms.content.local](/modules/com.salesmanager.core.business.modules.cms.content.local.md) - CmsStaticContentFileManagerImpl
+- [com.salesmanager.core.business.modules.cms.impl](/modules/com.salesmanager.core.business.modules.cms.impl.md) - CacheManagerImpl, DownloadCacheManagerImpl, GCPCacheManagerImpl, LocalCacheManagerImpl
+- [com.salesmanager.core.business.modules.cms.product](/modules/com.salesmanager.core.business.modules.cms.product.md) - ProductFileManager, ProductFileManagerImpl
+- [com.salesmanager.core.business.modules.cms.product.aws](/modules/com.salesmanager.core.business.modules.cms.product.aws.md) - S3ProductContentFileManager
+- [com.salesmanager.core.business.modules.cms.product.gcp](/modules/com.salesmanager.core.business.modules.cms.product.gcp.md) - GCPProductContentFileManager
+- [com.salesmanager.core.business.modules.cms.product.infinispan](/modules/com.salesmanager.core.business.modules.cms.product.infinispan.md) - CmsImageFileManagerImpl
+- [com.salesmanager.core.business.modules.cms.product.local](/modules/com.salesmanager.core.business.modules.cms.product.local.md) - CmsImageFileManagerImpl
+- [com.salesmanager.core.business.modules.email](/modules/com.salesmanager.core.business.modules.email.md) - DefaultEmailSenderImpl, Email, EmailComponent, EmailConfig
+- [com.salesmanager.core.business.modules.integration](/modules/com.salesmanager.core.business.modules.integration.md) - IntegrationException
+- [com.salesmanager.core.business.modules.integration.payment.impl](/modules/com.salesmanager.core.business.modules.integration.payment.impl.md) - BeanStreamPayment, BraintreePayment, MoneyOrderPayment, PayPalExpressCheckoutPayment
+- [com.salesmanager.core.business.modules.integration.shipping.impl](/modules/com.salesmanager.core.business.modules.integration.shipping.impl.md) - CustomShippingQuoteRules, CustomWeightBasedShippingQuote, DecisionResponse, DefaultPackagingImpl
+- [com.salesmanager.core.business.modules.order](/modules/com.salesmanager.core.business.modules.order.md) - ODSInvoiceModule
+- [com.salesmanager.core.business.modules.order.total](/modules/com.salesmanager.core.business.modules.order.total.md) - ManufacturerShippingCodeOrderTotalModuleImpl, OrderTotalInputParameters, OrderTotalResponse, PromoCodeCalculatorModule
+- [com.salesmanager.core.business.modules.utils](/modules/com.salesmanager.core.business.modules.utils.md) - EncryptionImpl, GeoLocationImpl
+- [com.salesmanager.core.business.repositories.catalog.catalog](/modules/com.salesmanager.core.business.repositories.catalog.catalog.md) - findById, findByCode, existsByCode, listByCatalog
+- [com.salesmanager.core.business.repositories.catalog.category](/modules/com.salesmanager.core.business.repositories.catalog.category.md) - CategoryRepositoryImpl, PageableCategoryRepositoryImpl
+- [com.salesmanager.core.business.repositories.catalog.product](/modules/com.salesmanager.core.business.repositories.catalog.product.md) - ProductRepositoryImpl
+- [com.salesmanager.core.business.repositories.catalog.product.attribute](/modules/com.salesmanager.core.business.repositories.catalog.product.attribute.md) - findByProductId, findByProductId, listOptions, listOptionValues
+- [com.salesmanager.core.business.repositories.catalog.product.availability](/modules/com.salesmanager.core.business.repositories.catalog.product.availability.md) - listByStore, listByStore, getByProductId, getBySku
+- [com.salesmanager.core.business.repositories.catalog.product.file](/modules/com.salesmanager.core.business.repositories.catalog.product.file.md) - findByProduct, findOne
+- [com.salesmanager.core.business.repositories.catalog.product.image](/modules/com.salesmanager.core.business.repositories.catalog.product.image.md) - findOne, finById
+- [com.salesmanager.core.business.repositories.catalog.product.manufacturer](/modules/com.salesmanager.core.business.repositories.catalog.product.manufacturer.md) - countByProduct, findByStoreAndLanguage, findOne, findByStore
+- [com.salesmanager.core.business.repositories.catalog.product.price](/modules/com.salesmanager.core.business.repositories.catalog.product.price.md) - findOne, findByProduct, findByProduct, findByProductInventoty
+- [com.salesmanager.core.business.repositories.catalog.product.relationship](/modules/com.salesmanager.core.business.repositories.catalog.product.relationship.md) - ProductRelationshipRepositoryImpl
+- [com.salesmanager.core.business.repositories.catalog.product.review](/modules/com.salesmanager.core.business.repositories.catalog.product.review.md) - findOne, findByCustomer, findByProduct, findByProductNoCustomers
+- [com.salesmanager.core.business.repositories.catalog.product.type](/modules/com.salesmanager.core.business.repositories.catalog.product.type.md) - listByStore, findByCode, findByCode, findById
+- [com.salesmanager.core.business.repositories.catalog.product.variant](/modules/com.salesmanager.core.business.repositories.catalog.product.variant.md) - findByProductId, findByProductId, findOne, finByProductVariant
+- [com.salesmanager.core.business.repositories.catalog.product.variation](/modules/com.salesmanager.core.business.repositories.catalog.product.variation.md) - list, findOne, findOne, findByCode
+- [com.salesmanager.core.business.repositories.content](/modules/com.salesmanager.core.business.repositories.content.md) - ContentRepositoryImpl
+- [com.salesmanager.core.business.repositories.customer](/modules/com.salesmanager.core.business.repositories.customer.md) - CustomerRepositoryImpl
+- [com.salesmanager.core.business.repositories.customer.attribute](/modules/com.salesmanager.core.business.repositories.customer.attribute.md) - findOne, findByOptionId, findByOptionId, findByCustomerId
+- [com.salesmanager.core.business.repositories.customer.optin](/modules/com.salesmanager.core.business.repositories.customer.optin.md) - findByCode, findByMerchantAndCodeAndEmail
+- [com.salesmanager.core.business.repositories.customer.review](/modules/com.salesmanager.core.business.repositories.customer.review.md) - findOne, findByReviewer, findByReviewed, findByRevieweAndReviewed
+- [com.salesmanager.core.business.repositories.merchant](/modules/com.salesmanager.core.business.repositories.merchant.md) - MerchantRepositoryImpl
+- [com.salesmanager.core.business.repositories.order](/modules/com.salesmanager.core.business.repositories.order.md) - OrderRepositoryImpl
+- [com.salesmanager.core.business.repositories.order.orderaccount](/modules/com.salesmanager.core.business.repositories.order.orderaccount.md) - module
+- [com.salesmanager.core.business.repositories.order.orderproduct](/modules/com.salesmanager.core.business.repositories.order.orderproduct.md) - findOne, findByOrderId
+- [com.salesmanager.core.business.repositories.payments](/modules/com.salesmanager.core.business.repositories.payments.md) - findByOrder, findByDates
+- [com.salesmanager.core.business.repositories.reference.country](/modules/com.salesmanager.core.business.repositories.reference.country.md) - findByIsoCode, listByLanguage, listCountryZonesByLanguage
+- [com.salesmanager.core.business.repositories.reference.currency](/modules/com.salesmanager.core.business.repositories.reference.currency.md) - getByCode
+- [com.salesmanager.core.business.repositories.reference.language](/modules/com.salesmanager.core.business.repositories.reference.language.md) - findByCode
+- [com.salesmanager.core.business.repositories.reference.zone](/modules/com.salesmanager.core.business.repositories.reference.zone.md) - findByCode, listByLanguage, listByLanguageAndCountry
+- [com.salesmanager.core.business.repositories.shipping](/modules/com.salesmanager.core.business.repositories.shipping.md) - findByStore, findByOrder
+- [com.salesmanager.core.business.repositories.shoppingcart](/modules/com.salesmanager.core.business.repositories.shoppingcart.md) - findOne, deleteById, findOne, findByCode
+- [com.salesmanager.core.business.repositories.system](/modules/com.salesmanager.core.business.repositories.system.md) - findByMerchantStore, findByMerchantStoreAndKey, findByMerchantStoreAndType, findByStore
+- [com.salesmanager.core.business.repositories.tax](/modules/com.salesmanager.core.business.repositories.tax.md) - findByStore, findByCode, findByStoreAndCode, findByStore
+- [com.salesmanager.core.business.repositories.user](/modules/com.salesmanager.core.business.repositories.user.md) - PermissionRepositoryImpl, UserRepositoryImpl
+- [com.salesmanager.core.business.services.catalog.catalog](/modules/com.salesmanager.core.business.services.catalog.catalog.md) - CatalogEntryServiceImpl, CatalogServiceImpl
+- [com.salesmanager.core.business.services.catalog.category](/modules/com.salesmanager.core.business.services.catalog.category.md) - CategoryServiceImpl
+- [com.salesmanager.core.business.services.catalog.inventory](/modules/com.salesmanager.core.business.services.catalog.inventory.md) - ProductInventoryServiceImpl
+- [com.salesmanager.core.business.services.catalog.marketplace](/modules/com.salesmanager.core.business.services.catalog.marketplace.md) - create, getByCode, delete
+- [com.salesmanager.core.business.services.catalog.pricing](/modules/com.salesmanager.core.business.services.catalog.pricing.md) - PricingServiceImpl
+- [com.salesmanager.core.business.services.catalog.product](/modules/com.salesmanager.core.business.services.catalog.product.md) - ProductServiceImpl
+- [com.salesmanager.core.business.services.catalog.product.attribute](/modules/com.salesmanager.core.business.services.catalog.product.attribute.md) - ProductAttributeServiceImpl, ProductOptionServiceImpl, ProductOptionSetServiceImpl, ProductOptionValueServiceImpl
+- [com.salesmanager.core.business.services.catalog.product.availability](/modules/com.salesmanager.core.business.services.catalog.product.availability.md) - ProductAvailabilityServiceImpl
+- [com.salesmanager.core.business.services.catalog.product.file](/modules/com.salesmanager.core.business.services.catalog.product.file.md) - DigitalProductServiceImpl
+- [com.salesmanager.core.business.services.catalog.product.image](/modules/com.salesmanager.core.business.services.catalog.product.image.md) - ProductImageServiceImpl
+- [com.salesmanager.core.business.services.catalog.product.manufacturer](/modules/com.salesmanager.core.business.services.catalog.product.manufacturer.md) - ManufacturerServiceImpl
+- [com.salesmanager.core.business.services.catalog.product.price](/modules/com.salesmanager.core.business.services.catalog.product.price.md) - ProductPriceServiceImpl
+- [com.salesmanager.core.business.services.catalog.product.relationship](/modules/com.salesmanager.core.business.services.catalog.product.relationship.md) - ProductRelationshipServiceImpl
+- [com.salesmanager.core.business.services.catalog.product.review](/modules/com.salesmanager.core.business.services.catalog.product.review.md) - ProductReviewServiceImpl
+- [com.salesmanager.core.business.services.catalog.product.type](/modules/com.salesmanager.core.business.services.catalog.product.type.md) - ProductTypeServiceImpl
+- [com.salesmanager.core.business.services.catalog.product.variant](/modules/com.salesmanager.core.business.services.catalog.product.variant.md) - ProductVariantGroupServiceImpl, ProductVariantImageServiceImpl, ProductVariantServiceImpl
+- [com.salesmanager.core.business.services.catalog.product.variation](/modules/com.salesmanager.core.business.services.catalog.product.variation.md) - ProductVariationServiceImpl
+- [com.salesmanager.core.business.services.common.generic](/modules/com.salesmanager.core.business.services.common.generic.md) - SalesManagerEntityServiceImpl
+- [com.salesmanager.core.business.services.content](/modules/com.salesmanager.core.business.services.content.md) - ContentServiceImpl
+- [com.salesmanager.core.business.services.customer](/modules/com.salesmanager.core.business.services.customer.md) - CustomerServiceImpl
+- [com.salesmanager.core.business.services.customer.attribute](/modules/com.salesmanager.core.business.services.customer.attribute.md) - CustomerAttributeServiceImpl, CustomerOptionServiceImpl, CustomerOptionSetServiceImpl, CustomerOptionValueServiceImpl
+- [com.salesmanager.core.business.services.customer.optin](/modules/com.salesmanager.core.business.services.customer.optin.md) - CustomerOptinServiceImpl
+- [com.salesmanager.core.business.services.customer.review](/modules/com.salesmanager.core.business.services.customer.review.md) - CustomerReviewServiceImpl
+- [com.salesmanager.core.business.services.merchant](/modules/com.salesmanager.core.business.services.merchant.md) - MerchantStoreServiceImpl
+- [com.salesmanager.core.business.services.order](/modules/com.salesmanager.core.business.services.order.md) - OrderServiceImpl
+- [com.salesmanager.core.business.services.order.orderproduct](/modules/com.salesmanager.core.business.services.order.orderproduct.md) - OrderProductDownloadServiceImpl
+- [com.salesmanager.core.business.services.order.orderstatushistory](/modules/com.salesmanager.core.business.services.order.orderstatushistory.md) - OrderStatusHistoryServiceImpl
+- [com.salesmanager.core.business.services.order.ordertotal](/modules/com.salesmanager.core.business.services.order.ordertotal.md) - OrderTotalServiceImpl
+- [com.salesmanager.core.business.services.payments](/modules/com.salesmanager.core.business.services.payments.md) - PaymentServiceImpl, TransactionServiceImpl
+- [com.salesmanager.core.business.services.reference.country](/modules/com.salesmanager.core.business.services.reference.country.md) - CountryServiceImpl
+- [com.salesmanager.core.business.services.reference.currency](/modules/com.salesmanager.core.business.services.reference.currency.md) - CurrencyServiceImpl
+- [com.salesmanager.core.business.services.reference.init](/modules/com.salesmanager.core.business.services.reference.init.md) - InitializationDatabaseImpl
+- [com.salesmanager.core.business.services.reference.language](/modules/com.salesmanager.core.business.services.reference.language.md) - LanguageServiceImpl
+- [com.salesmanager.core.business.services.reference.loader](/modules/com.salesmanager.core.business.services.reference.loader.md) - ConfigurationModulesLoader, IntegrationModulesLoader, ZonesLoader
+- [com.salesmanager.core.business.services.reference.zone](/modules/com.salesmanager.core.business.services.reference.zone.md) - ZoneServiceImpl, ZoneTransient
+- [com.salesmanager.core.business.services.search](/modules/com.salesmanager.core.business.services.search.md) - SearchServiceImpl
+- [com.salesmanager.core.business.services.shipping](/modules/com.salesmanager.core.business.services.shipping.md) - ShippingOriginServiceImpl, ShippingQuoteServiceImpl, ShippingServiceImpl
+- [com.salesmanager.core.business.services.shoppingcart](/modules/com.salesmanager.core.business.services.shoppingcart.md) - ShoppingCartCalculationServiceImpl, ShoppingCartServiceImpl
+- [com.salesmanager.core.business.services.system](/modules/com.salesmanager.core.business.services.system.md) - EmailServiceImpl, MerchantConfigurationServiceImpl, MerchantLogServiceImpl, ModuleConfigurationServiceImpl
+- [com.salesmanager.core.business.services.system.optin](/modules/com.salesmanager.core.business.services.system.optin.md) - OptinServiceImpl
+- [com.salesmanager.core.business.services.tax](/modules/com.salesmanager.core.business.services.tax.md) - TaxClassServiceImpl, TaxRateServiceImpl, TaxServiceImpl
+- [com.salesmanager.core.business.services.user](/modules/com.salesmanager.core.business.services.user.md) - GroupServiceImpl, PermissionServiceImpl, UserServiceImpl
+- [com.salesmanager.core.business.utils](/modules/com.salesmanager.core.business.utils.md) - AbstractDataPopulator, CacheUtils, CatalogServiceHelper, CoreConfiguration
+- [com.salesmanager.core.business.utils.ajax](/modules/com.salesmanager.core.business.utils.ajax.md) - AjaxPageableResponse, AjaxResponse
+- [com.salesmanager.core.business.utils.query](/modules/com.salesmanager.core.business.utils.query.md) - ProductQueryBuilder
+- [com.salesmanager.core.constants](/modules/com.salesmanager.core.constants.md) - SchemaConstant
+- [com.salesmanager.core.model.catalog.catalog](/modules/com.salesmanager.core.model.catalog.catalog.md) - Catalog, CatalogCategoryEntry
+- [com.salesmanager.core.model.catalog.category](/modules/com.salesmanager.core.model.catalog.category.md) - Category, CategoryDescription
+- [com.salesmanager.core.model.catalog.marketplace](/modules/com.salesmanager.core.model.catalog.marketplace.md) - Catalog, CatalogDescription, MarketPlace
+- [com.salesmanager.core.model.catalog.product](/modules/com.salesmanager.core.model.catalog.product.md) - Product, ProductCriteria, ProductDimensions, ProductList
+- [com.salesmanager.core.model.catalog.product.attribute](/modules/com.salesmanager.core.model.catalog.product.attribute.md) - AttributeCriteria, ProductAttribute, ProductOption, ProductOptionDescription
+- [com.salesmanager.core.model.catalog.product.availability](/modules/com.salesmanager.core.model.catalog.product.availability.md) - ProductAvailability
+- [com.salesmanager.core.model.catalog.product.description](/modules/com.salesmanager.core.model.catalog.product.description.md) - ProductDescription
+- [com.salesmanager.core.model.catalog.product.file](/modules/com.salesmanager.core.model.catalog.product.file.md) - DigitalProduct
+- [com.salesmanager.core.model.catalog.product.image](/modules/com.salesmanager.core.model.catalog.product.image.md) - ProductImage, ProductImageDescription
+- [com.salesmanager.core.model.catalog.product.inventory](/modules/com.salesmanager.core.model.catalog.product.inventory.md) - ProductInventory
+- [com.salesmanager.core.model.catalog.product.manufacturer](/modules/com.salesmanager.core.model.catalog.product.manufacturer.md) - Manufacturer, ManufacturerDescription
+- [com.salesmanager.core.model.catalog.product.price](/modules/com.salesmanager.core.model.catalog.product.price.md) - FinalPrice, ProductPrice, ProductPriceDescription
+- [com.salesmanager.core.model.catalog.product.relationship](/modules/com.salesmanager.core.model.catalog.product.relationship.md) - ProductRelationship
+- [com.salesmanager.core.model.catalog.product.review](/modules/com.salesmanager.core.model.catalog.product.review.md) - ProductReview, ProductReviewDescription
+- [com.salesmanager.core.model.catalog.product.type](/modules/com.salesmanager.core.model.catalog.product.type.md) - ProductType, ProductTypeDescription
+- [com.salesmanager.core.model.catalog.product.variant](/modules/com.salesmanager.core.model.catalog.product.variant.md) - ProductVariant, ProductVariantGroup, ProductVariantImage, ProductVariantImageDescription
+- [com.salesmanager.core.model.catalog.product.variation](/modules/com.salesmanager.core.model.catalog.product.variation.md) - ProductVariation
+- [com.salesmanager.core.model.common](/modules/com.salesmanager.core.model.common.md) - Address, Billing, CredentialsReset, Criteria
+- [com.salesmanager.core.model.common.audit](/modules/com.salesmanager.core.model.common.audit.md) - AuditListener, AuditSection
+- [com.salesmanager.core.model.common.description](/modules/com.salesmanager.core.model.common.description.md) - Description
+- [com.salesmanager.core.model.content](/modules/com.salesmanager.core.model.content.md) - Content, ContentDescription, ContentFile, ImageContentFile
+- [com.salesmanager.core.model.customer](/modules/com.salesmanager.core.model.customer.md) - Customer, CustomerCriteria, CustomerList
+- [com.salesmanager.core.model.customer.attribute](/modules/com.salesmanager.core.model.customer.attribute.md) - CustomerAttribute, CustomerOption, CustomerOptionDescription, CustomerOptionSet
+- [com.salesmanager.core.model.customer.connection](/modules/com.salesmanager.core.model.customer.connection.md) - AbstractUserConnection, AbstractUserConnectionWithCompositeKey, UserConnection, UserConnectionPK
+- [com.salesmanager.core.model.customer.review](/modules/com.salesmanager.core.model.customer.review.md) - CustomerReview, CustomerReviewDescription
+- [com.salesmanager.core.model.generic](/modules/com.salesmanager.core.model.generic.md) - SalesManagerEntity
+- [com.salesmanager.core.model.merchant](/modules/com.salesmanager.core.model.merchant.md) - MerchantStore, MerchantStoreCriteria
+- [com.salesmanager.core.model.order](/modules/com.salesmanager.core.model.order.md) - Order, OrderCriteria, OrderList, OrderSummary
+- [com.salesmanager.core.model.order.attributes](/modules/com.salesmanager.core.model.order.attributes.md) - OrderAttribute
+- [com.salesmanager.core.model.order.filehistory](/modules/com.salesmanager.core.model.order.filehistory.md) - FileHistory
+- [com.salesmanager.core.model.order.orderaccount](/modules/com.salesmanager.core.model.order.orderaccount.md) - OrderAccount, OrderAccountProduct
+- [com.salesmanager.core.model.order.orderproduct](/modules/com.salesmanager.core.model.order.orderproduct.md) - OrderProduct, OrderProductAttribute, OrderProductDownload, OrderProductPrice
+- [com.salesmanager.core.model.order.orderstatus](/modules/com.salesmanager.core.model.order.orderstatus.md) - OrderStatusHistory
+- [com.salesmanager.core.model.order.payment](/modules/com.salesmanager.core.model.order.payment.md) - CreditCard
+- [com.salesmanager.core.model.payments](/modules/com.salesmanager.core.model.payments.md) - BasicPayment, CreditCardPayment, Payment, PaymentMethod
+- [com.salesmanager.core.model.reference.country](/modules/com.salesmanager.core.model.reference.country.md) - Country, CountryDescription
+- [com.salesmanager.core.model.reference.currency](/modules/com.salesmanager.core.model.reference.currency.md) - Currency
+- [com.salesmanager.core.model.reference.geozone](/modules/com.salesmanager.core.model.reference.geozone.md) - GeoZone, GeoZoneDescription
+- [com.salesmanager.core.model.reference.language](/modules/com.salesmanager.core.model.reference.language.md) - Language
+- [com.salesmanager.core.model.reference.zone](/modules/com.salesmanager.core.model.reference.zone.md) - Zone, ZoneDescription
+- [com.salesmanager.core.model.security](/modules/com.salesmanager.core.model.security.md) - Secrets
+- [com.salesmanager.core.model.shipping](/modules/com.salesmanager.core.model.shipping.md) - Package, PackageDetails, Quote, ShippingConfiguration
+- [com.salesmanager.core.model.shoppingcart](/modules/com.salesmanager.core.model.shoppingcart.md) - ShoppingCart, ShoppingCartAttributeItem, ShoppingCartItem
+- [com.salesmanager.core.model.system](/modules/com.salesmanager.core.model.system.md) - IntegrationConfiguration, IntegrationModule, MerchantConfig, MerchantConfiguration
+- [com.salesmanager.core.model.system.credentials](/modules/com.salesmanager.core.model.system.credentials.md) - Credentials, DbCredentials
+- [com.salesmanager.core.model.system.optin](/modules/com.salesmanager.core.model.system.optin.md) - CustomerOptin, Optin
+- [com.salesmanager.core.model.tax](/modules/com.salesmanager.core.model.tax.md) - TaxConfiguration, TaxItem
+- [com.salesmanager.core.model.tax.taxclass](/modules/com.salesmanager.core.model.tax.taxclass.md) - TaxClass
+- [com.salesmanager.core.model.tax.taxrate](/modules/com.salesmanager.core.model.tax.taxrate.md) - TaxRate, TaxRateDescription
+- [com.salesmanager.core.model.user](/modules/com.salesmanager.core.model.user.md) - Group, Permission, PermissionCriteria, PermissionList
+- [com.salesmanager.core.modules](/modules/com.salesmanager.core.modules.md) - getName, setName, getCode, setCode
+- [com.salesmanager.core.modules.constants](/modules/com.salesmanager.core.modules.constants.md) - Constants
+- [com.salesmanager.core.modules.integration](/modules/com.salesmanager.core.modules.integration.md) - IntegrationException
+- [com.salesmanager.core.modules.integration.payment.model](/modules/com.salesmanager.core.modules.integration.payment.model.md) - validateModuleConfiguration, initTransaction, authorize, capture
+- [com.salesmanager.core.modules.integration.shipping.model](/modules/com.salesmanager.core.modules.integration.shipping.model.md) - CustomShippingQuoteItem, CustomShippingQuoteWeightItem, CustomShippingQuotesConfiguration, CustomShippingQuotesRegion
+- [com.salesmanager.core.modules.order.total](/modules/com.salesmanager.core.modules.order.total.md) - caculateProductPiceVariation
+- [com.salesmanager.core.modules.utils](/modules/com.salesmanager.core.modules.utils.md) - encrypt, decrypt, getAddress
+- [com.salesmanager.core.utils](/modules/com.salesmanager.core.utils.md) - CloneUtils
+- [com.salesmanager.shop.admin.security](/modules/com.salesmanager.shop.admin.security.md) - AbstractAuthenticatinSuccessHandler, SecurityDataAccessException, UserAuthenticationSuccessHandler, UserServicesImpl
+- [com.salesmanager.shop.application](/modules/com.salesmanager.shop.application.md) - ShopApplication
+- [com.salesmanager.shop.application.config](/modules/com.salesmanager.shop.application.config.md) - AsyncConfig, DocumentationConfiguration, LanguageArgumentResolver, LocationImageConfig
+- [com.salesmanager.shop.constants](/modules/com.salesmanager.shop.constants.md) - ApplicationConstants, Constants, EmailConstants
+- [com.salesmanager.shop.controller](/modules/com.salesmanager.shop.controller.md) - FilesController, ImagesController; 6 route(s)
+- [com.salesmanager.shop.filter](/modules/com.salesmanager.shop.filter.md) - CorsFilter, XssFilter, XssHttpServletRequestWrapper
+- [com.salesmanager.shop.init.data](/modules/com.salesmanager.shop.init.data.md) - InitializationLoader
+- [com.salesmanager.shop.mapper](/modules/com.salesmanager.shop.mapper.md) - convert, merge
+- [com.salesmanager.shop.mapper.cart](/modules/com.salesmanager.shop.mapper.cart.md) - ReadableShoppingCartMapper
+- [com.salesmanager.shop.mapper.catalog](/modules/com.salesmanager.shop.mapper.catalog.md) - PersistableCatalogCategoryEntryMapper, PersistableCatalogMapper, PersistableProductAttributeMapper, PersistableProductOptionMapper
+- [com.salesmanager.shop.mapper.catalog.product](/modules/com.salesmanager.shop.mapper.catalog.product.md) - PersistableProductAvailabilityMapper, PersistableProductDefinitionMapper, PersistableProductMapper, PersistableProductVariantGroupMapper
+- [com.salesmanager.shop.mapper.customer](/modules/com.salesmanager.shop.mapper.customer.md) - ReadableCustomerMapper
+- [com.salesmanager.shop.mapper.inventory](/modules/com.salesmanager.shop.mapper.inventory.md) - PersistableInventoryMapper, PersistableProductPriceMapper, ReadableInventoryMapper
+- [com.salesmanager.shop.mapper.optin](/modules/com.salesmanager.shop.mapper.optin.md) - PersistableOptinMapper, ReadableOptinMapper
+- [com.salesmanager.shop.mapper.order](/modules/com.salesmanager.shop.mapper.order.md) - ReadableOrderProductMapper, ReadableOrderTotalMapper
+- [com.salesmanager.shop.mapper.tax](/modules/com.salesmanager.shop.mapper.tax.md) - PersistableTaxClassMapper, PersistableTaxRateMapper, ReadableTaxClassMapper, ReadableTaxRateMapper
+- [com.salesmanager.shop.model.catalog](/modules/com.salesmanager.shop.model.catalog.md) - NamedEntity, ProductList, SearchProductList, SearchProductRequest
+- [com.salesmanager.shop.model.catalog.catalog](/modules/com.salesmanager.shop.model.catalog.catalog.md) - CatalogEntity, CatalogEntryEntity, PersistableCatalog, PersistableCatalogCategoryEntry
+- [com.salesmanager.shop.model.catalog.category](/modules/com.salesmanager.shop.model.catalog.category.md) - Category, CategoryDescription, CategoryEntity, PersistableCategory
+- [com.salesmanager.shop.model.catalog.manufacturer](/modules/com.salesmanager.shop.model.catalog.manufacturer.md) - Manufacturer, ManufacturerDescription, ManufacturerEntity, PersistableManufacturer
+- [com.salesmanager.shop.model.catalog.product](/modules/com.salesmanager.shop.model.catalog.product.md) - LightPersistableProduct, PersistableImage, PersistableProductPrice, PersistableProductReview
+- [com.salesmanager.shop.model.catalog.product.attribute](/modules/com.salesmanager.shop.model.catalog.product.attribute.md) - PersistableProductAttribute, PersistableProductOption, PersistableProductOptionValue, ProductAttribute
+- [com.salesmanager.shop.model.catalog.product.attribute.api](/modules/com.salesmanager.shop.model.catalog.product.attribute.api.md) - PersistableProductOptionEntity, PersistableProductOptionValueEntity, ProductAttributeEntity, ProductOptionValueEntity
+- [com.salesmanager.shop.model.catalog.product.attribute.optionset](/modules/com.salesmanager.shop.model.catalog.product.attribute.optionset.md) - PersistableProductOptionSet, ProductOptionSetEntity, ReadableProductOptionSet
+- [com.salesmanager.shop.model.catalog.product.group](/modules/com.salesmanager.shop.model.catalog.product.group.md) - ProductGroup
+- [com.salesmanager.shop.model.catalog.product.inventory](/modules/com.salesmanager.shop.model.catalog.product.inventory.md) - InventoryEntity, PersistableInventory, ReadableInventory, ReadableInventoryList
+- [com.salesmanager.shop.model.catalog.product.product](/modules/com.salesmanager.shop.model.catalog.product.product.md) - PersistableProduct, PersistableProductInventory, ProductEntity, ProductSpecification
+- [com.salesmanager.shop.model.catalog.product.product.definition](/modules/com.salesmanager.shop.model.catalog.product.product.definition.md) - PersistableProductDefinition, ProductDefinition, ReadableProductDefinition, ReadableProductDefinitionFull
+- [com.salesmanager.shop.model.catalog.product.product.variant](/modules/com.salesmanager.shop.model.catalog.product.product.variant.md) - PersistableProductVariant, ProductVariant, ReadableProductVariant
+- [com.salesmanager.shop.model.catalog.product.product.variantGroup](/modules/com.salesmanager.shop.model.catalog.product.product.variantGroup.md) - PersistableProductVariantGroup, ProductVariantGroup, ReadableProductVariantGroup
+- [com.salesmanager.shop.model.catalog.product.type](/modules/com.salesmanager.shop.model.catalog.product.type.md) - PersistableProductType, ProductTypeDescription, ProductTypeEntity, ReadableProductType
+- [com.salesmanager.shop.model.catalog.product.variation](/modules/com.salesmanager.shop.model.catalog.product.variation.md) - PersistableProductVariation, ProductVariationEntity, ReadableProductVariation
+- [com.salesmanager.shop.model.configuration](/modules/com.salesmanager.shop.model.configuration.md) - ConfigurationEntity, PersistableConfiguration, ReadableConfiguration
+- [com.salesmanager.shop.model.content](/modules/com.salesmanager.shop.model.content.md) - Content, ContentDescriptionEntity, ContentEntity, ContentFile
+- [com.salesmanager.shop.model.content.box](/modules/com.salesmanager.shop.model.content.box.md) - ContentBox, PersistableContentBox, ReadableContentBox, ReadableContentBoxFull
+- [com.salesmanager.shop.model.content.common](/modules/com.salesmanager.shop.model.content.common.md) - Content, ContentDescription
+- [com.salesmanager.shop.model.content.page](/modules/com.salesmanager.shop.model.content.page.md) - ContentPage, PersistableContentPage, ReadableContentPage, ReadableContentPageFull
+- [com.salesmanager.shop.model.customer](/modules/com.salesmanager.shop.model.customer.md) - AnonymousCustomer, BillingEntity, Customer, CustomerEntity
+- [com.salesmanager.shop.model.customer.address](/modules/com.salesmanager.shop.model.customer.address.md) - Address, AddressLocation
+- [com.salesmanager.shop.model.customer.attribute](/modules/com.salesmanager.shop.model.customer.attribute.md) - CustomerAttribute, CustomerAttributeEntity, CustomerOption, CustomerOptionDescription
+- [com.salesmanager.shop.model.customer.optin](/modules/com.salesmanager.shop.model.customer.optin.md) - CustomerOptin, CustomerOptinEntity, PersistableCustomerOptin
+- [com.salesmanager.shop.model.entity](/modules/com.salesmanager.shop.model.entity.md) - CodeEntity, Entity, EntityExists, ListCriteria
+- [com.salesmanager.shop.model.marketplace](/modules/com.salesmanager.shop.model.marketplace.md) - MarketPlaceEntity, ReadableMarketPlace, SignupStore
+- [com.salesmanager.shop.model.order](/modules/com.salesmanager.shop.model.order.md) - OrderAttribute, OrderEntity, OrderProduct, OrderProductEntity
+- [com.salesmanager.shop.model.order.history](/modules/com.salesmanager.shop.model.order.history.md) - OrderStatusHistory, PersistableOrderStatusHistory, ReadableOrderStatusHistory
+- [com.salesmanager.shop.model.order.shipping](/modules/com.salesmanager.shop.model.order.shipping.md) - ReadableShippingSummary
+- [com.salesmanager.shop.model.order.total](/modules/com.salesmanager.shop.model.order.total.md) - OrderTotal, ReadableOrderTotal, ReadableTotal
+- [com.salesmanager.shop.model.order.transaction](/modules/com.salesmanager.shop.model.order.transaction.md) - PaymentEntity, PersistablePayment, PersistableTransaction, ReadablePayment
+- [com.salesmanager.shop.model.order.v0](/modules/com.salesmanager.shop.model.order.v0.md) - Order, PersistableOrder, ReadableOrder, ReadableOrderList
+- [com.salesmanager.shop.model.order.v1](/modules/com.salesmanager.shop.model.order.v1.md) - Order, PersistableAnonymousOrder, PersistableOrder, ReadableOrder
+- [com.salesmanager.shop.model.references](/modules/com.salesmanager.shop.model.references.md) - Address, CountryEntity, PersistableAddress, ReadableAddress
+- [com.salesmanager.shop.model.security](/modules/com.salesmanager.shop.model.security.md) - GroupEntity, PermissionEntity, PersistableGroup, ReadableGroup
+- [com.salesmanager.shop.model.shipping](/modules/com.salesmanager.shop.model.shipping.md) - BoxConfiguration, ExpeditionConfiguration, ShippingConfiguration
+- [com.salesmanager.shop.model.shop](/modules/com.salesmanager.shop.model.shop.md) - ContactForm, PageInformation
+- [com.salesmanager.shop.model.shoppingcart](/modules/com.salesmanager.shop.model.shoppingcart.md) - CartModificationException, PersistableShoppingCartItem, ReadableShoppingCart, ReadableShoppingCartAttribute
+- [com.salesmanager.shop.model.store](/modules/com.salesmanager.shop.model.store.md) - MerchantConfigEntity, MerchantStoreBrand, MerchantStoreEntity, PersistableBrand
+- [com.salesmanager.shop.model.system](/modules/com.salesmanager.shop.model.system.md) - Configs, IntegrationModuleConfiguration, IntegrationModuleEntity, IntegrationModuleSummaryEntity
+- [com.salesmanager.shop.model.tax](/modules/com.salesmanager.shop.model.tax.md) - PersistableTaxClass, PersistableTaxRate, ReadableTaxClass, ReadableTaxRate
+- [com.salesmanager.shop.model.user](/modules/com.salesmanager.shop.model.user.md) - PersistableUser, ReadableUser, ReadableUserList, User
+- [com.salesmanager.shop.populator](/modules/com.salesmanager.shop.populator.md) - PersistableAuditAspect
+- [com.salesmanager.shop.populator.catalog](/modules/com.salesmanager.shop.populator.catalog.md) - PersistableCategoryPopulator, PersistableProductImagePopulator, PersistableProductOptionPopulator, PersistableProductOptionValuePopulator
+- [com.salesmanager.shop.populator.customer](/modules/com.salesmanager.shop.populator.customer.md) - CustomerBillingAddressPopulator, CustomerDeliveryAddressPopulator, CustomerEntityPopulator, CustomerOptionPopulator
+- [com.salesmanager.shop.populator.manufacturer](/modules/com.salesmanager.shop.populator.manufacturer.md) - PersistableManufacturerPopulator, ReadableManufacturerPopulator
+- [com.salesmanager.shop.populator.order](/modules/com.salesmanager.shop.populator.order.md) - OrderProductPopulator, PersistableOrderApiPopulator, PersistableOrderPopulator, PersistableOrderProductPopulator
+- [com.salesmanager.shop.populator.order.transaction](/modules/com.salesmanager.shop.populator.order.transaction.md) - PersistablePaymentPopulator, PersistableTransactionPopulator, ReadableTransactionPopulator
+- [com.salesmanager.shop.populator.references](/modules/com.salesmanager.shop.populator.references.md) - ReadableCountryPopulator, ReadableZonePopulator
+- [com.salesmanager.shop.populator.security](/modules/com.salesmanager.shop.populator.security.md) - ReadablePermissionPopulator
+- [com.salesmanager.shop.populator.shoppingCart](/modules/com.salesmanager.shop.populator.shoppingCart.md) - ShoppingCartDataPopulator, ShoppingCartModelPopulator
+- [com.salesmanager.shop.populator.store](/modules/com.salesmanager.shop.populator.store.md) - PersistableMerchantStorePopulator, ReadableMerchantStorePopulator, ReadableMerchantStorePopulatorWithDetails
+- [com.salesmanager.shop.populator.system](/modules/com.salesmanager.shop.populator.system.md) - ReadableOptinPopulator
+- [com.salesmanager.shop.populator.user](/modules/com.salesmanager.shop.populator.user.md) - PersistableUserPopulator, ReadableUserPopulator
+- [com.salesmanager.shop.store.api](/modules/com.salesmanager.shop.store.api.md) - DefaultController; 1 route(s)
+- [com.salesmanager.shop.store.api.exception](/modules/com.salesmanager.shop.store.api.exception.md) - ConstraintException, ConversionRuntimeException, ErrorEntity, FileUploadExceptionAdvice
+- [com.salesmanager.shop.store.api.v0.store](/modules/com.salesmanager.shop.store.api.v0.store.md) - StoreContactRESTController; 2 route(s)
+- [com.salesmanager.shop.store.api.v0.system](/modules/com.salesmanager.shop.store.api.v0.system.md) - SystemRESTController; 4 route(s)
+- [com.salesmanager.shop.store.api.v1.catalog](/modules/com.salesmanager.shop.store.api.v1.catalog.md) - CatalogApi; 9 route(s)
+- [com.salesmanager.shop.store.api.v1.category](/modules/com.salesmanager.shop.store.api.v1.category.md) - CategoryApi; 10 route(s)
+- [com.salesmanager.shop.store.api.v1.configurations](/modules/com.salesmanager.shop.store.api.v1.configurations.md) - CacheApi, ConfigurationsApi; 4 route(s)
+- [com.salesmanager.shop.store.api.v1.content](/modules/com.salesmanager.shop.store.api.v1.content.md) - ContentAdministrationApi, FileStatus, ImageFile, ContentApi; 32 route(s)
+- [com.salesmanager.shop.store.api.v1.customer](/modules/com.salesmanager.shop.store.api.v1.customer.md) - AuthenticateCustomerApi, CustomerApi, CustomerNewsletterApi, CustomerReviewApi; 25 route(s)
+- [com.salesmanager.shop.store.api.v1.marketplace](/modules/com.salesmanager.shop.store.api.v1.marketplace.md) - MarketPlaceApi; 3 route(s)
+- [com.salesmanager.shop.store.api.v1.order](/modules/com.salesmanager.shop.store.api.v1.order.md) - OrderApi, OrderPaymentApi, OrderShippingApi, OrderStatusHistoryApi; 23 route(s)
+- [com.salesmanager.shop.store.api.v1.payment](/modules/com.salesmanager.shop.store.api.v1.payment.md) - PaymentApi; 3 route(s)
+- [com.salesmanager.shop.store.api.v1.product](/modules/com.salesmanager.shop.store.api.v1.product.md) - ProductApi, ProductAttributeOptionApi, ProductGroupApi, ProductImageApi; 92 route(s)
+- [com.salesmanager.shop.store.api.v1.references](/modules/com.salesmanager.shop.store.api.v1.references.md) - ReferencesApi; 5 route(s)
+- [com.salesmanager.shop.store.api.v1.search](/modules/com.salesmanager.shop.store.api.v1.search.md) - SearchApi; 2 route(s)
+- [com.salesmanager.shop.store.api.v1.security](/modules/com.salesmanager.shop.store.api.v1.security.md) - SecurityApi; 3 route(s)
+- [com.salesmanager.shop.store.api.v1.shipping](/modules/com.salesmanager.shop.store.api.v1.shipping.md) - ShippingConfigurationApi, ShippingExpeditionApi; 13 route(s)
+- [com.salesmanager.shop.store.api.v1.shoppingCart](/modules/com.salesmanager.shop.store.api.v1.shoppingCart.md) - ShoppingCartApi; 9 route(s)
+- [com.salesmanager.shop.store.api.v1.store](/modules/com.salesmanager.shop.store.api.v1.store.md) - MerchantStoreApi; 16 route(s)
+- [com.salesmanager.shop.store.api.v1.system](/modules/com.salesmanager.shop.store.api.v1.system.md) - ContactApi, ModulesApi, OptinApi, PublicConfigsApi; 4 route(s)
+- [com.salesmanager.shop.store.api.v1.tax](/modules/com.salesmanager.shop.store.api.v1.tax.md) - TaxClassApi, TaxRatesApi; 12 route(s)
+- [com.salesmanager.shop.store.api.v1.user](/modules/com.salesmanager.shop.store.api.v1.user.md) - AuthenticateUserApi, ResetUserPasswordApi, UserApi; 14 route(s)
+- [com.salesmanager.shop.store.api.v2.product](/modules/com.salesmanager.shop.store.api.v2.product.md) - ProductApiV2, ProductVariantApi, ProductVariantGroupApi, ProductVariationApi; 32 route(s)
+- [com.salesmanager.shop.store.controller](/modules/com.salesmanager.shop.store.controller.md) - AbstractController
+- [com.salesmanager.shop.store.controller.catalog.facade](/modules/com.salesmanager.shop.store.controller.catalog.facade.md) - saveCatalog, updateCatalog, deleteCatalog, uniqueCatalog
+- [com.salesmanager.shop.store.controller.category.facade](/modules/com.salesmanager.shop.store.controller.category.facade.md) - getCategoryHierarchy, saveCategory, getById, getByCode
+- [com.salesmanager.shop.store.controller.configurations](/modules/com.salesmanager.shop.store.controller.configurations.md) - configurations, configuration, saveConfiguration, deleteConfiguration
+- [com.salesmanager.shop.store.controller.content.facade](/modules/com.salesmanager.shop.store.controller.content.facade.md) - getContentFolder, absolutePath, delete, delete
+- [com.salesmanager.shop.store.controller.country.facade](/modules/com.salesmanager.shop.store.controller.country.facade.md) - CountryFacadeImpl
+- [com.salesmanager.shop.store.controller.currency.facade](/modules/com.salesmanager.shop.store.controller.currency.facade.md) - CurrencyFacadeImpl
+- [com.salesmanager.shop.store.controller.customer.facade](/modules/com.salesmanager.shop.store.controller.customer.facade.md) - CustomerFacadeImpl
+- [com.salesmanager.shop.store.controller.customer.facade.v1](/modules/com.salesmanager.shop.store.controller.customer.facade.v1.md) - authorize, requestPasswordReset, verifyPasswordRequestToken, resetPassword
+- [com.salesmanager.shop.store.controller.error](/modules/com.salesmanager.shop.store.controller.error.md) - ShopErrorController
+- [com.salesmanager.shop.store.controller.items.facade](/modules/com.salesmanager.shop.store.controller.items.facade.md) - listItemsByManufacturer, createProductGroup, listProductGroups, updateProductGroup
+- [com.salesmanager.shop.store.controller.language.facade](/modules/com.salesmanager.shop.store.controller.language.facade.md) - LanguageFacadeImpl
+- [com.salesmanager.shop.store.controller.manufacturer.facade](/modules/com.salesmanager.shop.store.controller.manufacturer.facade.md) - getByProductInCategory, saveOrUpdateManufacturer, deleteManufacturer, getManufacturer
+- [com.salesmanager.shop.store.controller.marketplace.facade](/modules/com.salesmanager.shop.store.controller.marketplace.facade.md) - MarketPlaceFacadeImpl
+- [com.salesmanager.shop.store.controller.optin](/modules/com.salesmanager.shop.store.controller.optin.md) - OptinFacadeImpl
+- [com.salesmanager.shop.store.controller.order.facade](/modules/com.salesmanager.shop.store.controller.order.facade.md) - OrderFacadeImpl
+- [com.salesmanager.shop.store.controller.order.facade.v1](/modules/com.salesmanager.shop.store.controller.order.facade.v1.md) - orderConfirmation
+- [com.salesmanager.shop.store.controller.product.facade](/modules/com.salesmanager.shop.store.controller.product.facade.md) - saveProduct, update, update, getProduct
+- [com.salesmanager.shop.store.controller.search.facade](/modules/com.salesmanager.shop.store.controller.search.facade.md) - SearchFacadeImpl
+- [com.salesmanager.shop.store.controller.security.facade](/modules/com.salesmanager.shop.store.controller.security.facade.md) - SecurityFacadeImpl
+- [com.salesmanager.shop.store.controller.shipping.facade](/modules/com.salesmanager.shop.store.controller.shipping.facade.md) - ShippingFacadeImpl
+- [com.salesmanager.shop.store.controller.shoppingCart.facade](/modules/com.salesmanager.shop.store.controller.shoppingCart.facade.md) - ShoppingCartFacadeImpl
+- [com.salesmanager.shop.store.controller.shoppingCart.facade.v1](/modules/com.salesmanager.shop.store.controller.shoppingCart.facade.v1.md) - get
+- [com.salesmanager.shop.store.controller.store.facade](/modules/com.salesmanager.shop.store.controller.store.facade.md) - StoreFacadeImpl
+- [com.salesmanager.shop.store.controller.system](/modules/com.salesmanager.shop.store.controller.system.md) - MerchantConfigurationFacadeImpl
+- [com.salesmanager.shop.store.controller.tax.facade](/modules/com.salesmanager.shop.store.controller.tax.facade.md) - createTaxClass, updateTaxClass, deleteTaxClass, existsTaxClass
+- [com.salesmanager.shop.store.controller.user.facade](/modules/com.salesmanager.shop.store.controller.user.facade.md) - findByUserName, findByUserName, findById, create
+- [com.salesmanager.shop.store.controller.zone.facade](/modules/com.salesmanager.shop.store.controller.zone.facade.md) - ZoneFacadeImpl
+- [com.salesmanager.shop.store.facade.catalog](/modules/com.salesmanager.shop.store.facade.catalog.md) - CatalogFacadeImpl
+- [com.salesmanager.shop.store.facade.category](/modules/com.salesmanager.shop.store.facade.category.md) - CategoryFacadeImpl
+- [com.salesmanager.shop.store.facade.configuration](/modules/com.salesmanager.shop.store.facade.configuration.md) - AbstractConfigurationFacadeImpl
+- [com.salesmanager.shop.store.facade.content](/modules/com.salesmanager.shop.store.facade.content.md) - ContentFacadeImpl
+- [com.salesmanager.shop.store.facade.customer](/modules/com.salesmanager.shop.store.facade.customer.md) - CustomerFacadeImpl
+- [com.salesmanager.shop.store.facade.items](/modules/com.salesmanager.shop.store.facade.items.md) - ProductItemsFacadeImpl
+- [com.salesmanager.shop.store.facade.manufacturer](/modules/com.salesmanager.shop.store.facade.manufacturer.md) - ManufacturerFacadeImpl
+- [com.salesmanager.shop.store.facade.order](/modules/com.salesmanager.shop.store.facade.order.md) - OrderFacadeImpl
+- [com.salesmanager.shop.store.facade.payment](/modules/com.salesmanager.shop.store.facade.payment.md) - PaymentConfigurationFacadeImpl
+- [com.salesmanager.shop.store.facade.product](/modules/com.salesmanager.shop.store.facade.product.md) - ProductCommonFacadeImpl, ProductDefinitionFacadeImpl, ProductFacadeImpl, ProductFacadeV2Impl
+- [com.salesmanager.shop.store.facade.shipping](/modules/com.salesmanager.shop.store.facade.shipping.md) - ShippingConfigurationFacadeImpl
+- [com.salesmanager.shop.store.facade.shoppingCart](/modules/com.salesmanager.shop.store.facade.shoppingCart.md) - ShoppingCartFacadeImpl
+- [com.salesmanager.shop.store.facade.tax](/modules/com.salesmanager.shop.store.facade.tax.md) - TaxFacadeImpl
+- [com.salesmanager.shop.store.facade.user](/modules/com.salesmanager.shop.store.facade.user.md) - UserFacadeImpl
+- [com.salesmanager.shop.store.model.catalog](/modules/com.salesmanager.shop.store.model.catalog.md) - Attribute, AttributeValue
+- [com.salesmanager.shop.store.model.filter](/modules/com.salesmanager.shop.store.model.filter.md) - QueryFilter
+- [com.salesmanager.shop.store.model.paging](/modules/com.salesmanager.shop.store.model.paging.md) - PaginationData
+- [com.salesmanager.shop.store.model.search](/modules/com.salesmanager.shop.store.model.search.md) - AutoCompleteRequest
+- [com.salesmanager.shop.store.security](/modules/com.salesmanager.shop.store.security.md) - AbstractCustomerServices, AuthenticationRequest, AuthenticationResponse, AuthenticationTokenFilter
+- [com.salesmanager.shop.store.security.admin](/modules/com.salesmanager.shop.store.security.admin.md) - AdminAccessDeniedHandler, JWTAdminAuthenticationManager, JWTAdminAuthenticationProvider, JWTAdminServicesImpl
+- [com.salesmanager.shop.store.security.common](/modules/com.salesmanager.shop.store.security.common.md) - CustomAuthenticationException, CustomAuthenticationManager
+- [com.salesmanager.shop.store.security.customer](/modules/com.salesmanager.shop.store.security.customer.md) - JWTCustomerAuthenticationManager, JWTCustomerAuthenticationProvider, JWTCustomerServicesImpl
+- [com.salesmanager.shop.store.security.services](/modules/com.salesmanager.shop.store.security.services.md) - CredentialsException, CredentialsServiceImpl
+- [com.salesmanager.shop.store.security.user](/modules/com.salesmanager.shop.store.security.user.md) - CustomerDetails, JWTUser
+- [com.salesmanager.shop.util](/modules/com.salesmanager.shop.util.md) - ReadableEntityUtil
+- [com.salesmanager.shop.utils](/modules/com.salesmanager.shop.utils.md) - AbstractimageFilePath, AdminAccessDeniedHandler, AppConfiguration, AuthorizationUtils
+- [com.salesmanager.shop.validation](/modules/com.salesmanager.shop.validation.md) - BeanUtils, EnumValidator, FieldMatchValidator
+- [type:.MavenWrapperDownloader](/modules/type:.MavenWrapperDownloader.md) - MavenWrapperDownloader

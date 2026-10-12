@@ -7,6 +7,7 @@ The recommended output, generated with `kgen okf --preset recommended` (see [../
 | [`click/`](click/) | Click at the pinned commit `2247b35`. 33 concept files, one per module. |
 | [`click-after-drift/`](click-after-drift/) | The same bundle checked against the refactored Click (`kgen okf --stale-against`): the two concepts whose source changed (`click.core`, `click.shell_completion`) carry a past `stale_after`, and the pointer says what that means. |
 | [`ledger-lib/`](ledger-lib/) | The library repository of the cross-repo pair. |
+| [`shopizer/`](shopizer/) | The real Shopizer backend (Java, 1,173 source files): 315 files, one concept per package, a `routes.md` with all 325 routes and their handlers, and each type's fields. About 4 MB. The experiment used a copy with the question-relevant identifiers renamed; this one is unmodified. |
 | [`invoice-service/`](invoice-service/) | The consuming repository, with the library's bundle mirrored under `okf/references/ledger-lib/` and its links rewritten to stay inside the mirror. |
 
 ## Reading a concept
