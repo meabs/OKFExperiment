@@ -1,0 +1,58 @@
+diff --git a/src/click/core.py b/src/click/core.py
+index 59ed94e..7bb9ca5 100644
+--- a/src/click/core.py
++++ b/src/click/core.py
+@@ -1393,6 +1393,9 @@ class Command:
+             self.parse_args(ctx, args)
+         return ctx
+ 
++    def _ordered_params(self, ctx: Context, param_order: list[Parameter]) -> list[Parameter]:
++        return iter_params_for_processing(param_order, self.get_params(ctx))
++
+     def parse_args(self, ctx: Context, args: list[str]) -> list[str]:
+         if not args and self.no_args_is_help and not ctx.resilient_parsing:
+             raise NoArgsIsHelpError(ctx)
+@@ -1400,7 +1403,7 @@ class Command:
+         parser = self.make_parser(ctx)
+         opts, args, param_order = parser.parse_args(args=args)
+ 
+-        for param in iter_params_for_processing(param_order, self.get_params(ctx)):
++        for param in self._ordered_params(ctx, param_order):
+             _, args = param.handle_parse_result(ctx, opts, args)
+ 
+         # We now have all parameters' values into `ctx.params`, but the data may contain
+@@ -3891,7 +3894,11 @@ class Option(Parameter):
+         return super().process_value(ctx, value)
+ 
+ 
+-class Argument(Parameter):
++class PositionalParameter(Parameter):
++    """Marker base for parameters that are filled from positional values."""
++
++
++class Argument(PositionalParameter):
+     """Arguments are positional parameters to a command.  They generally
+     provide fewer features than options but can have infinite ``nargs``
+     and are required by default.
+diff --git a/src/click/shell_completion.py b/src/click/shell_completion.py
+index 8a2668b..bdb5b56 100644
+--- a/src/click/shell_completion.py
++++ b/src/click/shell_completion.py
+@@ -361,7 +361,7 @@ class ShellComplete:
+         :param args: List of complete args before the incomplete value.
+         :param incomplete: Value being completed. May be empty.
+         """
+-        ctx = _resolve_context(self.cli, self.ctx_args, self.prog_name, args)
++        ctx = _resolve_completion_context(self.cli, self.ctx_args, self.prog_name, args)
+         obj, incomplete = _resolve_incomplete(ctx, args, incomplete)
+         return obj.shell_complete(ctx, incomplete)
+ 
+@@ -693,7 +693,7 @@ def _is_incomplete_option(ctx: Context, args: list[str], param: Parameter) -> bo
+     return last_option is not None and last_option in param.opts
+ 
+ 
+-def _resolve_context(
++def _resolve_completion_context(
+     cli: Command,
+     ctx_args: cabc.MutableMapping[str, t.Any],
+     prog_name: str,
