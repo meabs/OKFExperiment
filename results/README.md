@@ -14,7 +14,9 @@ Each file is the unedited report AgentTrialRig produced for one trial. "Relative
 | [C2-cross-repo.md](C2-cross-repo.md) | C: cross-repo, 6 arms | 72 | Change tasks only, so there is no "correct" column; the verified count is in the first column. |
 | [D1-cross-repo-fresh-shopizer.md](D1-cross-repo-fresh-shopizer.md) | D: unreadable dependency, bundle current, 4 arms | 96 | Storefront as the working repo, backend renamed. `scripts/leak_check.py` found 3 of 24 no-backend runs that searched the disk. |
 | [D2-cross-repo-stale-shopizer.md](D2-cross-repo-stale-shopizer.md) | D: unreadable dependency, bundle stale, 4 arms | 128 | The report's "correct" column mixes drift and control questions; the stale-following counts come from `scripts/analyse_d2.py`. Efficiency prompt. |
+| [E-confidence-labels-crossrepo-questions.md](E-confidence-labels-crossrepo-questions.md) | E: cross-repo questions with wrong entries, 4 conditions | 112 | The report's "correct" column counts true answers; followed-wrong and disclosure counts come from `scripts/analyse_e.py`. |
+| [F-crossrepo-change-tasks.md](F-crossrepo-change-tasks.md) | F: cross-repo change tasks, 3 conditions | 60 | The "verified" count is the number of changes that passed their hidden test. |
 
 A first cross-repo run used the v1 pointer and was stopped part-way; it is not reported.
 
-To count stale-following yourself: `python scripts/analyse_b.py <results folder>` (B) or `python scripts/analyse_d2.py <results folder>` (D2). To count runs that reached outside their own workspace: `python scripts/leak_check.py <results folder>`.
+To count stale-following yourself: `python scripts/analyse_b.py <results folder>` (B) `python scripts/analyse_d2.py <results folder>` (D2) or `python scripts/analyse_e.py <results folder>` (E). To count runs that reached outside their own workspace: `python scripts/leak_check.py <results folder>`.

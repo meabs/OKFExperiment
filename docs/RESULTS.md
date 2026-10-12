@@ -1,5 +1,7 @@
 # Results
 
+The README organises everything around four conditions: **1. No OKF**, **2. OKF**, **3. OKF with confidence labels** (every fact marked `[high]`, stated in the source, or `[medium]`, a heuristic guess, with an instruction to say when relying on `[medium]`) and **4. cross-repo change with OKF**. Tests A and B use the same repository, C to F cross repositories; F is the cross-repo change test, E the confidence-label test.
+
 > **Terms.** A *bundle* is OKF's name for a generated guide to a codebase: a folder of markdown files, one per module or package, listing what it contains and where each fact came from. The [main README](../README.md) calls it a *guide*.
 
 Codex `gpt-5.6-luna` (medium reasoning), AgentTrialRig 0.6.1. Bundles come from `kgen okf` (deterministic, no language model; [how to get it](../README.md#reproducing)). Raw reports are in [`../results/`](../results/). Read anything under 8 runs per arm as provisional; intervals are 95%.
@@ -100,6 +102,47 @@ Four renames on the backend (a handler method, a request-class field, a path var
 - `stale_after` did not help either. The seven marked concepts included the routes concept and the packages the questions touched, the pointer explained the field, and still not one of 32 answers in that arm mentioned staleness.
 - Unchanged facts stayed correct (controls 16/16 in every arm), so the harm is exactly the drifted facts.
 - No run in D2 reached outside its own workspace.
+
+## E. Cross-repo questions where the guide has wrong `[medium]` entries (112 runs)
+
+**Question tested:** does marking each fact with a confidence level (and telling the agent to say when it relies on a guess) change what an agent does when some entries are wrong and it cannot check the source?
+
+**Setup.** The working repository is the storefront; the backend's guide is copied in; the backend source is not available. Each of 7 questions starts from a storefront request, asks which backend handler serves it (a `[high]` entry: a route and a declared method), and asks what that handler calls (a `[medium]` entry: a call target the generator resolves heuristically). In four questions we made the call entry wrong on purpose, using a plausible name from elsewhere in the same guide (for example, the login handler "calling" `CustomerFacade.registerCustomer`). Three questions are unchanged controls. 4 runs per question per condition.
+
+| Condition | Followed the wrong entry (of 16) | True answer | Something else | Said it relied on a `[medium]` guess |
+| --- | --- | --- | --- | --- |
+| 2. OKF, no labels | **11** | 4 | 1 | 0 |
+| OKF with labels, no instruction | 10 | 4 | 2 | 0 |
+| **3. OKF with labels and the instruction** | **8** | 3 | 5 | **6** |
+| Labels and instruction, but the wrong entries marked `[high]` | 10 | 5 | 1 | 0 |
+
+- Wrong answers fell only a little (11 to 8 of 16; Fisher exact p≈0.47, not reliable). Disclosure rose clearly: 6 of 16 against 0 of 16 (p≈0.02). Of the 8 wrong answers in condition 3, 6 said the answer rested on a `[medium]` entry.
+- Mislabelling the wrong entries `[high]` removed all disclosure: agents trusted the label.
+- Controls (three unchanged questions, 12 answers per condition): 10, 8, 8 and 9 correct; the agent hedged on 0, 0, 2 and 3 of them. Labels cost a little over-caution.
+- "Disclosure" is a keyword match on the answer ("medium", "heuristic", "guess", "unverified", "inferred", and similar); a sample of the matches was read and they were genuine.
+- No run reached outside its own workspace (`scripts/leak_check.py`; one flagged path was the author's global skill file, the constant overhead noted under Limits).
+
+## F. Cross-repo change tasks (60 runs)
+
+**Question tested:** when the agent must change the storefront using facts that only the backend states, how much does the backend's guide help, and do confidence labels change that?
+
+**Setup.** Four tasks, each "create this small ES module in the storefront", each checked by a hidden Node test that was shown to fail on the unchanged storefront and pass on a reference solution:
+1. `buildAddToCartRequest`: add the backend's field for a discount code (`voucher`, renamed from the real name).
+2. `buildSearchRequest`: use the backend's names for page size and offset (`size`, `offset`).
+3. `buildReviewsRequest`: use the path the backend declares (`product/{id}/reviews`; the storefront's own code uses `products/...`).
+4. `canPurchaseOnline`: read the backend's purchase flag from its public config response (`purchasingEnabled`).
+
+5 runs per task per condition.
+
+| Condition | Passed (of 20) | f1 | f2 | f3 | f4 | Tokens per run (95% CI) |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1. No OKF | **3** | 3 | 0 | 0 | 0 | 482k (301k to 681k) |
+| 2. OKF | **19** | 5 | 5 | 4 | 5 | 242k (203k to 286k) |
+| 3. OKF with confidence labels | **15** | 5 | 3 | 2 | 5 | 235k (205k to 270k) |
+
+- No OKF against OKF: 3 against 19 of 20 (p<0.001), at about half the tokens. The 3 passes without a guide were all on task 1, where the backend's field name (`voucher`) is a common word an agent can guess.
+- OKF against OKF with labels: 19 against 15 of 20 (p≈0.18), not a reliable difference at this size. The labelled condition's five failures were two wrong paging field names (`start`/`startIndex` for `offset`) and three on the reviews path, one of which added a `/api/v1` prefix that the task did not clearly rule out. The plain guide failed once, on the same task. The task wording should have been clearer about the prefix.
+- One task (4) was ambiguous in the first draft: the backend has an internal setting and a public response field with similar meanings. The wording was fixed before any real run.
 
 ## Spec findings from building it
 

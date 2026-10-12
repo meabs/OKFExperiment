@@ -103,10 +103,10 @@ index 3af8163..3e900b6 100644
                  full = "/" + "/".join(x for x in (pre.strip("/"), p.strip("/")) if x)
 diff --git a/.apm/skills/agent-graph/tool/kgen/okf.py b/.apm/skills/agent-graph/tool/kgen/okf.py
 new file mode 100644
-index 0000000..0b93211
+index 0000000..3ca3cfc
 --- /dev/null
 +++ b/.apm/skills/agent-graph/tool/kgen/okf.py
-@@ -0,0 +1,338 @@
+@@ -0,0 +1,339 @@
 +"""Emit an Open Knowledge Format (v0.2) bundle from kgen claims, with switches for what goes in it.
 +
 +The bundle is a pure function of claims.jsonl and manifest.json, so it is as deterministic as the claims.
@@ -152,12 +152,13 @@ index 0000000..0b93211
 +`okf/` is an Open Knowledge Format bundle generated from this repository's source: one markdown file per module with its types, functions, call edges and the file and line each came from. Start at `okf/index.md`. Use it to find your way around, then read the source to confirm before you rely on it.
 +"""
 +POINTER_STALE = "\nA concept whose `stale_after` time has passed describes source that has changed since it was generated; re-check it against the source.\n"
++POINTER_CONFIDENCE = "\nEntries marked `[medium]` are heuristic guesses, not facts read from the code. When your answer relies on one, say so.\n"
 +POINTER_REFERENCES = "\n`okf/references/` holds bundles of other repositories this one depends on, copied in as they were when generated.\n"
 +
 +
 +def pointer(cfg: "Config") -> str:
 +    """The AGENTS.md text that goes with a bundle. The first paragraph's last sentence is the part that measurably stops stale claims being followed."""
-+    return POINTER + (POINTER_STALE if cfg.stale_files or cfg.stale_after_days else "") + (POINTER_REFERENCES if cfg.references else "")
++    return POINTER + (POINTER_STALE if cfg.stale_files or cfg.stale_after_days else "") + (POINTER_CONFIDENCE if cfg.line_tags else "") + (POINTER_REFERENCES if cfg.references else "")
 +
 +
 +PRESETS = {
@@ -472,10 +473,10 @@ index 2fb6743..42075a6 100644
 +    assert routes == ["route:GET /api/x", "route:GET /api/y", "route:POST /api", "route:POST /api/login"], routes
 diff --git a/.apm/skills/agent-graph/tool/tests/test_okf.py b/.apm/skills/agent-graph/tool/tests/test_okf.py
 new file mode 100644
-index 0000000..3bbfda7
+index 0000000..65abb58
 --- /dev/null
 +++ b/.apm/skills/agent-graph/tool/tests/test_okf.py
-@@ -0,0 +1,131 @@
+@@ -0,0 +1,136 @@
 +import re
 +import subprocess
 +import sys
@@ -607,3 +608,8 @@ index 0000000..3bbfda7
 +    assert "/api/v1/items/{id}" in files["routes.md"] and "ItemController.get" in files["routes.md"]
 +    assert "`ItemController.name: String`" in files["modules/com.acme.web.md"]
 +    assert "ItemController.get(" in files["modules/com.acme.web.md"] and "[HTTP routes](/routes.md)" in files["index.md"]
++
++
++def test_pointer_asks_the_reader_to_say_when_it_relies_on_a_medium_entry_only_when_lines_are_tagged():
++    assert "relies on one, say so" not in okf.pointer(okf.Config())
++    assert "relies on one, say so" in okf.pointer(okf.Config(line_tags=True))

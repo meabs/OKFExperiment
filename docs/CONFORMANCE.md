@@ -17,10 +17,15 @@ There is no official validator or JSON schema; the spec is prose, and the checke
 | Bundle | Concepts | MUST findings | SHOULD findings | Reference parser |
 | --- | --- | --- | --- | --- |
 | `click` | 32 | 0 | 0 | all parse and validate; all `unverified` |
+| `click-with-confidence` (`[high]`/`[medium]` marks on each line) | 32 | 0 | 0 | not run |
 | `click-after-drift` | 32 | 0 | 0 | the two changed concepts are stale, no others |
 | `ledger-lib` | 6 | 0 | 0 | all parse and validate |
 | `invoice-service` (with the mirrored library) | 8 | 0 | 0 | all parse and validate |
 | `shopizer` (Java: package concepts and a routes concept) | 313 packages, 1 routes concept | 0 | 0 | not run |
+
+## Confidence labels are an extension
+
+OKF v0.2 has no field for the confidence of an individual fact (its trust fields describe a whole concept: `generated`, `verified`, `status`, `stale_after`). The `[high]`/`[medium]` marks at the end of each line are our extension, written in the body, so a consumer that does not know them reads them as plain text and the bundle stays conformant.
 
 ## What was wrong in the first version
 

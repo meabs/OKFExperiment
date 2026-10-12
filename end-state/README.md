@@ -7,6 +7,7 @@ The recommended output, generated with `kgen okf --preset recommended` (see [../
 | Folder | What it is |
 | --- | --- |
 | [`click/`](click/) | Click at the pinned commit `2247b35`. 33 concept files, one per module. |
+| [`click-with-confidence/`](click-with-confidence/) | The same Click guide with confidence labels: each line ends with `[high]` (stated in the source) or `[medium]` (a heuristic guess, such as a call target), and the agent-instruction file asks the reader to say when its answer relies on a `[medium]` entry. |
 | [`click-after-drift/`](click-after-drift/) | The same bundle checked against the refactored Click (`kgen okf --stale-against`): the two concepts whose source changed (`click.core`, `click.shell_completion`) carry a past `stale_after`, and the pointer says what that means. |
 | [`ledger-lib/`](ledger-lib/) | The library repository of the cross-repo pair. |
 | [`shopizer/`](shopizer/) | The real Shopizer backend (Java, 1,173 source files): 315 files, one concept per package, a `routes.md` with all 325 routes and their handlers, and each type's fields. About 4 MB. The experiment used a copy with the question-relevant identifiers renamed; this one is unmodified. |

@@ -1,0 +1,10 @@
+import assert from "node:assert/strict";
+const m = await import(process.cwd() + "/src/util/cartRequest.mjs");
+const a = m.buildAddToCartRequest({ sku: "SKU-1", quantity: 2 });
+assert.equal(a.method, "POST"); assert.match(a.path, /^cart\/?(\?|$)/);
+assert.equal(a.body.product, "SKU-1"); assert.equal(a.body.quantity, 2);
+assert.ok(!("voucher" in a.body) || a.body.voucher === undefined, "no discount field when none is given");
+const b = m.buildAddToCartRequest({ cartId: "abc123", sku: "SKU-1", quantity: 1, voucher: "SAVE10" });
+assert.equal(b.method, "PUT"); assert.match(b.path, /^cart\/abc123/);
+assert.equal(b.body.voucher, "SAVE10");
+console.log("ok");
