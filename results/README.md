@@ -24,3 +24,5 @@ Each file is the unedited report AgentTrialRig produced for one trial. "Relative
 A first cross-repo run used the v1 pointer and was stopped part-way; it is not reported.
 
 To count stale-following yourself: `python scripts/analyse_b.py <results folder>` (B) `python scripts/analyse_d2.py <results folder>` (D2) or `python scripts/analyse_e.py <results folder>` (E); for H, `python scripts/analyse_h.py <results folder> [--exclude REGEX]` and `python scripts/net_check.py <results folder>`. To count runs that reached outside their own workspace: `python scripts/leak_check.py <results folder>`.
+
+| `archive/H3-first-run-contaminated.tgz` | First H3 run (service in a findable folder; 14 of 64 non-source runs opened it). Kept for the record, not reported. |
