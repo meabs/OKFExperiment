@@ -1,5 +1,7 @@
 # Raw reports
 
+> **Terms.** A *bundle* is OKF's name for a generated guide to a codebase: a folder of markdown files, one per module or package, listing what it contains and where each fact came from. The [main README](../README.md) calls it a *guide*.
+
 Each file is the unedited report AgentTrialRig produced for one trial. "Relative cost" is each run's tokens divided by the no-bundle (or stated baseline) mean for the same question; 1.00 means equal, lower is cheaper. The write-up that interprets them is [../docs/RESULTS.md](../docs/RESULTS.md).
 
 | File | Trial | Runs | Notes |

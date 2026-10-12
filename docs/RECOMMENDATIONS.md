@@ -1,5 +1,7 @@
 # OKF recommendations
 
+> **Terms.** A *bundle* is OKF's name for a generated guide to a codebase: a folder of markdown files, one per module or package, listing what it contains and where each fact came from. The [main README](../README.md) calls it a *guide*.
+
 What the data supports, in order of how much it matters. Every claim points at a table in [RESULTS.md](RESULTS.md). All of it was measured on one model (Codex `gpt-5.6-luna`), so treat these as defaults to test on your own agent, not as laws.
 
 The five experiments fit one picture: **a bundle's value depends on whether the agent can read the source it describes.**

@@ -1,5 +1,7 @@
 # Results
 
+> **Terms.** A *bundle* is OKF's name for a generated guide to a codebase: a folder of markdown files, one per module or package, listing what it contains and where each fact came from. The [main README](../README.md) calls it a *guide*.
+
 Codex `gpt-5.6-luna` (medium reasoning), AgentTrialRig 0.6.1. Bundles come from `kgen okf` (deterministic, no language model; [how to get it](../README.md#reproducing)). Raw reports are in [`../results/`](../results/). Read anything under 8 runs per arm as provisional; intervals are 95%.
 
 ## A. Which bundle shape? (Click, 5 questions and 3 change tasks)

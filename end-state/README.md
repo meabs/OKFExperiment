@@ -1,5 +1,7 @@
 # End-state bundles
 
+> **Terms.** A *bundle* is OKF's name for a generated guide to a codebase: a folder of markdown files, one per module or package, listing what it contains and where each fact came from. The [main README](../README.md) calls it a *guide*.
+
 The recommended output, generated with `kgen okf --preset recommended` (see [../docs/RECOMMENDATIONS.md](../docs/RECOMMENDATIONS.md)). Each folder has the bundle (`okf/`) and the `AGENTS.md` pointer that goes beside it. The pointer's last sentence ("read the source to confirm before you rely on it") is the part the experiments found to matter.
 
 | Folder | What it is |

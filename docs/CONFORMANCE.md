@@ -1,5 +1,7 @@
 # Conformance with the OKF v0.2 spec
 
+> **Terms.** A *bundle* is OKF's name for a generated guide to a codebase: a folder of markdown files, one per module or package, listing what it contains and where each fact came from. The [main README](../README.md) calls it a *guide*.
+
 **Short answer:** the end-state bundles are conformant with OKF v0.2 as the spec defines it (§11), and they now pass a stricter check of the spec's SHOULD-level rules too. The first version did not: it was conformant, but it filled two optional fields in ways the spec does not intend, and it had one latent bug. Those were found by checking against the spec text and the reference parser, and fixed.
 
 ## What was checked, and against what
