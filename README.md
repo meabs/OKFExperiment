@@ -2,7 +2,7 @@
 
 **Does giving a coding agent a generated guide to a codebase help it, and does marking each fact with a confidence level help more?**
 
-A coding agent has to work out a codebase before it can change it. We generated a **guide** from source code with a script (no language model): a folder of markdown files, one per module or package, listing its classes, functions, routes and what it calls, with the file and line each fact came from. The file format is [OKF](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md) (Open Knowledge Format), which calls such a folder a *bundle*; this page says *guide*. We gave guides to OpenAI's Codex (`gpt-5.6-luna`) while it answered questions about code and made code changes. About 1,200 runs in total.
+A coding agent has to work out a codebase before it can change it. We generated a **guide** from source code with a script (no language model): a folder of markdown files, one per module or package, listing its classes, functions, routes and what it calls, with the file and line each fact came from. The file format is [OKF](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md) (Open Knowledge Format), which calls such a folder a *bundle*; this page says *guide*. We gave guides to OpenAI's Codex (`gpt-5.6-luna`) while it answered questions about code and made code changes. About 1,480 runs in total.
 
 [The four conditions](#the-four-conditions) · [Results at a glance](#results-at-a-glance) · [What to do](#what-to-do) · [Recommended layout](#recommended-layout-and-approach) · [Each test](#each-test) · [Detailed analysis](#detailed-analysis) · [Example](#what-a-guide-looks-like) · [Is it valid OKF?](#is-it-valid-okf) · [Limits](#limits) · [Reproduce](#reproducing) · [Files](#repository-layout)
 
@@ -40,7 +40,7 @@ The headline: **where the agent cannot read the code, a guide takes cross-repo c
 
 In order of importance. One model and limited tests, so try it on your own agent before relying on it.
 
-1. **Use a guide where the agent cannot read the code**: a private service, a copied-in dependency, another team's repository. In the harder cross-repo change test it matched having the real source (18 of 20 each, against 3 of 20 with nothing). Where the agent can search the code, do not expect it to save anything (test A).
+1. **Where the agent cannot read a dependency's source, supply an authoritative, versioned contract first. Add structural knowledge (a guide) only where the task cannot be done from the contract.** A private service, a copied-in dependency and another team's repository all count. Anything beats nothing: in the harder cross-repo change test a guide matched having the real source (18 of 20 each, against 3 of 20 with nothing). But for interface changes, a contract or a 3 KB note did as well as a guide and cost less (test H1: 13, 14 and 14 of 16, against 4 of 16 with nothing; the note used 128k tokens per run, the guide 282k). A guide earned its place on questions about what calls what (test H2: 21 of 24, against 8 for the contract and 0 for the note). Where the agent can search the code, do not expect a guide to save anything (test A).
 2. **Keep a copied-in guide current automatically.** Regenerate it whenever the dependency changes, and have your build check that the source files it was made from have not changed (each file records a SHA-256 hash for this). Out-of-date guides were repeated as fact in 14 to 16 of 16 answers, and neither warnings nor an expiry date helped (test D).
 3. **Use confidence labels to make the agent disclose guesses, not to make it right.** With the instruction, agents said they were relying on a `[medium]` guess in 6 of 8 wrong answers; without it, in none. Labels alone changed nothing. Only mark `[high]` what is truly stated in the source: a wrong fact labelled `[high]` was trusted every time (test E).
 4. **Where the agent can read the code, add one sentence to its instructions:** "read the source to confirm before you rely on it." It stopped the agent repeating old facts (8 of 12 down to 0 of 12) at no extra cost (test B).
@@ -58,7 +58,7 @@ This is the setup we would use, and what each choice rests on. Where a choice wa
 | Situation | Guide? | Why |
 | --- | --- | --- |
 | The agent works in this repo and can search it | Usually no | No gain in accuracy; 7 to 30% more tokens (test A). A very large repo might differ; untested. |
-| The agent needs facts from **another repo it cannot read** (a private service, another team's code, a vendored dependency) | **Yes**, copy that repo's guide in | 3 of 20 changes pass without it, 18 or 19 of 20 with it, about the same as having the source (tests D, F, G). |
+| The agent needs facts from **another repo it cannot read** (a private service, another team's code, a vendored dependency) | **Yes**: copy in its contract first (or a short note). Add its guide when tasks depend on call structure | 3 of 20 changes pass with nothing, 18 or 19 of 20 with a guide, about the same as having the source (tests D, F, G). A contract or note did as well as a guide on interface changes (test H1); only a guide or the source answered call-structure questions (test H2). |
 | The agent needs facts from another repo it **can** read | No | About 25% more tokens, no accuracy gain (test C). |
 
 ### Step 2. The layout
