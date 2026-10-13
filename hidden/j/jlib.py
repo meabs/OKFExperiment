@@ -42,6 +42,13 @@ def apply(src: bytes, task: dict, sites: list) -> bytes:
     root = P.parse(src).root_node
     edits = []  # (start, end, replacement)
     for s in sites:
+        if s["kind"] == "string":  # a string literal that names the method, such as an AspectJ pointcut
+            hit = [n for n in _walk(root) if n.type == "string_literal" and n.start_point[0] + 1 == s["line"] and ("." + task["name"] + "(") in n.text.decode()]
+            if not hit:
+                raise ValueError(f"string site not found: {s}")
+            for n in hit:
+                edits.append((n.start_byte, n.end_byte, n.text.replace(("." + task["name"] + "(").encode(), ("." + task["new"] + "(").encode())))
+            continue
         n = find(root, "method_declaration" if s["kind"] == "decl" else "method_invocation", task["name"], s["line"])
         if n is None:
             raise ValueError(f"site not found: {s} for {task['name']}")

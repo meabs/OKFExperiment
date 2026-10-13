@@ -355,6 +355,18 @@ Four renames of a method with a common name (`findOne`, `saveOrUpdate` twice, `t
 
 Failures were concentrated in the two `saveOrUpdate` renames and were missed calls or edits to callers of a different class, in both arms. The first batch was graded with a rule that was too strict and is discarded; both batches are published.
 
+### Test J. A repository set up for agents against one left as it is: no reliable gain, and about 48% more tokens
+
+The same 1,173-file backend, readable. `plain` had nothing added. `optimised` had the recommended guide in `okf/`, the code graph and its `kg` tool in `.agent-knowledge/`, three operating skills in `.agents/skills/` (`navigate-the-repo`, `change-the-code`, `check-your-work`: how to work here, not about the technology; the source is in [`../fixtures/operating-skills/`](../fixtures/operating-skills/)) and an `AGENTS.md` that points to all of them. Four changes (a cross-module rename over seven implementations, one overload out of six, removing an unused parameter from six implementations, and a 58-file rename of a generic base method with 105 sites) and three questions, 8 runs each per arm, 112 runs, isolated. Plan, deviations and results: [EXPERIMENT_J.md](EXPERIMENT_J.md).
+
+| | `plain` | `optimised` |
+| --- | --- | --- |
+| Changes (of 32) | 28 | 29 (p = 1.0) |
+| Questions (of 24) | 16 | 19 (p = 0.52) |
+| Tokens per run | 297k | 401k (1.48 times, interval 1.38 to 1.60, reliably more) |
+
+The agents used the setup (graph and guide in every optimised run). The hard rename passed 4 of 8 plain and 6 of 8 optimised, not a reliable difference. The grader missed four AspectJ pointcut strings that all 16 runs had updated; the runs were re-scored from their saved diffs.
+
 ## Detailed analysis
 
 This section explains what the numbers mean, why we think they came out this way, and how far to trust them.

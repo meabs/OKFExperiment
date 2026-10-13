@@ -1,0 +1,576 @@
+j7_rename_entity_delete: 57 of 57 files correct; 1 other files wrongly changed
+sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/PublishProductAspect.java
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/PublishProductAspect.java b/sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/PublishProductAspect.java
+index 0cd6979..f2e0059 100644
+--- a/sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/PublishProductAspect.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/PublishProductAspect.java
+@@ -70 +70 @@ public class PublishProductAspect {
+-	@After("execution(* com.salesmanager.core.business.services.catalog.product.ProductService.delete(com.salesmanager.core.model.catalog.product.Product))")
++	@After("execution(* com.salesmanager.core.business.services.catalog.product.ProductService.removeEntity(com.salesmanager.core.model.catalog.product.Product))")
+@@ -93 +93 @@ public class PublishProductAspect {
+-	@After("execution(* com.salesmanager.core.business.services.catalog.product.variant.ProductVariantService.delete(com.salesmanager.core.model.catalog.product.variant.ProductVariant))")
++	@After("execution(* com.salesmanager.core.business.services.catalog.product.variant.ProductVariantService.removeEntity(com.salesmanager.core.model.catalog.product.variant.ProductVariant))")
+@@ -114 +114 @@ public class PublishProductAspect {
+-	@After("execution(* com.salesmanager.core.business.services.catalog.product.image.ProductImageService.delete(com.salesmanager.core.model.catalog.product.image.ProductImage))")
++	@After("execution(* com.salesmanager.core.business.services.catalog.product.image.ProductImageService.removeEntity(com.salesmanager.core.model.catalog.product.image.ProductImage))")
+@@ -136 +136 @@ public class PublishProductAspect {
+-	@After("execution(* com.salesmanager.core.business.services.catalog.product.attribute.ProductAttributeService.delete(com.salesmanager.core.model.catalog.product.attribute.ProductAttribute))")
++	@After("execution(* com.salesmanager.core.business.services.catalog.product.attribute.ProductAttributeService.removeEntity(com.salesmanager.core.model.catalog.product.attribute.ProductAttribute))")
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogService.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogService.java
+index 93ca67a..13a49da 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogService.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogService.java
+@@ -39 +39 @@ public interface CatalogService extends SalesManagerEntityService<Long, Catalog>
+-	void delete(Catalog catalog) throws ServiceException;
++	void removeEntity(Catalog catalog) throws ServiceException;
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogServiceImpl.java
+index 4af2d85..9850f02 100644
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogServiceImpl.java
+@@ -52 +52 @@ implements CatalogService {
+-	public void delete(Catalog catalog) throws ServiceException {
++	public void removeEntity(Catalog catalog) throws ServiceException {
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/category/CategoryServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/category/CategoryServiceImpl.java
+index 36a1aeb..1e41b27 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/category/CategoryServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/category/CategoryServiceImpl.java
+@@ -231 +231 @@ public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Cat
+-	public void delete(Category category) throws ServiceException {
++	public void removeEntity(Category category) throws ServiceException {
+@@ -271 +271 @@ public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Cat
+-						productService.delete(dbProduct);
++						productService.removeEntity(dbProduct);
+@@ -275 +275 @@ public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Cat
+-					productService.delete(dbProduct);
++					productService.removeEntity(dbProduct);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/marketplace/MarketPlaceService.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/marketplace/MarketPlaceService.java
+index 2e7d688..cb5a627 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/marketplace/MarketPlaceService.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/marketplace/MarketPlaceService.java
+@@ -28 +28 @@ public interface MarketPlaceService extends SalesManagerEntityService<Long, Mark
+-	void delete(MarketPlace marketPlace) throws ServiceException;
++	void removeEntity(MarketPlace marketPlace) throws ServiceException;
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java
+index 883ae07..146058e 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java
+@@ -215 +215 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
+-	public void delete(Product product) throws ServiceException {
++	public void removeEntity(Product product) throws ServiceException {
+@@ -233 +233 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
+-			productReviewService.delete(review);
++			productReviewService.removeEntity(review);
+@@ -242 +242 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
+-		super.delete(product);
++		super.removeEntity(product);
+@@ -322 +322 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
+-							productImageService.delete(image);
++							productImageService.removeEntity(image);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductAttributeServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductAttributeServiceImpl.java
+index 9760b52..2856598 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductAttributeServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductAttributeServiceImpl.java
+@@ -94 +94 @@ public class ProductAttributeServiceImpl extends SalesManagerEntityServiceImpl<L
+-	public void delete(ProductAttribute attribute) throws ServiceException {
++	public void removeEntity(ProductAttribute attribute) throws ServiceException {
+@@ -99 +99 @@ public class ProductAttributeServiceImpl extends SalesManagerEntityServiceImpl<L
+-		super.delete(attribute);
++		super.removeEntity(attribute);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionServiceImpl.java
+index 1962254..5ea194c 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionServiceImpl.java
+@@ -85 +85 @@ public class ProductOptionServiceImpl extends
+-	public void delete(ProductOption entity) throws ServiceException {
++	public void removeEntity(ProductOption entity) throws ServiceException {
+@@ -91 +91 @@ public class ProductOptionServiceImpl extends
+-			productAttributeService.delete(attribute);
++			productAttributeService.removeEntity(attribute);
+@@ -97 +97 @@ public class ProductOptionServiceImpl extends
+-		super.delete(option);
++		super.removeEntity(option);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionValueServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionValueServiceImpl.java
+index d49eddf..0b83c56 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionValueServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionValueServiceImpl.java
+@@ -86 +86 @@ public class ProductOptionValueServiceImpl extends
+-	public void delete(ProductOptionValue entity) throws ServiceException {
++	public void removeEntity(ProductOptionValue entity) throws ServiceException {
+@@ -92 +92 @@ public class ProductOptionValueServiceImpl extends
+-			productAttributeService.delete(attribute);
++			productAttributeService.removeEntity(attribute);
+@@ -98 +98 @@ public class ProductOptionValueServiceImpl extends
+-		super.delete(option);
++		super.removeEntity(option);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/file/DigitalProductServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/file/DigitalProductServiceImpl.java
+index c3d9e1e..ecc86cc 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/file/DigitalProductServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/file/DigitalProductServiceImpl.java
+@@ -81 +81 @@ public class DigitalProductServiceImpl extends SalesManagerEntityServiceImpl<Lon
+-	public void delete(DigitalProduct digitalProduct) throws ServiceException {
++	public void removeEntity(DigitalProduct digitalProduct) throws ServiceException {
+@@ -87 +87 @@ public class DigitalProductServiceImpl extends SalesManagerEntityServiceImpl<Lon
+-		super.delete(digitalProduct);
++		super.removeEntity(digitalProduct);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/image/ProductImageServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/image/ProductImageServiceImpl.java
+index 7e55d99..588c12e 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/image/ProductImageServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/image/ProductImageServiceImpl.java
+@@ -176 +176 @@ public class ProductImageServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-		delete(p);
++		removeEntity(p);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerService.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerService.java
+index 65a70e7..f99c3a9 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerService.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerService.java
+@@ -30 +30 @@ public interface ManufacturerService extends SalesManagerEntityService<Long, Man
+-	void delete(Manufacturer manufacturer) throws ServiceException;
++  void removeEntity(Manufacturer manufacturer) throws ServiceException;
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerServiceImpl.java
+index 03cb476..4d72d0f 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerServiceImpl.java
+@@ -45 +45 @@ public class ManufacturerServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-  public void delete(Manufacturer manufacturer) throws ServiceException {
++  public void removeEntity(Manufacturer manufacturer) throws ServiceException {
+@@ -47 +47 @@ public class ManufacturerServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-    super.delete(manufacturer);
++    super.removeEntity(manufacturer);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/price/ProductPriceServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/price/ProductPriceServiceImpl.java
+index 4a62846..42ffbc7 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/price/ProductPriceServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/price/ProductPriceServiceImpl.java
+@@ -50 +50 @@ public class ProductPriceServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-	public void delete(ProductPrice price) throws ServiceException {
++	public void removeEntity(ProductPrice price) throws ServiceException {
+@@ -54 +54 @@ public class ProductPriceServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-		super.delete(price);
++		super.removeEntity(price);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/relationship/ProductRelationshipServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/relationship/ProductRelationshipServiceImpl.java
+index 6c72269..8ba9b9e 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/relationship/ProductRelationshipServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/relationship/ProductRelationshipServiceImpl.java
+@@ -65 +65 @@ public class ProductRelationshipServiceImpl extends
+-			this.delete(relation);
++			this.removeEntity(relation);
+@@ -92 +92 @@ public class ProductRelationshipServiceImpl extends
+-			delete(relationship);
++			removeEntity(relationship);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantServiceImpl.java
+index 7dc6b1b..b654ecd 100644
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantServiceImpl.java
+@@ -88,2 +88,2 @@ public class ProductVariantServiceImpl extends SalesManagerEntityServiceImpl<Lon
+-	public void delete(ProductVariant instance) throws ServiceException{
+-		super.delete(instance);
++	public void removeEntity(ProductVariant instance) throws ServiceException{
++		super.removeEntity(instance);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityService.java b/sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityService.java
+index 23f409b..76dd66d 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityService.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityService.java
+@@ -49 +49 @@ public interface SalesManagerEntityService<K extends Serializable & Comparable<K
+-	void delete(E entity) throws ServiceException;
++	void removeEntity(E entity) throws ServiceException;
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityServiceImpl.java
+index 994bbfc..d764de7 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityServiceImpl.java
+@@ -63 +63 @@ public abstract class SalesManagerEntityServiceImpl<K extends Serializable & Com
+-	public void delete(E entity) throws ServiceException {
++	public void removeEntity(E entity) throws ServiceException {
+@@ -87 +87 @@ public abstract class SalesManagerEntityServiceImpl<K extends Serializable & Com
+-}
+\ No newline at end of file
++}
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/content/ContentServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/content/ContentServiceImpl.java
+index d1ae393..661309e 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/content/ContentServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/content/ContentServiceImpl.java
+@@ -66 +66 @@ public class ContentServiceImpl extends SalesManagerEntityServiceImpl<Long, Cont
+-	public void delete(Content content) throws ServiceException {
++	public void removeEntity(Content content) throws ServiceException {
+@@ -69 +69 @@ public class ContentServiceImpl extends SalesManagerEntityServiceImpl<Long, Cont
+-		super.delete(c);
++		super.removeEntity(c);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/customer/CustomerServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/customer/CustomerServiceImpl.java
+index 1c80bad..cb5da3e 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/customer/CustomerServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/customer/CustomerServiceImpl.java
+@@ -100 +100 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
+-	public void delete(Customer customer) throws ServiceException {
++	public void removeEntity(Customer customer) throws ServiceException {
+@@ -107 +107 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
+-				customerAttributeService.delete(attribute);
++				customerAttributeService.removeEntity(attribute);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerAttributeServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerAttributeServiceImpl.java
+index 8b8a89b..b48db6d 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerAttributeServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerAttributeServiceImpl.java
+@@ -44 +44 @@ public class CustomerAttributeServiceImpl extends
+-	public void delete(CustomerAttribute attribute) throws ServiceException {
++	public void removeEntity(CustomerAttribute attribute) throws ServiceException {
+@@ -48 +48 @@ public class CustomerAttributeServiceImpl extends
+-		super.delete(attribute);
++		super.removeEntity(attribute);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionServiceImpl.java
+index 0205b98..bd0ade0 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionServiceImpl.java
+@@ -64 +64 @@ public class CustomerOptionServiceImpl extends
+-	public void delete(CustomerOption customerOption) throws ServiceException {
++	public void removeEntity(CustomerOption customerOption) throws ServiceException {
+@@ -70 +70 @@ public class CustomerOptionServiceImpl extends
+-			customerAttributeService.delete(attribute);
++			customerAttributeService.removeEntity(attribute);
+@@ -78 +78 @@ public class CustomerOptionServiceImpl extends
+-			customerOptionSetService.delete(optionSet);
++			customerOptionSetService.removeEntity(optionSet);
+@@ -82 +82 @@ public class CustomerOptionServiceImpl extends
+-		super.delete(option);
++		super.removeEntity(option);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionSetServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionSetServiceImpl.java
+index 06725ab..19cde73 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionSetServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionSetServiceImpl.java
+@@ -47 +47 @@ public class CustomerOptionSetServiceImpl extends
+-	public void delete(CustomerOptionSet customerOptionSet) throws ServiceException {
++	public void removeEntity(CustomerOptionSet customerOptionSet) throws ServiceException {
+@@ -49 +49 @@ public class CustomerOptionSetServiceImpl extends
+-		super.delete(customerOptionSet);
++		super.removeEntity(customerOptionSet);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionValueServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionValueServiceImpl.java
+index 14b0baf..724b02d 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionValueServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionValueServiceImpl.java
+@@ -67 +67 @@ public class CustomerOptionValueServiceImpl extends
+-	public void delete(CustomerOptionValue customerOptionValue) throws ServiceException {
++	public void removeEntity(CustomerOptionValue customerOptionValue) throws ServiceException {
+@@ -73 +73 @@ public class CustomerOptionValueServiceImpl extends
+-			customerAttributeService.delete(attribute);
++			customerAttributeService.removeEntity(attribute);
+@@ -79 +79 @@ public class CustomerOptionValueServiceImpl extends
+-			customerOptionSetService.delete(optionSet);
++			customerOptionSetService.removeEntity(optionSet);
+@@ -85 +85 @@ public class CustomerOptionValueServiceImpl extends
+-		super.delete(option);
++		super.removeEntity(option);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderServiceImpl.java
+index b6bac52..0cb37cf 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderServiceImpl.java
+@@ -524 +524 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
+-    public void delete(final Order order) throws ServiceException {
++    public void removeEntity(final Order order) throws ServiceException {
+@@ -527 +527 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
+-        super.delete(order);
++        super.removeEntity(order);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java
+index 6b25968..6dd4f55 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java
+@@ -285 +285 @@ public class PaymentServiceImpl implements PaymentService {
+-				merchantConfigurationService.delete(configuration);
++				merchantConfigurationService.removeEntity(configuration);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
+index 6d58fc3..2a636d6 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
+@@ -307 +307 @@ public class ShippingServiceImpl implements ShippingService {
+-				merchantConfigurationService.delete(configuration);
++				merchantConfigurationService.removeEntity(configuration);
+@@ -327 +327 @@ public class ShippingServiceImpl implements ShippingService {
+-				merchantConfigurationService.delete(merchantConfiguration);
++				merchantConfigurationService.removeEntity(merchantConfiguration);
+@@ -962 +962 @@ public class ShippingServiceImpl implements ShippingService {
+-}
+\ No newline at end of file
++}
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java
+index e0d1ce8..8781669 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java
+@@ -87 +87 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-					delete(shoppingCart);
++					removeEntity(shoppingCart);
+@@ -143 +143 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-				delete(shoppingCart);
++				removeEntity(shoppingCart);
+@@ -194 +194 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-				delete(shoppingCart);
++				removeEntity(shoppingCart);
+@@ -213 +213 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-			super.delete(cart);
++			super.removeEntity(cart);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationServiceImpl.java
+index 10452bf..b4953e6 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationServiceImpl.java
+@@ -60 +60 @@ public class MerchantConfigurationServiceImpl extends
+-	public void delete(MerchantConfiguration merchantConfiguration) throws ServiceException {
++	public void removeEntity(MerchantConfiguration merchantConfiguration) throws ServiceException {
+@@ -63 +63 @@ public class MerchantConfigurationServiceImpl extends
+-			super.delete(config);
++			super.removeEntity(config);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/system/ModuleConfigurationServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/system/ModuleConfigurationServiceImpl.java
+index d61b8b3..419a9db 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/system/ModuleConfigurationServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/system/ModuleConfigurationServiceImpl.java
+@@ -177 +177 @@ public class ModuleConfigurationServiceImpl extends SalesManagerEntityServiceImp
+-					this.delete(m);
++					this.removeEntity(m);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxClassServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxClassServiceImpl.java
+index 38faeea..8f803e8 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxClassServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxClassServiceImpl.java
+@@ -45 +45 @@ public class TaxClassServiceImpl extends SalesManagerEntityServiceImpl<Long, Tax
+-	public void delete(TaxClass taxClass) throws ServiceException {
++	public void removeEntity(TaxClass taxClass) throws ServiceException {
+@@ -48 +48 @@ public class TaxClassServiceImpl extends SalesManagerEntityServiceImpl<Long, Tax
+-		super.delete(t);
++		super.removeEntity(t);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxRateServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxRateServiceImpl.java
+index 7606366..01b3604 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxRateServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxRateServiceImpl.java
+@@ -61 +61 @@ public class TaxRateServiceImpl extends SalesManagerEntityServiceImpl<Long, TaxR
+-	public void delete(TaxRate taxRate) throws ServiceException {
++	public void removeEntity(TaxRate taxRate) throws ServiceException {
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/user/PermissionServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/user/PermissionServiceImpl.java
+index b2c8ed0..ebe886f 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/user/PermissionServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/user/PermissionServiceImpl.java
+@@ -55 +55 @@ public class PermissionServiceImpl extends
+-		this.delete(permission);
++		this.removeEntity(permission);
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/user/UserServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/user/UserServiceImpl.java
+index dd14409..1f86ce9 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/user/UserServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/user/UserServiceImpl.java
+@@ -47 +47 @@ public class UserServiceImpl extends SalesManagerEntityServiceImpl<Long, User> i
+-	public void delete(User user) throws ServiceException {
++	public void removeEntity(User user) throws ServiceException {
+@@ -49 +49 @@ public class UserServiceImpl extends SalesManagerEntityServiceImpl<Long, User> i
+-		super.delete(u);
++		super.removeEntity(u);
+diff --git a/sm-core/src/test/java/com/salesmanager/test/catalog/CategoryTest.java b/sm-core/src/test/java/com/salesmanager/test/catalog/CategoryTest.java
+index 95f92c7..e4379c3 100755
+--- a/sm-core/src/test/java/com/salesmanager/test/catalog/CategoryTest.java
++++ b/sm-core/src/test/java/com/salesmanager/test/catalog/CategoryTest.java
+@@ -61 +61 @@ public class CategoryTest extends com.salesmanager.test.common.AbstractSalesMana
+-	    categoryService.delete(materingstuff);
++	    categoryService.removeEntity(materingstuff);
+@@ -67 +67 @@ public class CategoryTest extends com.salesmanager.test.common.AbstractSalesMana
+-}
+\ No newline at end of file
++}
+diff --git a/sm-core/src/test/java/com/salesmanager/test/catalog/ProductTest.java b/sm-core/src/test/java/com/salesmanager/test/catalog/ProductTest.java
+index 31568b5..18f0a16 100755
+--- a/sm-core/src/test/java/com/salesmanager/test/catalog/ProductTest.java
++++ b/sm-core/src/test/java/com/salesmanager/test/catalog/ProductTest.java
+@@ -346 +346 @@ public class ProductTest extends com.salesmanager.test.common.AbstractSalesManag
+-		productService.delete(refreshed);
++		productService.removeEntity(refreshed);
+@@ -682 +682 @@ public class ProductTest extends com.salesmanager.test.common.AbstractSalesManag
+-}
+\ No newline at end of file
++}
+diff --git a/sm-core/src/test/java/com/salesmanager/test/customer/CustomerTest.java b/sm-core/src/test/java/com/salesmanager/test/customer/CustomerTest.java
+index 6c54078..2130aab 100755
+--- a/sm-core/src/test/java/com/salesmanager/test/customer/CustomerTest.java
++++ b/sm-core/src/test/java/com/salesmanager/test/customer/CustomerTest.java
+@@ -215 +215 @@ public class CustomerTest extends com.salesmanager.test.common.AbstractSalesMana
+-		customerService.delete(customer);
++		customerService.removeEntity(customer);
+diff --git a/sm-core/src/test/java/com/salesmanager/test/shoppingcart/ShoppingCartTest.java b/sm-core/src/test/java/com/salesmanager/test/shoppingcart/ShoppingCartTest.java
+index 531d2ac..3cccaf9 100755
+--- a/sm-core/src/test/java/com/salesmanager/test/shoppingcart/ShoppingCartTest.java
++++ b/sm-core/src/test/java/com/salesmanager/test/shoppingcart/ShoppingCartTest.java
+@@ -256 +256 @@ public class ShoppingCartTest extends com.salesmanager.test.common.AbstractSales
+-	    shoppingCartService.delete(retrievedCart);
++	    shoppingCartService.removeEntity(retrievedCart);
+@@ -264 +264 @@ public class ShoppingCartTest extends com.salesmanager.test.common.AbstractSales
+-	    categoryService.delete(shirts);
++	    categoryService.removeEntity(shirts);
+@@ -269 +269 @@ public class ShoppingCartTest extends com.salesmanager.test.common.AbstractSales
+-}
+\ No newline at end of file
++}
+diff --git a/sm-core/src/test/java/com/salesmanager/test/utils/ImportIntegrationModule.java b/sm-core/src/test/java/com/salesmanager/test/utils/ImportIntegrationModule.java
+index 2c25d50..7a097e1 100755
+--- a/sm-core/src/test/java/com/salesmanager/test/utils/ImportIntegrationModule.java
++++ b/sm-core/src/test/java/com/salesmanager/test/utils/ImportIntegrationModule.java
+@@ -72 +72 @@ public class ImportIntegrationModule  {
+-					moduleCongigurationService.delete(m);
++					moduleCongigurationService.removeEntity(m);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductImageApi.java b/sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductImageApi.java
+index fc467d6..bc9dd07 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductImageApi.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductImageApi.java
+@@ -159 +159 @@ public class ProductImageApi {
+-				productImageService.delete(productImage);
++				productImageService.removeEntity(productImage);
+@@ -183 +183 @@ public class ProductImageApi {
+-					productImageService.delete(productImage.get());
++				productImageService.removeEntity(productImage.get());
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java
+index 60fbf4b..0655855 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java
+@@ -801 +801 @@ public class CustomerFacadeImpl implements CustomerFacade {
+-      customerReviewService.delete(review);
++			customerReviewService.removeEntity(review);
+@@ -942 +942 @@ public class CustomerFacadeImpl implements CustomerFacade {
+-      customerService.delete(entity);
++			customerService.removeEntity(entity);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacadeImpl.java
+index 9834139..654b60e 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacadeImpl.java
+@@ -292 +292 @@ public class StoreFacadeImpl implements StoreFacade {
+-			merchantStoreService.delete(mStore);
++			merchantStoreService.removeEntity(mStore);
+@@ -425 +425 @@ public class StoreFacadeImpl implements StoreFacade {
+-						merchantConfigurationService.delete(config);
++						merchantConfigurationService.removeEntity(config);
+@@ -584 +584 @@ public class StoreFacadeImpl implements StoreFacade {
+-}
+\ No newline at end of file
++}
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/catalog/CatalogFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/catalog/CatalogFacadeImpl.java
+index 013bae3..29a087c 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/catalog/CatalogFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/catalog/CatalogFacadeImpl.java
+@@ -91 +91 @@ public class CatalogFacadeImpl implements CatalogFacade {
+-            catalogService.delete(c);
++			catalogService.removeEntity(c);
+@@ -228 +228 @@ public class CatalogFacadeImpl implements CatalogFacade {
+-            catalogEntryService.delete(entry);
++			catalogEntryService.removeEntity(entry);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/category/CategoryFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/category/CategoryFacadeImpl.java
+index 3d9067d..d86aa26 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/category/CategoryFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/category/CategoryFacadeImpl.java
+@@ -307 +307 @@ public class CategoryFacadeImpl implements CategoryFacade {
+-			categoryService.delete(category);
++			categoryService.removeEntity(category);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/content/ContentFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/content/ContentFacadeImpl.java
+index bc2a7ac..5d9ff5f 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/content/ContentFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/content/ContentFacadeImpl.java
+@@ -762 +762 @@ public class ContentFacadeImpl implements ContentFacade {
+-			contentService.delete(content);
++			contentService.removeEntity(content);
+@@ -892 +892 @@ public class ContentFacadeImpl implements ContentFacade {
+-			contentService.delete(content);
++			contentService.removeEntity(content);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/items/ProductItemsFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/items/ProductItemsFacadeImpl.java
+index 4b0f6ed..d1d64fc 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/items/ProductItemsFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/items/ProductItemsFacadeImpl.java
+@@ -196 +196 @@ public class ProductItemsFacadeImpl implements ProductItemsFacade {
+-			productRelationshipService.delete(r);
++			productRelationshipService.removeEntity(r);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/manufacturer/ManufacturerFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/manufacturer/ManufacturerFacadeImpl.java
+index a03a559..2b7a78c 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/manufacturer/ManufacturerFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/manufacturer/ManufacturerFacadeImpl.java
+@@ -117 +117 @@ public class ManufacturerFacadeImpl implements ManufacturerFacade {
+-    manufacturerService.delete(manufacturer);
++    manufacturerService.removeEntity(manufacturer);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java
+index cd3d302..1da6080 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java
+@@ -222 +222 @@ public class ProductCommonFacadeImpl implements ProductCommonFacade {
+-		productService.delete(product);
++		productService.removeEntity(product);
+@@ -324 +324 @@ public class ProductCommonFacadeImpl implements ProductCommonFacade {
+-		productReviewService.delete(review);
++		productReviewService.removeEntity(review);
+@@ -405 +405 @@ public class ProductCommonFacadeImpl implements ProductCommonFacade {
+-			productService.delete(p);
++			productService.removeEntity(p);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductInventoryFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductInventoryFacadeImpl.java
+index a8f2db8..cb56614 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductInventoryFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductInventoryFacadeImpl.java
+@@ -70 +70 @@ public class ProductInventoryFacadeImpl implements ProductInventoryFacade {
+-					productAvailabilityService.delete(availability.get());
++					productAvailabilityService.removeEntity(availability.get());
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionFacadeImpl.java
+index 3ce0bd8..7a59feb 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionFacadeImpl.java
+@@ -120 +120 @@ public class ProductOptionFacadeImpl implements ProductOptionFacade {
+-			productOptionService.delete(optionModel);
++			productOptionService.removeEntity(optionModel);
+@@ -135 +135 @@ public class ProductOptionFacadeImpl implements ProductOptionFacade {
+-			productOptionValueService.delete(optionModel);
++			productOptionValueService.removeEntity(optionModel);
+@@ -406 +406 @@ public class ProductOptionFacadeImpl implements ProductOptionFacade {
+-			productAttributeService.delete(attr);
++			productAttributeService.removeEntity(attr);
+@@ -513 +513 @@ public class ProductOptionFacadeImpl implements ProductOptionFacade {
+-}
+\ No newline at end of file
++}
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionSetFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionSetFacadeImpl.java
+index 014a140..3c2ec77 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionSetFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionSetFacadeImpl.java
+@@ -130 +130 @@ public class ProductOptionSetFacadeImpl implements ProductOptionSetFacade {
+-			productOptionSetService.delete(opt);
++			productOptionSetService.removeEntity(opt);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductPriceFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductPriceFacadeImpl.java
+index e4ebd84..9254619 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductPriceFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductPriceFacadeImpl.java
+@@ -118 +118 @@ public class ProductPriceFacadeImpl implements ProductPriceFacade {
+-			productPriceService.delete(productPrice);
++			productPriceService.removeEntity(productPrice);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductTypeFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductTypeFacadeImpl.java
+index 73f5dff..e3533e2 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductTypeFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductTypeFacadeImpl.java
+@@ -159 +159 @@ public class ProductTypeFacadeImpl implements ProductTypeFacade {
+-			productTypeService.delete(t);
++			productTypeService.removeEntity(t);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantFacadeImpl.java
+index 230ab8e..3a12e74 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantFacadeImpl.java
+@@ -170 +170 @@ public class ProductVariantFacadeImpl implements ProductVariantFacade {
+-			productVariantService.delete(instanceModel.get());
++			productVariantService.removeEntity(instanceModel.get());
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantGroupFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantGroupFacadeImpl.java
+index f9f0ea8..2cce9e6 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantGroupFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantGroupFacadeImpl.java
+@@ -118 +118 @@ public class ProductVariantGroupFacadeImpl implements ProductVariantGroupFacade
+-			productVariantGroupService.delete(group);
++			productVariantGroupService.removeEntity(group);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariationFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariationFacadeImpl.java
+index 10f2741..693e2ec 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariationFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariationFacadeImpl.java
+@@ -135 +135 @@ public class ProductVariationFacadeImpl implements ProductVariationFacade {
+-			productVariationService.delete(opt);
++			productVariationService.removeEntity(opt);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/tax/TaxFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/tax/TaxFacadeImpl.java
+index 0856994..3426c88 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/tax/TaxFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/tax/TaxFacadeImpl.java
+@@ -99 +99 @@ public class TaxFacadeImpl implements TaxFacade {
+-			taxClassService.delete(model);
++			taxClassService.removeEntity(model);
+@@ -245 +245 @@ public class TaxFacadeImpl implements TaxFacade {
+-			taxRateService.delete(model);
++		taxRateService.removeEntity(model);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/user/UserFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/user/UserFacadeImpl.java
+index 92a6764..2a6864c 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/user/UserFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/user/UserFacadeImpl.java
+@@ -386 +386 @@ public class UserFacadeImpl implements UserFacade {
+-			userService.delete(user);
++			userService.removeEntity(user);

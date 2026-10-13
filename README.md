@@ -4,7 +4,7 @@ Coding agents have to understand code before they can change it. When the code i
 
 We tested what helps. We generated a **guide** from source code with a script (no language model): a folder of markdown files, one per module or package, listing classes, functions, routes and calls, each with the file and line it came from. The format is [OKF](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md) (Open Knowledge Format), which calls such a folder a *bundle*; this README says *guide*. We compared guides with nothing, with an API contract, with a short hand-written note and with the real source.
 
-Every run used one agent, OpenAI's Codex (`gpt-5.6-luna`, medium reasoning). The agent answered questions or made changes that hidden tests graded, and we recorded whether it was right and how many tokens it used. There were about 1,550 runs in nine experiments (A to I).
+Every run used one agent, OpenAI's Codex (`gpt-5.6-luna`, medium reasoning). The agent answered questions or made changes that hidden tests graded, and we recorded whether it was right and how many tokens it used. There were about 1,650 runs in ten experiments (A to J).
 
 | Experiment | Setting | Runs |
 | --- | --- | --- |
@@ -14,12 +14,13 @@ Every run used one agent, OpenAI's Codex (`gpt-5.6-luna`, medium reasoning). The
 | F, G | The same pair: small, then harder cross-repository changes | 60, 80 |
 | H | Guide against an OpenAPI contract, a note and the source (H1 changes, H2 questions, H3 a small service) | 280 |
 | I | Renaming a method and its callers in the large readable backend, with and without a guide | 64 |
+| J | The same backend left as it is, against one set up for agents (guide, graph, operating skills, `AGENTS.md`): four changes and three structure questions | 112 |
 
 The central message: **coding agents do not necessarily need more documentation. They need the right information, at the right time, from a trustworthy source.**
 
 ## Key findings
 
-1. **Knowledge about a repository the agent can already read did not improve accuracy.** It added tokens, and when it was out of date it misled the agent (A, B, C).
+1. **Knowledge about a repository the agent can already read did not improve accuracy.** It added tokens, and when it was out of date it misled the agent (A, B, C). A large readable repository set up for agents, with a guide, a graph, skills and `AGENTS.md`, gave no reliable gain either and cost about 48% more tokens (I, J).
 2. **Where the agent cannot read a dependency, facts about it made a large difference.** Cross-repository changes passed in 3 of 20 runs with nothing, and in 18 or 19 of 20 with a guide (F, G).
 3. **For changes that depend on an interface, a contract or a 3 KB note did about as well as a guide, and cost less** (H1).
 4. **For questions about internal call relationships, only the guide and the source worked** (21 of 24, against 8 for the contract and 0 for the note). This measured answering questions, not making better changes (H2).
@@ -38,6 +39,8 @@ Evidence: A (Click, 312 runs), B (340 runs), C (72 runs). Details: [docs/DETAILS
 **An out-of-date guide misled the agent.** After we changed Click three ways, 8 of 12 answers repeated the old fact with a guide and 0 of 12 without. Confidence labels, a warning banner and OKF's own trust fields did not prevent it. One sentence in the agent's instructions, "read the source to confirm before you rely on it", did: 0 of 12 (B).
 
 A guide is a substitute for reading the code, so it adds little where the code can be read. We also tested this in a large repository (experiment I, 64 runs, the 1,173-file backend, readable). The task was to rename a method with a common name and update every caller, which a text search over-matches by three to ten times. The guide arm passed 24 of 32 runs and the plain arm 22 of 32 (no reliable difference), and the guide cost about 22% more tokens (reliably more). One repository, one task type. Plan and results: [docs/EXPERIMENT_I.md](docs/EXPERIMENT_I.md).
+
+Experiment J then tested a whole setup in the same repository (112 runs): the recommended guide, the code graph and its `kg` tool, three operating skills about how to navigate and change the repository, and a configured `AGENTS.md`, against the repository left as it was. The agents used the setup (`kg` and the guide in every run, the navigation skill in 55 of 56). Correctness was not reliably different: 29 against 28 of 32 on four changes (one a 58-file rename with 105 sites, 6 against 4 of 8) and 19 against 16 of 24 on three structure questions. The setup used about 48% more tokens (1.38 to 1.60 times, reliably more). The plain arm was already strong, and the setup bundles four ingredients, so this does not say which would help alone. Plan and results: [docs/EXPERIMENT_J.md](docs/EXPERIMENT_J.md).
 
 ## When the agent cannot read a dependency
 
@@ -117,7 +120,7 @@ Nothing here means a guide must be used. If you do generate one, include file-an
 - **The backend is Shopizer with names changed** and changes applied as uncompiled text edits. The H1 contract is generated by our script from its source.
 - **H2 had network access, and 56 of 120 runs cloned the public repository.** Results are reported with and without those runs.
 - **H3 was contaminated.** Agents without the source searched the disk and found the service, the tests and other arms' material in 15 of 64 runs, and the sandbox cannot restrict reads. No pair of arms differed reliably (smallest p=0.08), and the price-rule task could not be tested fairly.
-- **Large readable codebases: one test.** Experiment I used one repository, one task type (renames) and 32 runs per arm.
+- **Large readable codebases: two tests, one repository.** Experiments I and J used the same backend, mechanical edits and structure questions, and 32 and 56 runs per arm. Both grading rules had a defect that we found and corrected after the runs (I: two commented-out calls counted as required; J: four pointcut strings missed). Neither changed a conclusion, and both are recorded in the plans.
 - **There is no evidence here for an enterprise-wide knowledge platform.** The experiments compare ways of giving an agent facts about one dependency.
 - **A generator that reads source states structure, not what the code does.**
 
@@ -127,10 +130,10 @@ The first runs of A and B told the agent to verify in every condition, which hid
 
 | What | Where |
 | --- | --- |
-| **Architectural recommendation paper** (plain English, 7 pages) | [docs/architecture-recommendation.pdf](docs/architecture-recommendation.pdf) ([source](docs/architecture-recommendation.html)) |
+| **Architectural recommendation paper** (plain English, 8 pages) | [docs/architecture-recommendation.pdf](docs/architecture-recommendation.pdf) ([source](docs/architecture-recommendation.html)) |
 | **Long-form detail**: the four conditions, recommended guide layout, each experiment, the full analysis, an example file, rerun commands | [docs/DETAILS.md](docs/DETAILS.md) |
 | Results for each experiment, with tables | [docs/RESULTS.md](docs/RESULTS.md) |
-| Plans written before the runs (H and I) | [docs/EXPERIMENT_H.md](docs/EXPERIMENT_H.md), [docs/EXPERIMENT_I.md](docs/EXPERIMENT_I.md) |
+| Plans written before the runs, with deviations and results (H, I, J) | [docs/EXPERIMENT_H.md](docs/EXPERIMENT_H.md), [docs/EXPERIMENT_I.md](docs/EXPERIMENT_I.md), [docs/EXPERIMENT_J.md](docs/EXPERIMENT_J.md) |
 | Raw trial reports | [results/](results/) ([index](results/README.md)) |
 | Advice in more detail | [docs/RECOMMENDATIONS.md](docs/RECOMMENDATIONS.md) |
 | Does the output meet OKF v0.2? | [docs/CONFORMANCE.md](docs/CONFORMANCE.md) |

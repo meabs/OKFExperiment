@@ -70,3 +70,43 @@ Which of the four ingredients matters; other repositories, languages or models; 
 ## Deviations
 
 1. **A harder task was added after a pilot.** A pilot (one run per arm on j2 and j5, one `plain` run on each of j1, j3, j4 and j6; six runs, discarded, not counted) showed `plain` passing five of the six original tasks, so the test risked a ceiling. Task j7 was designed and its grader tested (exact answer passes; no change and a blanket replace fail) before any counted run. The pilot also showed the agent opening the skills, running `kg` and reading the guide in the `optimised` arm. Codex loads `AGENTS.md` itself, so adoption of `AGENTS.md` cannot be seen in the commands and is not measured.
+2. **The j7 ground truth missed four string literals, and was corrected after the runs.** Every one of the 16 j7 runs (8 per arm) changed one file that the grader did not list: `PublishProductAspect.java`, which holds four AspectJ pointcut strings of the form `execution(* ...ProductService.delete(Product))`. They name the method as text, so a rename that leaves them alone breaks the aspect without a compile error. The agents were right and the site finder, which looked only at method declarations and calls, was wrong. The finder now also finds string literals that name a service's `delete` method (105 sites in 58 files); the corrected grader passes the exact answer and fails no change. The runs' work folders were not kept, so the 16 j7 runs were re-scored from the diffs the grader had saved (`scripts/regrade_j.py`): a run passes if its other 57 files were exactly right and its edit to the aspect changed exactly the four lines, each by renaming `.delete(` to `.removeEntity(`. The three tasks j1, j2, j3 and the questions are unaffected: no string or other non-code references to their methods exist (checked by parsing every string literal in the repository). The first grader's figure (0 of 16) is kept in the raw report.
+
+## Results
+
+Raw report: [`results/J-optimised-repo.md`](../results/J-optimised-repo.md); per-run verdicts and diffs in [`results/J-grades/`](../results/J-grades/).
+
+| Part | `plain` | `optimised` | Tokens per run |
+| --- | --- | --- | --- |
+| Changes (j1, j2, j3, j7), of 32 | 28 | 29 (p = 1.0) | 407k and 526k (1.29 times) |
+| Questions (j4, j5, j6), of 24 | 16 | 19 (p = 0.52) | 150k and 234k (1.56 times) |
+| All 56 runs per arm | | | 297k and 401k: **1.48 times, interval 1.38 to 1.60, reliably more** |
+
+| Task | `plain` | `optimised` |
+| --- | --- | --- |
+| j1 rename payment method (9 sites) | 8 / 8 | 8 / 8 |
+| j2 add parameter to one overload (6 sites) | 8 / 8 | 7 / 8 |
+| j3 remove unused parameter (8 sites) | 8 / 8 | 8 / 8 |
+| **j7 rename generic `delete` (105 sites in 58 files)** | **4 / 8** (p = 0.61) | **6 / 8** |
+| j4 callers of one overload | 1 / 8 | 3 / 8 (p = 0.57) |
+| j5 shipping call chain | 7 / 8 | 8 / 8 |
+| j6 checkout call path | 8 / 8 | 8 / 8 |
+
+- **No reliable difference in correctness anywhere**, per part or per task. The optimised arm was ahead by 4 runs of 56 (48 against 44), which is within chance, and reliably dearer overall.
+- **The setup was used.** In all 56 optimised runs the agent ran `kg` and opened the guide; it read `navigate-the-repo` in 55, `change-the-code` in 32 and `check-your-work` in 34. (Whether `AGENTS.md` was read cannot be seen, because Codex loads it itself.)
+- **The cost came with it.** The optimised runs took more turns (8.8 against 5.9) and more tokens, because the agent read the instructions, the guide and the graph output and then still searched and read the source.
+- **The hidden dependency was found by everyone.** All 16 j7 agents updated the four pointcut strings without being told.
+- **j4's failures are one mistake in both arms:** 11 of 16 answers listed `ProductFacadeImpl` or `ProductFacadeV2Impl`, whose calls sit inside a block comment, although the question said to count only real code.
+- **Isolation held:** 10 runs (4 plain, 6 optimised) had a command refused by the sandbox; no network use was detected.
+
+| Prediction | Outcome |
+| --- | --- |
+| The agent opens `AGENTS.md` and runs `kg` in most runs; reads a skill in fewer than half | **Partly wrong.** `kg` in all runs, as predicted; but `navigate-the-repo` was read in 55 of 56 and the other two skills in over half. `AGENTS.md` not measurable. |
+| Questions: `optimised` uses fewer tokens | **Not seen.** 1.56 times more. |
+| Questions: pass rates level (j4 favours `optimised`) | **Held** (16 against 19 of 24; j4 1 against 3 of 8, not reliable). |
+| Changes: no reliable difference; `optimised` no cheaper | **Held**, and dearer (1.29 times). |
+| j2: at most a modest gain from the skills | **Not seen** (8 against 7 of 8). |
+| j7: `plain` finds it hard; `optimised` helps only partly | **Half right.** `plain` passed 4 of 8 (not fewer than half); `optimised` passed 6 of 8, not reliable. |
+
+What this adds: a repository set up the recommended way, with a guide, a graph, operating skills and a configured `AGENTS.md`, did not give a reliably better result than the same repository left as it was, on mechanical changes and structure questions in a large readable codebase, and it cost about 48% more tokens. The one hard task, a 58-file rename with 105 sites, favoured the setup by two runs of eight, which this size of experiment cannot tell from chance. The plain arm was already strong: it passed 44 of 56 runs. One repository, one model, one task type (mechanical edits and structure questions); the optimised arm bundles four ingredients, so this does not say which would help alone. An earlier trial of the graph on a small library found about a third of the tokens on caller questions (AgentGraphWorkTree's own evaluation); that did not carry over to this repository, where the agent used the graph and still searched.
+

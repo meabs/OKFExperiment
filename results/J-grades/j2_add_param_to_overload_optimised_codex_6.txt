@@ -1,0 +1,54 @@
+j2_add_param_to_overload: 5 of 5 files correct; 0 other files wrongly changed
+
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingService.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingService.java
+index 6eb0bdc..b2a44fc 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingService.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingService.java
+@@ -72 +72 @@ public interface PricingService {
+-			List<ProductAttribute> attributes) throws ServiceException;
++			List<ProductAttribute> attributes, boolean refresh) throws ServiceException;
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingServiceImpl.java
+index 2ad9e0a..5546242 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingServiceImpl.java
+@@ -50 +50 @@ public class PricingServiceImpl implements PricingService {
+-	public FinalPrice calculateProductPrice(Product product, List<ProductAttribute> attributes) throws ServiceException {
++	public FinalPrice calculateProductPrice(Product product, List<ProductAttribute> attributes, boolean refresh) throws ServiceException {
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java
+index e0d1ce8..9ea4b64 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java
+@@ -352 +352 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
+-		FinalPrice price = pricingService.calculateProductPrice(product, attributesList);
++		FinalPrice price = pricingService.calculateProductPrice(product, attributesList, false);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/api/v2/product/ProductVariationApi.java b/sm-shop/src/main/java/com/salesmanager/shop/store/api/v2/product/ProductVariationApi.java
+index 1e9fcc5..98dca07 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/api/v2/product/ProductVariationApi.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/api/v2/product/ProductVariationApi.java
+@@ -153 +153 @@ public class ProductVariationApi {
+-    FinalPrice price = pricingService.calculateProductPrice(product, attributes);
++    FinalPrice price = pricingService.calculateProductPrice(product, attributes, false);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacadeImpl.java
+index 809db39..e684ccb 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacadeImpl.java
+@@ -605 +605 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
+-						productAttributes);
++						productAttributes, false);
+@@ -656 +656 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
+-					productAttributes);
++					productAttributes, false);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeImpl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeImpl.java
+index ee0ee4b..cc63bfe 100755
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeImpl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeImpl.java
+@@ -251 +251 @@ public class ProductFacadeImpl implements ProductFacade {
+-			price = pricingService.calculateProductPrice(model, attributes);
++			price = pricingService.calculateProductPrice(model, attributes, false);
+diff --git a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeV2Impl.java b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeV2Impl.java
+index fad03cc..9c3fc02 100644
+--- a/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeV2Impl.java
++++ b/sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeV2Impl.java
+@@ -273 +273 @@ public class ProductFacadeV2Impl implements ProductFacade {
+-			price = pricingService.calculateProductPrice(model, attributes);
++			price = pricingService.calculateProductPrice(model, attributes, false);

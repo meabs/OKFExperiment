@@ -1,0 +1,58 @@
+j3_remove_unused_param: 8 of 8 files correct; 0 other files wrongly changed
+
+diff --git a/sm-core-modules/src/main/java/com/salesmanager/core/modules/integration/shipping/model/ShippingQuoteModule.java b/sm-core-modules/src/main/java/com/salesmanager/core/modules/integration/shipping/model/ShippingQuoteModule.java
+index aa59c3c..b5bbb87 100755
+--- a/sm-core-modules/src/main/java/com/salesmanager/core/modules/integration/shipping/model/ShippingQuoteModule.java
++++ b/sm-core-modules/src/main/java/com/salesmanager/core/modules/integration/shipping/model/ShippingQuoteModule.java
+@@ -24 +24 @@ public interface ShippingQuoteModule {
+-	public List<ShippingOption> getShippingQuotes(ShippingQuote quote, List<PackageDetails> packages, BigDecimal orderTotal, Delivery delivery, ShippingOrigin origin, MerchantStore store, IntegrationConfiguration configuration, IntegrationModule module, ShippingConfiguration shippingConfiguration, Locale locale) throws IntegrationException;
++	public List<ShippingOption> getShippingQuotes(ShippingQuote quote, List<PackageDetails> packages, BigDecimal orderTotal, Delivery delivery, MerchantStore store, IntegrationConfiguration configuration, IntegrationModule module, ShippingConfiguration shippingConfiguration, Locale locale) throws IntegrationException;
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomShippingQuoteRules.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomShippingQuoteRules.java
+index 374c286..b1a4970 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomShippingQuoteRules.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomShippingQuoteRules.java
+@@ -61 +61 @@ public class CustomShippingQuoteRules implements ShippingQuoteModule {
+-			Delivery delivery, ShippingOrigin origin, MerchantStore store,
++			Delivery delivery, MerchantStore store,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomWeightBasedShippingQuote.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomWeightBasedShippingQuote.java
+index d58df19..0d7f06f 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomWeightBasedShippingQuote.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomWeightBasedShippingQuote.java
+@@ -92 +92 @@ public class CustomWeightBasedShippingQuote implements ShippingQuoteModule {
+-			Delivery delivery, ShippingOrigin origin, MerchantStore store,
++			Delivery delivery, MerchantStore store,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/PriceByDistanceShippingQuoteRules.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/PriceByDistanceShippingQuoteRules.java
+index e9e485f..758058f 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/PriceByDistanceShippingQuoteRules.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/PriceByDistanceShippingQuoteRules.java
+@@ -61 +61 @@ public class PriceByDistanceShippingQuoteRules implements ShippingQuoteModule {
+-			Delivery delivery, ShippingOrigin origin, MerchantStore store,
++			Delivery delivery, MerchantStore store,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/StorePickupShippingQuote.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/StorePickupShippingQuote.java
+index 4435335..8275f29 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/StorePickupShippingQuote.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/StorePickupShippingQuote.java
+@@ -99 +99 @@ public class StorePickupShippingQuote implements ShippingQuoteModule, ShippingQu
+-			Delivery delivery, ShippingOrigin origin, MerchantStore store,
++			Delivery delivery, MerchantStore store,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/UPSShippingQuote.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/UPSShippingQuote.java
+index 66e34de..bb4e420 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/UPSShippingQuote.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/UPSShippingQuote.java
+@@ -125 +125 @@ public class UPSShippingQuote implements ShippingQuoteModule {
+-			Delivery delivery, ShippingOrigin origin, MerchantStore store,
++			Delivery delivery, MerchantStore store,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/USPSShippingQuote.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/USPSShippingQuote.java
+index 3ebd741..5f90daf 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/USPSShippingQuote.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/USPSShippingQuote.java
+@@ -129 +129 @@ public class USPSShippingQuote implements ShippingQuoteModule {
+-			Delivery delivery, ShippingOrigin origin, MerchantStore store,
++			Delivery delivery, MerchantStore store,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
+index 6d58fc3..2ad3912 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java
+@@ -563 +563 @@ public class ShippingServiceImpl implements ShippingService {
+-				shippingOptions = shippingQuoteModule.getShippingQuotes(shippingQuote, packages, orderTotal, delivery, shippingOrigin, store, configuration, shippingModule, shippingConfiguration, locale);
++				shippingOptions = shippingQuoteModule.getShippingQuotes(shippingQuote, packages, orderTotal, delivery, store, configuration, shippingModule, shippingConfiguration, locale);

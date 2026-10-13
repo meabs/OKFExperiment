@@ -106,6 +106,10 @@ for f in files:
                     why = "through " + T
             if why:
                 sites.append({"file": f, "kind": "call", "line": n.child_by_field_name("name").start_point[0] + 1, "why": why})
+for f in files:  # pointcut strings and other string literals that name a service's delete method (found after the first run, see EXPERIMENT_J.md)
+    for n in jlib._walk(roots[f]):
+        if n.type == "string_literal" and re.search(r"(Service|ServiceImpl)\.delete\(", n.text.decode()):
+            sites.append({"file": f, "kind": "string", "line": n.start_point[0] + 1, "why": "string literal naming the method"})
 TASKS["j7_rename_entity_delete"] = {"op": "rename", "name": "delete", "new": "removeEntity", "sites": sites}
 for t, v in TASKS.items():
     print(t, len(v["sites"]), "sites in", len({s["file"] for s in v["sites"]}), "files")

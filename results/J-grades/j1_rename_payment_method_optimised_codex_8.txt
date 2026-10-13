@@ -1,0 +1,65 @@
+j1_rename_payment_method: 9 of 9 files correct; 0 other files wrongly changed
+
+diff --git a/sm-core-modules/src/main/java/com/salesmanager/core/modules/integration/payment/model/PaymentModule.java b/sm-core-modules/src/main/java/com/salesmanager/core/modules/integration/payment/model/PaymentModule.java
+index ecb3832..906f370 100755
+--- a/sm-core-modules/src/main/java/com/salesmanager/core/modules/integration/payment/model/PaymentModule.java
++++ b/sm-core-modules/src/main/java/com/salesmanager/core/modules/integration/payment/model/PaymentModule.java
+@@ -46 +46 @@ public interface PaymentModule {
+-	public Transaction authorizeAndCapture(
++	public Transaction chargeInOneStep(
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/BeanStreamPayment.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/BeanStreamPayment.java
+index 49040e9..0368f62 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/BeanStreamPayment.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/BeanStreamPayment.java
+@@ -129 +129 @@ public class BeanStreamPayment implements PaymentModule {
+-	public Transaction authorizeAndCapture(MerchantStore store, Customer customer,
++	public Transaction chargeInOneStep(MerchantStore store, Customer customer,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/BraintreePayment.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/BraintreePayment.java
+index 0786bbf..e20e41c 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/BraintreePayment.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/BraintreePayment.java
+@@ -297 +297 @@ public class BraintreePayment implements PaymentModule {
+-	public Transaction authorizeAndCapture(MerchantStore store, Customer customer, List<ShoppingCartItem> items,
++	public Transaction chargeInOneStep(MerchantStore store, Customer customer, List<ShoppingCartItem> items,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/MoneyOrderPayment.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/MoneyOrderPayment.java
+index 2a01e71..a129187 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/MoneyOrderPayment.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/MoneyOrderPayment.java
+@@ -77 +77 @@ public class MoneyOrderPayment implements PaymentModule {
+-	public Transaction authorizeAndCapture(MerchantStore store, Customer customer,
++	public Transaction chargeInOneStep(MerchantStore store, Customer customer,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/PayPalExpressCheckoutPayment.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/PayPalExpressCheckoutPayment.java
+index 03f01f7..7e5c420 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/PayPalExpressCheckoutPayment.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/PayPalExpressCheckoutPayment.java
+@@ -327 +327 @@ public class PayPalExpressCheckoutPayment implements PaymentModule {
+-	public Transaction authorizeAndCapture(MerchantStore store,
++	public Transaction chargeInOneStep(MerchantStore store,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/PayPalRestPayment.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/PayPalRestPayment.java
+index 7df212b..153118c 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/PayPalRestPayment.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/PayPalRestPayment.java
+@@ -213 +213 @@ public class PayPalRestPayment implements PaymentModule {
+-	public Transaction authorizeAndCapture(MerchantStore store,
++	public Transaction chargeInOneStep(MerchantStore store,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/Stripe3Payment.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/Stripe3Payment.java
+index b9bf4f6..f815cab 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/Stripe3Payment.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/Stripe3Payment.java
+@@ -278 +278 @@ public class Stripe3Payment implements PaymentModule {
+-	public Transaction authorizeAndCapture(MerchantStore store, Customer customer,
++	public Transaction chargeInOneStep(MerchantStore store, Customer customer,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/StripePayment.java b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/StripePayment.java
+index eacc34c..5433010 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/StripePayment.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/StripePayment.java
+@@ -252 +252 @@ public class StripePayment implements PaymentModule {
+-	public Transaction authorizeAndCapture(MerchantStore store, Customer customer,
++	public Transaction chargeInOneStep(MerchantStore store, Customer customer,
+diff --git a/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java b/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java
+index 6b25968..9425a34 100755
+--- a/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java
++++ b/sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java
+@@ -376 +376 @@ public class PaymentServiceImpl implements PaymentService {
+-			transaction = module.authorizeAndCapture(store, customer, items, amount, payment, configuration, integrationModule);
++			transaction = module.chargeInOneStep(store, customer, items, amount, payment, configuration, integrationModule);

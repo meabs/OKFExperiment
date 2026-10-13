@@ -34,7 +34,7 @@
 <body>
 
 <h1>Giving coding agents the right knowledge</h1>
-<p class="sub">An architectural recommendation, based on about 1,550 controlled runs of a coding agent<br>OKF Experiment &middot; October 2026</p>
+<p class="sub">An architectural recommendation, based on about 1,650 controlled runs of a coding agent<br>OKF Experiment &middot; October 2026</p>
 
 <h2 style="margin-top:0">1. Summary</h2>
 
@@ -48,10 +48,10 @@
 
 <p>Five results matter for architecture:</p>
 <ol>
-  <li>If the agent can already read the code, extra generated knowledge did not make it more accurate. It cost more tokens, and when it was out of date it misled the agent.</li>
+  <li>If the agent can already read the code, extra generated knowledge did not make it more accurate. It cost more tokens, and when it was out of date it misled the agent. That held even for a large repository set up with a guide, a code graph, operating skills and instructions: no reliable gain, and about 48% more tokens.</li>
   <li>If the agent cannot read a dependency, supplying facts about it made a very large difference: changes passed in about 3 of 20 runs with nothing and in 18 or 19 of 20 with a guide.</li>
   <li>For changes that depend on an interface (names, paths, fields), a contract or a short note did about as well as the guide, and cost less.</li>
-  <li>For questions about what calls what inside the dependency, only the guide or the source worked. That shows the guide helps agents answer structural questions. It does not show that it helps them make better changes. A later test in a large repository the agent could read found no gain in the quality of its changes from a guide (section 4.5).</li>
+  <li>For questions about what calls what inside the dependency, only the guide or the source worked. That shows the guide helps agents answer structural questions. It does not show that it helps them make better changes. Tests in a large repository the agent could read found no gain in the quality of its changes (sections 4.5 and 4.6).</li>
   <li>Out-of-date knowledge produced confident, wrong answers, and nothing placed inside the knowledge itself protected the agent.</li>
 </ol>
 
@@ -65,7 +65,7 @@
 
 <h2>3. What we tested</h2>
 
-<p>We ran about 1,550 runs of one agent (OpenAI's Codex, model <code>gpt-5.6-luna</code>, medium reasoning). Each run was one question or one change, started from scratch, and graded by a hidden test or an exact answer check. We recorded correctness and tokens used, which is a stand-in for cost and time. We called a difference real only when a standard statistical test (Fisher's exact test) gave p below 0.05.</p>
+<p>We ran about 1,650 runs of one agent (OpenAI's Codex, model <code>gpt-5.6-luna</code>, medium reasoning). Each run was one question or one change, started from scratch, and graded by a hidden test or an exact answer check. We recorded correctness and tokens used, which is a stand-in for cost and time. We called a difference real only when a standard statistical test (Fisher's exact test) gave p below 0.05.</p>
 
 <table>
   <tr><th>Experiment</th><th>Setting</th><th class="n">Runs</th></tr>
@@ -74,6 +74,7 @@
   <tr><td>F, G</td><td>The same pair. Small, then harder, cross-repository changes graded by hidden tests.</td><td class="n">140</td></tr>
   <tr><td>H</td><td>Guide against an OpenAPI contract, a note and the source, on changes (H1), call-structure questions (H2) and a small running service (H3).</td><td class="n">280</td></tr>
   <tr><td>I</td><td>A change task in a large codebase the agent can read: does a guide improve the result? Renames with and without a guide.</td><td class="n">64</td></tr>
+  <tr><td>J</td><td>The same codebase left as it is, against one set up for agents (guide, code graph, operating skills, <code>AGENTS.md</code>): four changes and three structure questions.</td><td class="n">112</td></tr>
 </table>
 
 <p>The backend was Shopizer, with names changed so the agent could not recall the answers from memory. We wrote the questions, the tests and the planted changes ourselves.</p>
@@ -120,7 +121,18 @@
 <p>The pass rates did not differ reliably (p = 0.78), and the guide cost about 22% more tokens, which was reliably more. Failures were mostly missed calls, or edits to callers of a different class with the same method name, and they happened in both arms. The guide's call information lacked one real caller, and the agents did not follow it into error. This is one repository, one kind of task and one model. It does not say that structural knowledge cannot help a change, only that on this task it did not.</p>
 
 
-<h3>4.6 Out-of-date knowledge is the main hazard</h3>
+<h3>4.6 A repository set up for agents, against one left as it is</h3>
+<p>Experiment J tested the whole recommended setup together, in the same large backend. The <em>set up</em> repository had the generated guide, a code graph with a command for asking who calls what, three short "operating skills" that say how to work in the repository (orient, list every place a change touches, check the diff; nothing about the technology), and an instruction file that points to all of them. The <em>plain</em> repository had none of this. Four changes and three structure questions were graded exactly, 8 runs each per arm. One change was hard: renaming a generic method used through 58 files, with 105 places to change, some of them text in a configuration annotation that no compiler would catch.</p>
+<table>
+  <tr><th>Part</th><th class="n">Plain</th><th class="n">Set up</th><th>Tokens per run</th></tr>
+  <tr><td>Changes (of 32)</td><td class="n">28</td><td class="n">29</td><td>407k and 526k</td></tr>
+  <tr><td>Questions (of 24)</td><td class="n">16</td><td class="n">19</td><td>150k and 234k</td></tr>
+  <tr><td>Hard 58-file rename (of 8)</td><td class="n">4</td><td class="n">6</td><td>1.05M and 1.28M</td></tr>
+  <tr><td>All runs</td><td class="n"></td><td class="n"></td><td>1.48 times, reliably more (interval 1.38 to 1.60)</td></tr>
+</table>
+<p>The agents did use the setup: they ran the graph command and opened the guide in every run, and read the navigation skill in 55 of 56. Correctness did not differ reliably in any part or task. The set-up repository cost about 48% more tokens, because the agent read the instructions, the guide and the graph output and then still searched and read the source. The plain agents were already strong, passing 44 of 56 runs, and all 16 agents on the hard rename found and updated the hidden text references without being told. Two caveats: the set-up arm bundles four ingredients, so this does not say which would help alone, and the hard rename favoured it by two runs of eight, which this size of test cannot tell from chance.</p>
+
+<h3>4.7 Out-of-date knowledge is the main hazard</h3>
 <p>We renamed four things in the backend after the guide was made. Four questions had new answers.</p>
 <table>
   <tr><th>The agent had</th><th class="n">Gave the old answer (of 16)</th></tr>
@@ -131,12 +143,12 @@
 </table>
 <p>None of the 46 wrong answers hedged. When the agent could read the code, one sentence in its instructions, "read the source to confirm before you rely on it", cut repeated old facts from 8 of 12 to 0 of 12. When it could not, nothing placed inside the guide helped: not warnings, not expiry dates, not confidence labels. Labels say how a fact was found, not whether it is still true. With an instruction to disclose guesses, agents did say they were relying on a guess in 6 of 8 wrong answers, but accuracy did not improve.</p>
 
-<h2 class="pb">5. Recommendations</h2>
+<h2>5. Recommendations</h2>
 
 <p>Findings are measured. Recommendations are our judgement, built on them. Where a recommendation goes beyond what we measured, it says so.</p>
 
 <div class="rec"><h3>R1. Do not give agents generated knowledge of code they can already read.</h3>
-<p><em>Evidence:</em> experiments A, B, C. No accuracy gain, higher cost, and a stale guide misleads. <em>Instead:</em> rely on the source and existing tools, and add "read the source to confirm before you rely on it" to the agent's instructions.</p></div>
+<p><em>Evidence:</em> experiments A, B, C, I and J. No reliable accuracy gain, higher cost (about 48% more tokens in J, even with skills and a configured instruction file), and a stale guide misleads. <em>Instead:</em> rely on the source and existing tools, and add "read the source to confirm before you rely on it" to the agent's instructions.</p></div>
 
 <div class="rec"><h3>R2. For a dependency the agent cannot read, supply a versioned API contract first.</h3>
 <p><em>Evidence:</em> H1. A contract matched the guide on interface changes at lower cost. <em>Why architects care:</em> most services already have, or can generate, one. It is also the form your teams already review and version. <em>Caution:</em> a contract states the success codes it was written with, and agents trust it. Make sure it is complete, including every success and error response.</p></div>
@@ -215,12 +227,13 @@
   <li><strong>We wrote the tests.</strong> The questions, hidden tests, planted changes and the note were ours. The contract was generated by our script.</li>
   <li><strong>Contamination.</strong> H2 had network access and H3 let agents find material on the disk. We report H2 with and without the affected runs and draw no conclusion from H3.</li>
   <li><strong>The code was altered.</strong> The backend had names changed and changes applied as uncompiled text edits.</li>
-  <li><strong>Mistakes we made and kept.</strong> Early runs of A and B told the agent to verify in every condition, which hid differences, so we reran them. The first H3 run is archived and unreported. Experiment I's first graded batch was discarded for a grader defect and rerun; both are published.</li>
+  <li><strong>Mistakes we made and kept.</strong> Early runs of A and B told the agent to verify in every condition, which hid differences, so we reran them. The first H3 run is archived and unreported. Experiment I's first graded batch was discarded for a grader defect and rerun, and both experiment I and J had ground-truth errors that we found and corrected after the runs (commented-out code counted as required; method names inside configuration strings missed). Neither changed a conclusion. All are published.</li>
 </ul>
 
 <h2>9. What to do next</h2>
 <ol>
   <li><strong>Test a contract and a guide together.</strong> We did not, and it is the combination this paper recommends.</li>
+  <li><strong>Split the set-up repository.</strong> Test the guide, the graph and the skills one at a time, on tasks the plain agent finds hard, to see whether any one earns its cost.</li>
   <li><strong>Test changes that need internal structure.</strong> Show that structural knowledge improves the change, not only the answer.</li>
   <li><strong>Repeat on another model and on real drift</strong> from real commits.</li>
   <li><strong>Run the freshness checks in a real pipeline</strong> and measure how often they fire.</li>

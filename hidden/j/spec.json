@@ -747,6 +747,30 @@
     "kind": "call",
     "line": 183,
     "why": "through ProductImageService"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/PublishProductAspect.java",
+    "kind": "string",
+    "line": 70,
+    "why": "string literal naming the method"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/PublishProductAspect.java",
+    "kind": "string",
+    "line": 93,
+    "why": "string literal naming the method"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/PublishProductAspect.java",
+    "kind": "string",
+    "line": 114,
+    "why": "string literal naming the method"
+   },
+   {
+    "file": "sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/PublishProductAspect.java",
+    "kind": "string",
+    "line": 136,
+    "why": "string literal naming the method"
    }
   ]
  }
